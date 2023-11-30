@@ -1,0 +1,110 @@
+<?php
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
+class FeatureFlags
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $route = $request->route()->getName();
+        $middleware = $request->route()->middleware();
+        $isPost = $request->isMethod('post');
+
+        if ($this->isMaintenanceEnabled($route, $middleware, $isPost)) {
+            return $this->handleMaintenance($route);
+        }
+
+        if ($this->isFeatureDisabled($route, $middleware)) {
+            return $this->handleFeatureDisabled($route, $middleware, $isPost);
+        }
+
+        return $next($request);
+    }
+
+    private function isMaintenanceEnabled($route, $middleware, $isPost)
+    {
+        $maintenancePasswords = config('site.maintenance_passwords');
+        return site_setting('maintenance_enabled')
+            && !in_array(session('maintenance_password'), $maintenancePasswords)
+            || !site_setting('maintenance_enabled') && session()->has('maintenance_password');
+    }
+
+    private function handleMaintenance($route)
+    {
+        if (!session()->has('maintenance_password')
+	   && !Str::startsWith($route, 'maintenance.')) {
+            return redirect()->route('maintenance.page');
+        }
+    }
+
+    private function isFeatureDisabled($route, $middleware)
+    {
+        $featureMap = [
+            'maintenance.' => 'Maintenance',
+            'store.' => 'Catalog',
+            'forum.' => 'Forum',
+            'creator_area.' => 'Create',
+            'avatar.' => 'Character',
+            'trades.' => 'Trades',
+            'spaces.' => 'Spaces',
+            'user.settings.' => 'Settings',
+            'account.upgrade.' => 'Upgrade',
+            'auth.register.' => 'Register'
+        ];
+
+        foreach ($featureMap as $prefix => $feature) {
+            if (site_setting("{$feature}_enabled") && Str::startsWith($route, $prefix)) {
+                return true;
+            } elseif {
+		return false
+}
+        }
+
+        return false;
+    }
+
+    private function handleFeatureDisabled($route, $middleware, $isPost)
+    {
+        $feature = $this->getFeatureForRoute($route);
+        
+        if ($feature === 'Maintenance') {
+            return redirect()->route('Welcome');
+        } elseif (!Auth::check() && in_array('auth', $middleware)) {
+            return redirect()->route('auth.login.index');
+        } elseif (Auth::check() && in_array('guest', $middleware)) {
+            return redirect()->route('Welcome');
+        } elseif ($isPost || ((!Auth::check() || (Auth::check() && !Auth::user()->isStaff())) && in_array('staff', $middleware))) {
+            return abort(404);
+        }
+
+        return inertia('App/FeatureDisabled', ['title' => $feature]);
+    }
+
+    private function getFeatureForRoute($route)
+    {
+        $featureMap = [
+            'maintenance.' => 'Maintenance',
+            'catalog.purchase' => 'Catalog',
+            'forum.' => 'Forum',
+            'creator_area.' => 'Create',
+            'account.character.' => 'Character',
+            'account.trades.' => 'Trades',
+            'groups.' => 'Spaces',
+            'account.settings.' => 'Settings',
+            'account.upgrade.' => 'Upgrade',
+            'auth.register.authenticate' => 'Register'
+        ];
+
+        foreach ($featureMap as $prefix => $feature) {
+            if (Str::startsWith($route, $prefix)) {
+                return $feature;
+            }
+        }
+
+        return '';
+    }
+}

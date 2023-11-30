@@ -1,0 +1,3 @@
+<template>
+soon.php
+</template>

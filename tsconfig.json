@@ -1,0 +1,36 @@
+{
+    //"extends": "@vue/tsconfig/tsconfig.web.json",
+    "compilerOptions": {
+        "target": "ESnext", // or "es2022", "esnext", "system", "node16", or "nodenext"
+        "module": "ESnext", // or "es2022", "esnext", "system", "node16", or "nodenext"
+        "types": [
+            "vite/client"
+        ],
+        "paths": {
+            "@/*": [
+               "./resources/js/*"
+            ]
+        },
+        "moduleResolution": "bundler",
+        "baseUrl": "./",
+        "strict": true,
+	"isolatedModules": true,
+	"noEmit": true,
+        "jsx": "preserve",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true, // Enable strict type-checking options
+        "skipLibCheck": true, // Skip type checking of declaration files
+        "noImplicitAny": false // Bypass raising errors on `any` type
+    },
+    "include": [
+        "resources/**/*.ts",
+        "resources/**/*.vue",
+        "resources/**/*.d.ts",
+        "vite.config.ts",
+        "resources/js/**/*",
+        "vue.config.ts"
+    ], // Paths
+    "exclude": [
+        "node_modules"
+    ]
+}
