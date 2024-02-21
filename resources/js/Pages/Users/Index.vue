@@ -7,7 +7,6 @@ import { route, current } from "momentum-trail";
 import axios from 'axios';
 import { ref } from 'vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import NewPaginator from '@/components/NewPaginator.vue';
 
 defineProps({
   users: { type: Object },
@@ -47,13 +46,7 @@ defineProps({
                 </div>
             </div>
             <div class="mx-3 my-3 divider"></div>
-            <NewPaginator
-            :current-page="currentPage"
-            :total-pages="totalPages"
-            @page-change="getUserList"
-          ></NewPaginator>
         </div>
-
     </Sidebar>
     <Footer />
 </template>
