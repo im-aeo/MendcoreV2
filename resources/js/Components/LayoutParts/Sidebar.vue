@@ -21,8 +21,106 @@ onMounted(() => {
     detectAdBlock(); // Call the function only if adblock status is not already set
 });
 
-const lang = computed(() => usePage<any>().props.locale);
+const sidebarsections = [
+    {
+        en: { name: "NAVIGATION" },
+        ru: { name: "НАВИГАЦИЯ" },
+        jp: { name: "ナビゲーション" }
+    },
+    {
+        en: { name: "SOCIAL" },
+        ru: { name: "СОЦИАЛЬНОЕ" },
+        jp: { name: "ソーシャル" }
+    },
+    {
+        en: { name: "MY SPACES" },
+        ru: { name: "МОИ ПРОСТРАНСТВА" },
+        jp: { title: "私のスペース" }
+    },
+    {
+        en: { name: "BOOST YOUR ACCOUNT" },
+        ru: { name: "เกม" },
+        jp: { name: "ゲーム" } 
+    }
+]
+const sidebar = [
+    {
+        url: "#",
+        active_link: "games.*",
+        section: "NAVIGATION",
+        icon: "fas fa-gamepad-modern",
+        en: { title: "Games" },
+        ru: { title: "Игры" },
+        jp: { title: "ゲーム" }
+        
+    },
+    {
+        url: route(`store.page`),
+        section: "NAVIGATION",
+        active_link: "store.*",
+        icon: "fas fa-store",
+        en: { title: "Market" },
+        ru: { title: "Рынок" },
+        jp: { title: "市場" },
+    },
+    {
+        url: route(`forum.page`, { id: 1 }),
+        active_link: "forum.page.*",
+        icon: "fas fa-messages",
+        section: "NAVIGATION",
+        en: { title: "Discuss" },
+        ru: { title: "Обсуждать" },
+        jp: { title: "議論" },
+    },
+    {
+        url: "#",
+        section: "NAVIGATION",
+        active_link: "develop.*",
+        icon: "fas fa-code",
+        en: { title: "Develop" },
+        ru: { title: "Развивать" },
+        jp: { title: "発展" }
+    },
+    {
+        url: route(`user.page`),
+        active_link: "user.*",
+        section: "SOCIAL",
+        icon: "fas fa-users",
+        en: { title: "Players" },
+        ru: { title: "Игроки" },
+        jp: { title: "発展" }
+    },
+    {
+        url: "#",
+        section: "SOCIAL",
+        active_link: "spaces.*",
+        icon: "fas fa-planet-ringed",
+        en: { title: "Spaces" },
+        ru: { title: "Пространства" },
+        jp: { title: "スペース" }
+    },
+    {
+        url: "#",
+        section: "SOCIAL",
+        active_link: "leaderboard.*",
+	icon: "fas fa-list-ol",
+        en: { title: "Leaderboard" },
+        ru: { title: "Таблица лидеров" },
+        jp: { title: "リーダーボード" }
+    },
+    {
+        url: "#",
+        icon: "fas fa-rocket-launch",
+        active_link: "upgade.*",
+        section: "BOOST YOUR ACCOUNT",
+        en: { title: "Upgrade" },
+        ru: { title: "модернизировать" },
+        jp: { title: "アップグレード" }
+    },
 
+];
+    
+const lang = computed(() => usePage().props.locale);
 const { props } = usePage<any>();
 </script>
 <template>
