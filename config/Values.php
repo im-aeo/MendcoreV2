@@ -19,8 +19,8 @@ return [
     ],
     'production' => [
         'domains' => [
-            'main' => 'https://netisu.test',
-            'api' => 'https://netisu.test/api',
+            'main' => 'https://netisu-backup.onrender.com/',
+            'api' => 'https://netisu-backup.onrender.com/api',
             'careers' => 'https://careers.netisu.test',
         ],
     ],
