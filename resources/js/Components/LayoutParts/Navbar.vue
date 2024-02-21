@@ -10,7 +10,7 @@ import Button from "../Button.vue";
 import SearchResultSkeleton from "../SearchResultSkeleton.vue";
 import VLazyImage from "v-lazy-image";
 import PageLoader from '../Loaders/PageLoader.vue';
-
+import '../toggle.js';
 
 const logout = () => {
     router.post(route('auth.logout'));
@@ -409,11 +409,6 @@ const { props } = usePage<any>();
 </template>
 
 <script lang="ts">
-    
- document.getElementById('sidebar-toggler').onclick = function () {
-    document.querySelector('.sidebar').classList.toggle('show-for-large');
-};
-    
 export default {
     methods: {
         showModal(modalId: string): void {
