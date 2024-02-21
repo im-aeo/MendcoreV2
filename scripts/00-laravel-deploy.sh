@@ -7,7 +7,7 @@ composer install --no-dev --working-dir=/var/www/html
 echo "Clearing old caches..."
 php artisan cache:clear
 php artisan cache:clear --store=redis
-npm cache clean --force command
+npm cache clean --force
 
 echo "Caching config..."
 php artisan config:cache
