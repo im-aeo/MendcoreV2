@@ -18,6 +18,6 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install node and npm for Vite
-# RUN apk add --update nodejs npm
+RUN apk add --update nodejs npm
 
 CMD ["/start.sh"]
