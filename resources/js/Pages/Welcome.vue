@@ -167,8 +167,6 @@ defineProps({
               </div>
           </div>
        </div>
-    </div>
-</div>
 <Footer/>
 </Navbar>
 </template>
