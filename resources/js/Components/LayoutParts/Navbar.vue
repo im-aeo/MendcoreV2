@@ -93,6 +93,11 @@ const { props } = usePage<any>();
     <LanguageModal />
     <nav class="navbar">
         <ul class="navbar-nav grid-x">
+            <li class="nav-item cell shrink show-for-small hide-for-large me-1">
+                    <button class="btn-circle squish" id="sidebar-toggler">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+            </li>
             <NavLink :link="route(`Welcome`)">
                 <v-lazy-image :src="props.site.logo" class="show-for-medium" width="180" />
                 <v-lazy-image :src="props.site.icon" class="show-for-small-only" width="43" />
@@ -404,6 +409,11 @@ const { props } = usePage<any>();
 </template>
 
 <script lang="ts">
+    
+ document.getElementById('sidebar-toggler').onclick = function () {
+    document.querySelector('.sidebar').classList.toggle('show-for-large');
+};
+    
 export default {
     methods: {
         showModal(modalId: string): void {
