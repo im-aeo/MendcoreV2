@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
@@ -25,12 +26,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(UrlGenerator $url): void
     {
       
-//if (env('APP_ENV') === 'production') {
-  Url::forceScheme('https');
-//}
+if (env('APP_ENV') === 'production') {
+   $url->forceScheme('https');
+}
 
       Inertia::share([
          'locale' => function () {
