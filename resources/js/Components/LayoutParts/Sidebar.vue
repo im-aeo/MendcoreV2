@@ -17,9 +17,9 @@ async function detectAdBlock() {
     }
 }
 
-//onMounted(() => {
-//detectAdBlock(); // Call the function only if adblock status is not already set
-//});
+onMounted(() => {
+    detectAdBlock(); // Call the function only if adblock status is not already set
+});
 
 const lang = computed(() => usePage<any>().props.locale);
 
