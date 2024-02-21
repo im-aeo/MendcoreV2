@@ -20,6 +20,6 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install node and npm for Vite
 RUN apk add --update nodejs npm
-RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql
+RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
 CMD ["/start.sh"]
