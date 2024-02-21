@@ -191,22 +191,6 @@ class GrabController extends Controller
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'LIKE', "%{$search}%");
             })
-            ->join('space_members', 'space_members.space_id', '=', 'spaces.id')
-            ->select('spaces.*', DB::raw('COUNT(space_members.id) AS member_count'))
-            ->groupBy([
-                'spaces.id',
-                'spaces.owner_id',
-                'spaces.name',
-                'spaces.verified',
-                'spaces.description',
-                'spaces.private',
-                'spaces.locked',
-                'spaces.thumbnail',
-                'spaces.thumbnail_pending',
-                'spaces.created_at',
-                'spaces.updated_at'
-            ])
-            ->orderByDesc('member_count')
             ->paginate(12);
 
         return inertia('Spaces/Index', [
