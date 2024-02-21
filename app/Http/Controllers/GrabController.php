@@ -39,15 +39,15 @@ class GrabController extends Controller
     public function WelcomeIndex()
     {
         // Define a cache key for this query result
-        $cacheKey = 'welcome_user_count';
+        $cacheKey = 'landing_items';
 
         // Use caching to store the user count query result
-        $userCount = cache()->remember($cacheKey, now()->addHours(1), function () {
-            return (int) User::count();
+        $landingItems = cache()->remember($cacheKey, now()->addHours(1), function () {
+            return Item::inRandomOrder()->limit(5)->get();
         });
 
         return inertia('Welcome', [
-            'UserCount' => $userCount,
+            'LandingItems' => $landingItems,
         ]);
     }
 
