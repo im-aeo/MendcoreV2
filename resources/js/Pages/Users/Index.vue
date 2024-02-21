@@ -54,12 +54,16 @@ defineProps({
 <script lang="ts">
 export default {
     data() {
-    return {
-      currentPage: slist.current_page,
-      totalPages: slist.last_page, // Set the total number of pages
-      // Your data here
-    };
-  },
+        return {
+	    currentPage: slist.current_page,
+            totalPages: slist.last_page, // Set the total number of pages
+            userstat: { // Replace this with your actual user object
+                online: false,
+                id: this.users.id,
+                fetchingStatus: false,
+            },
+        };
+    },
     methods: {
         getUserList(page: number | undefined): void {
             var vm = this;
@@ -90,15 +94,6 @@ export default {
                 this.userstat.fetchingStatus = false;
             }
         },
-    },
-    data() {
-        return {
-            userstat: { // Replace this with your actual user object
-                online: false,
-                id: this.users.id,
-                fetchingStatus: false,
-            },
-        };
     },
     created() {
         this.fetchUserStatus();
