@@ -2,7 +2,15 @@
 import { ref, onMounted, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { route, current } from "momentum-trail";
-
+	
+const props = defineProps<{
+  sidebarShow: Boolean;
+}>();
+	
+const emit = defineEmits<{
+  (event: 'sidebarToggle'): void;
+}>();
+	
 import SideLink from '../SideLink.vue';
 const chatopen = ref(false);
 
@@ -120,10 +128,9 @@ const sidebar = [
 
 ];    
 const lang = computed(() => usePage().props.locale);
-const { props } = usePage<any>();
 </script>
 <template>
-    <nav class="sidebar show-for-large" id="sidebar">
+    <nav class="sidebar show-for-large"  v-if="props.sidebarShow">
         <ul class="sidebar-nav">
             <div class="hide-for-large" v-if="!props.auth.user">
                 <li class="side-item side-title">Account</li>
