@@ -18,11 +18,6 @@ const handleRouteChange = (event) => {
     setTimeout(() => {
       isLoading.value = false;
     }, 2000);
-  } else if (event.detail.visit.cancelled) {
-    // Delay hiding the loading indicator for 2 seconds
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 2000);
   }
 };
 
