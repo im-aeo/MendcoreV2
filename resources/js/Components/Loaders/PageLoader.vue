@@ -3,7 +3,11 @@ import { usePage, router } from '@inertiajs/vue3';
 import { ref, onUnmounted } from 'vue';
 const page = usePage();
 const isLoading = ref(false);
-
+  
+const emit = defineEmits<{
+  (event: 'sidebarToggle'): void;
+}>();
+  
 // Check if it's the first visit or user is not connected to the internet
 const isFirstVisit = localStorage.getItem('firstVisit') === 'true';
 const isOnline = navigator.onLine;
