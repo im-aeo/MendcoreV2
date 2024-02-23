@@ -5,11 +5,7 @@ import { route, current } from "momentum-trail";
 	
 const props = defineProps<{
   sidebarShow: Boolean;
-}>();
-	
-const emit = defineEmits<{
-  (event: 'sidebarToggle'): void;
-}>();
+}>();	
 	
 import SideLink from '../SideLink.vue';
 const chatopen = ref(false);
