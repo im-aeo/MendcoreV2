@@ -2,12 +2,12 @@
 
 echo "Running composer"
 composer global require hirak/prestissimo
-composer install --no-dev --working-dir=/var/www/html
+composer install --no-dev --no-interaction --no-autoloader --no-scripts --working-dir=/var/www/html
+composer dump-autoload --optimize
 
 echo "Clearing old caches..."
 php artisan cache:clear
-php artisan cache:clear --store=redis
-npm cache clean --force
+npm cache clean
 
 echo "Caching config..."
 php artisan config:cache
@@ -22,5 +22,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm install
+npm i --prefer-offline --no-audit --progress=false
 npm run build
