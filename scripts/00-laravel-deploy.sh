@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 echo "Running composer"
-composer global require hirak/prestissimo
 composer install --no-dev --no-interaction --no-autoloader --no-scripts --working-dir=/var/www/html
 composer dump-autoload --optimize
 
