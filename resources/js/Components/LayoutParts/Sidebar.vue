@@ -130,7 +130,7 @@ const sidebar = [
 const lang = computed(() => usePage().props.locale);
 </script>
 <template>
-    <nav class="sidebar show-for-large"  v-if="props.sidebarShow">
+    <nav class="sidebar"  :class="{ 'show-for-large': props.sidebarShow }">
         <ul class="sidebar-nav">
             <div class="hide-for-large" v-if="!props.auth.user">
                 <li class="side-item side-title">Account</li>
