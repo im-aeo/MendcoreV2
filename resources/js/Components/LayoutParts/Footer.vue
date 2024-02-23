@@ -9,9 +9,9 @@ const props = usePage<any>().props;
         <footer class="footer footer-fixed">
             <main class="container py-3">
                 <div class="align-middle grid-x grid-margin-x">
-                    <div class="cell small-1">
+                    <div class="cell small-1 mx-auto">
 		      <div class="gap-3 flex-container align-right align-center-sm">
-			<img :src="props.site.icon" />
+			<img :src="props.site.icon" width="50" height="50" />
 		      </div>
 		    </div>
 		    <div class="cell large-6">
