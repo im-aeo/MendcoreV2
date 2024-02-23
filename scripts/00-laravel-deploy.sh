@@ -7,7 +7,6 @@ composer dump-autoload --optimize
 
 echo "Clearing old caches..."
 php artisan cache:clear
-npm cache clean
 
 echo "Caching config..."
 php artisan config:cache
@@ -22,5 +21,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm i --prefer-offline --no-audit --progress=false
+npm i --no-optional --no-fund --prefer-offline --no-audit --progress=false --only=prod
 npm run build
