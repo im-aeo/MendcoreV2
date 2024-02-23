@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { route, current } from "momentum-trail";
 	
-const props = usePage<any>(); 
+const { props } = usePage<any>();
 
 defineProps<{
   sidebarShow: Boolean;
