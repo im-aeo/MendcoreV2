@@ -145,78 +145,77 @@ const unfollowUser = (id) => {
             </div>
         </div>
         <div class="grid-x grid-margin-x grid-padding-y align-center">
-            <div class="cell large-11">
-                <div class="card mb-2">
-                    <img style="background-repeat:no-repeat;background-size:cover;object-fit: cover;border-radius: var(--rounded-lg) var(--rounded-lg) 0px 0px; ;height:100px;"
-                        class="w-100 card-img-top" onerror="this.style.backgroundColor='var(--info-600)';" :src="usePage<any>().props.user.settings.banner_url">
-                    <div class="card-body mb-2">
-                        <div class="flex-container align-justify align-middle mb-1">
-                            <div class="flex-container align-middle gap-2">
-                                <img src="assets/img/dummy_headshot.png"
-                                    class="headshot" width="50" />
-                                <div class="w-100">
-                                    <div class="fw-semibold">{{ usePage<any>().props.user.display_name  }}<img
-                                            src="https://hatscripts.github.io/circle-flags/flags/gy.svg"
-                                            style="width: 26px;height: 16px;"></div>
-                                    <div class="fw-semibold">{{ "@" + usePage<any>().props.user.username  }}</div>
-                                </div>
-                            </div>
-                            <div class="flex-container align-middle gap-2">
-                                <a href="#" class="btn btn-danger pl-2 btn-sm btn-circle text-truncate min-w-0"><i
-                                        class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                                <a href="#" class="btn btn-info btn-sm text-truncate min-w-0"><i
-                                        class="fa-solid fa-user-plus"></i></a>
-
-                                <a href="#" class="btn btn-success btn-sm text-truncate min-w-0"><i
-                                        class="fa-solid fa-envelope"></i></a>
-
-                                <a href="#" class="btn btn-danger btn-sm text-truncate min-w-0"><i
-                                        class="fa-solid fa-repeat"></i></a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
             <div class="cell medium-3">
-                <div class="card-body mb-2">
-                    <div :class="['card', 'card-body', 'card-status', userStatusClass]"
-                        :style="usePage<any>().props.user.settings.calling_card_enabled ? { 'background-image': 'url(' + usePage<any>().props.user.settings.calling_card_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' } : null">
-                        <v-lazy-image :src="usePage<any>().props.user.avatar"
-                            src-placeholder="&" />
-                    </div>
-
-                    <div class="card-body">
-                        <div class="text-center mt-2">
-
-                            <div class="flex-container align-center gap-3 text-sm">
-                                <button class="fw-semibold text-muted text-center text-truncate min-w-0 px-0"
-                                    @click="showModal('following-modal')">
-                                    <span class="text-body">{{ usePage<any>().props.user.following_count }}</span>
-                                    Following
-                                </button>
-                                <button class="fw-semibold text-muted text-center text-truncate min-w-0 px-0"
-                                    @click="showModal('followers-modal')">
-                                    <span class="text-body">{{ usePage<any>().props.user.followers_count }}</span>
-                                    Followers
-                                </button>
-                            </div>
-                            <div v-if="usePage<any>().props.user.followsYou" class="text-sm text-info fw-semibold">
-                                Follows you
+                <div class="flex-container align-justify align-middle mb-2">
+                    <div class="flex-container align-middle gap-3">
+                        <div class="text-xl" style="line-height: 16px">
+                            <div class="fw-semibold mb-1">{{ usePage<any>().props.user.display_name }}<img
+                                        src="https://hatscripts.github.io/circle-flags/flags/gy.svg"
+                                        style="width: 26px;height: 16px;"></div>
+                            <div class="text-sm text-muted fw-semibold">
+                                {{ "@" + usePage<any>().props.user.username }}
                             </div>
                         </div>
                     </div>
+                    <div class="dropdown position-relative" style="margin-right: -14px">
+                        <button class="far fa-ellipsis-vertical text-sm btn-circle" data-tooltip-title="More"
+                            data-tooltip-placement="bottom"></button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-item">
+                                <a href="#" class="dropdown-link dropdown-link-has-icon">
+                                    <i class="fas fa-exchange dropdown-icon"></i>
+                                    Send Trade
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="#" class="dropdown-link dropdown-link-has-icon">
+                                    <i class="fas fa-flag dropdown-icon"></i>
+                                    Report
+                                </a>
+                            </li>
+                            <div class="flex-container align-middle">
+                                <div class="dropdown-title">Moderation</div>
+                                <li class="divider flex-child-grow"></li>
+                            </div>
+                            <li class="dropdown-item">
+                                <a href="#" class="dropdown-link dropdown-link-has-icon text-danger">
+                                    <i class="fas fa-gavel text-danger dropdown-icon"></i>
+                                    View in Panel
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <a class="card p-2  mb-2 card-inner flex-container align-middle gap-2 mt-1">
-                    <img src="assets/img/space_placeholder.png"
-                        class="headshot" width="40" />
+                <div :class="['card', 'card-body', 'mb-3', 'card-status', userStatusClass]"
+                    style="usePage<any>().props.user.settings.calling_card_enabled ? { 'background-image': 'url(' + usePage<any>().props.user.settings.calling_card_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' } : null">
+                    <v-lazy-image :src="usePage<any>().props.user.avatar" src-placeholder="&" />
+                </div>
+                <div class="mb-2 card-body">
+                    <div class="mt-2 text-center">
+                        <div class="gap-3 text-sm flex-container align-center">
+                            <button class="min-w-0 px-0 text-center fw-semibold text-muted text-truncate"
+                                @click="showModal('following-modal')">
+                                <span class="text-body">{{ usePage<any>().props.user.following_count }}</span>
+                                Following
+                            </button>
+                            <button class="min-w-0 px-0 text-center fw-semibold text-muted text-truncate"
+                                @click="showModal('followers-modal')">
+                                <span class="text-body">{{ usePage<any>().props.user.followers_count }}</span>
+                                Followers
+                            </button>
+                        </div>
+                        <div v-if="usePage<any>().props.user.followsYou" class="text-sm text-info fw-semibold">
+                            Follows you
+                        </div>
+                    </div>
+                </div>
+                <a class="gap-2 p-2 mt-1 mb-2 align-middle card card-inner flex-container">
+                    <img src="assets/img/space_placeholder.png" class="headshot" width="40" />
                     <div class="min-w-0" style="line-height: 14px">
-                        <div class="text-truncate text-xs fw-bold text-muted text-uppercase">
+                        <div class="text-xs text-truncate fw-bold text-muted text-uppercase">
                             Primary Space
                         </div>
-                        <div class="text-truncate fw-semibold text-sm text-body">
+                        <div class="text-sm text-truncate fw-semibold text-body">
                             Namesnipe
                         </div>
                     </div>
@@ -380,9 +379,9 @@ const unfollowUser = (id) => {
                                 <img src="/assets/img/dummy_headshot.png" class="mb-1 headshot" width="60" />
                                 <div style="line-height: 16px">
                                     <div class="text-membership text-truncate">{{ usePage<any>().props.user.display_name
-                                    }}</div>
+                                            }}</div>
                                     <div class="text-xs text-muted text-truncate">{{ '@' + usePage<any>
-                                        ().props.user.username }}
+                                            ().props.user.username }}
                                     </div>
                                 </div>
                             </a>
@@ -392,10 +391,10 @@ const unfollowUser = (id) => {
                                 <div class="w-100">
                                     <div class="text-xs text-muted">
                                         <i class="far fa-clock me-1" style="
-          vertical-align: middle;
-          margin-top: -2.5px;
-          font-size: 10px;
-        "></i>Posted 23 minutes ago
+      vertical-align: middle;
+      margin-top: -2.5px;
+      font-size: 10px;
+    "></i>Posted 23 minutes ago
                                     </div>
                                     <div>
                                         {{ usePage<any>().props.user.status }}
