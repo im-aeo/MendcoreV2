@@ -30,7 +30,8 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-       /* $this->routes(function () {
+$this->routes(function () {
+/*
     Route::domain(config('Values.production.domains.api'))
         ->middleware('api')
 		->namespace($this->namespace)
