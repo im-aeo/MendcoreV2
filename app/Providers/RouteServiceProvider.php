@@ -41,8 +41,8 @@ $this->routes(function () {
     Route::middleware('api')
         ->prefix('api')
         ->as('api.')
-		->group(base_path('routes/api.php'));
-			 
+	->group(base_path('routes/api.php'));
+	
     Route::domain(config('Values.production.domains.careers'))
         ->middleware('web')
         ->namespace($this->namespace)
