@@ -39,11 +39,6 @@ const sidebarsections = [
         jp: { name: "ソーシャル" }
     },
     {
-        en: { name: "MY SPACES" },
-        ru: { name: "МОИ ПРОСТРАНСТВА" },
-        jp: { title: "私のスペースたち" }
-    },
-    {
         en: { name: "BOOST YOUR ACCOUNT" },
         ru: { name: "ПОДДЕРЖИТЕ СВОЙ АККАУНТ" },
         jp: { name: "アカウントを強化する" } 
