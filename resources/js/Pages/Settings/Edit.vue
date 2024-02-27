@@ -21,6 +21,8 @@ function showModal(modalId: string): void {
         modal.classList.toggle("active");
     }
 };
+
+const ActiveCategory = "general";
 </script>
 
 <template>
@@ -143,8 +145,8 @@ function showModal(modalId: string): void {
             <div class="mb-2 text-xl fw-semibold">Account Settings</div>
             <ul class="tabs flex-dir-column">
                 <li class="tab-item" v-for="category in categories">
-                    <Link :href="route(`user.settings.page`, { category: category })"
-                        :class="[current(`settings.page`, { category: category }) ? 'active' : '']" class="tab-link squish">
+                    <Link @click="{{ ActiveCategory === category }}" :href="route(`user.settings.page`, { category: category })"
+                        :class="[current(`settings.page`, { category: ActiveCategory }) ? 'active' : '']" class="tab-link squish">
                     {{ capitalized(category) }}
                     </Link>
                 </li>
@@ -153,7 +155,7 @@ function showModal(modalId: string): void {
         <div class="cell medium-8">
 
             <div v-for="category in categories" :key="category">
-                <div v-if="category === 'general'">
+                <div v-if="ActiveCategory === 'general'">
                     <div class="mb-1 text-xl fw-semibold">General</div>
                     <div class="section-borderless">
                         <div class="card card-body">
@@ -297,7 +299,7 @@ function showModal(modalId: string): void {
                         </div>
                     </div>
                 </div>
-                <div v-if="category === 'account'">
+                <div v-if="ActiveCategory === 'account'">
                     <div class="text-xl fw-semibold mb-1">
                         Security & Privacy
                     </div>
@@ -484,7 +486,7 @@ function showModal(modalId: string): void {
                         </div>
                     </div>
                 </div>
-                <div v-if="category === 'billing'">
+                <div v-if="ActiveCategory === 'billing'">
                     <div class="flex-container align-middle align-justify mb-2">
                         <div class="text-xl fw-semibold">Billing</div>
                         <a href="#" class="btn btn-upgrade btn-sm"><i class="fas fa-rocket-launch me-2"></i>Upgrade</a>
