@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\USController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Market\MarketController;
-use App\Http\Controllers\MarketController;
-use App\Http\Controllers\MarketController;
-use App\Http\Controllers\MarketController;
-use App\Http\Controllers\MarketController;
-use App\Http\Controllers\MarketController;
-use App\Http\Controllers\MarketController;
+use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Web3LoginController;
@@ -48,8 +43,8 @@ Route::group(['as' => 'my.', 'prefix' => 'my', 'middleware' => 'auth'], function
 
     Route::group(['Middleware' => 'auth'], function () {
         Route::group(['as' => 'dashboard.', 'prefix' => 'dashboard'], function () {
-            Route::get('/', [GrabController::class, 'DashboardIndex'])->name('page');
-            Route::post('/', [GrabController::class, 'DashboardVal'])->name('validate');
+            Route::get('/', [HomeController::class, 'DashboardIndex'])->name('page');
+            Route::post('/', [HomeController::class, 'DashboardVal'])->name('validate');
         });
     });
 });
@@ -120,7 +115,7 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
         });
     });
 });
-Route::get('/', [GrabController::class, 'WelcomeIndex'])->Middleware(['guest'])->name('Welcome');
+Route::get('/', [HomeController::class, 'WelcomeIndex'])->Middleware(['guest'])->name('Welcome');
 
 Route::group(['as' => 'games.', 'prefix' => 'games'], function () {
     Route::get('/', function () {
