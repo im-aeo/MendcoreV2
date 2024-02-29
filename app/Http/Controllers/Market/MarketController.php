@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Market;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Item;
+use App\Models\Inventory;
+use App\Models\ItemReseller;
+use App\Models\ItemPurchase;
+use App\Http\Controllers\Controller;
 
-
-public function StoreIndex()
+class MarketController extends Controller
+{
+    public function StoreIndex()
     {
         // Define a cache key for this data
         $cacheKey = 'store_index_data';
@@ -58,7 +63,7 @@ public function StoreIndex()
     
 
     public function purchase(int $id, string $currencyType, ?int $resellerId = null)
-{
+    {
     $item = Item::where('id', '=', $id)->firstOrFail();
     $item->timestamps = false;
 
@@ -217,3 +222,4 @@ public function StoreIndex()
 
         return redirect()->route('catalog.item', [$id, $slug])->with('success_message', 'Item has been taken off sale.');
     }
+}
