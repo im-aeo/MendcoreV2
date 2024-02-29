@@ -6,7 +6,14 @@ use App\Http\Controllers\TestCon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\USController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\GrabController;
+use App\Http\Controllers\Market\MarketController;
+use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MarketController;
+
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Web3LoginController;
 use App\Http\Controllers\MaintenanceController;
@@ -125,14 +132,14 @@ Route::get('/deletion', function () {
 })->name('removed');
 
 Route::group(['as' => 'store.', 'prefix' => 'market'], function () {
-    Route::get('/', [GrabController::class, 'StoreIndex'])->name('page');
+    Route::get('/', [MarketController::class, 'StoreIndex'])->name('page');
     Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
-        Route::get('/', [GrabController::class, 'CreateIndex'])->name('page');
-        Route::get('/', [GrabController::class, 'CreateItem'])->name('validate');
+        Route::get('/', [MarketController::class, 'CreateIndex'])->name('page');
+        Route::get('/', [MarketController::class, 'CreateItem'])->name('validate');
 
     });
-    Route::get('/item/{id}', [GrabController::class, 'StoreItem'])->name('item');
-    Route::post('/item/purchase/{id}/{currencyType}', [GrabController::class, 'purchase'])->name('purchase');
+    Route::get('/item/{id}', [MarketController::class, 'StoreItem'])->name('item');
+    Route::post('/item/purchase/{id}/{currencyType}', [MarketController::class, 'purchase'])->name('purchase');
 });
 Route::group(['as' => 'spaces.', 'prefix' => 'spaces'], function () {
     Route::get('/', [GrabController::class, 'SpacesIndex'])->name('page');
