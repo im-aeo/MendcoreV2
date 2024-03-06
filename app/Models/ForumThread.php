@@ -37,24 +37,20 @@ class ForumThread extends Model
         return $this->belongsTo('App\Models\ForumTopic', 'topic_id');
     }
 
-    public function replies()
+    public function replies($perPage = 4)
     {
-        // Validate and check if the thread exists
-        $thread = ForumThread::findOrFail($this->id);
-    
-        // Check if the user is authenticated and has staff privileges
-        if (Auth::check() && Auth::user()->isstaff()) {
-            $query = ForumReply::with('creator')->where('thread_id', $thread->id)->orderBy('created_at', 'ASC');
-        } else {
-            // Regular user or guest, filter out deleted replies
-            $query = ForumReply::with('creator')->where([
-                ['thread_id', $thread->id],
-                ['is_deleted', false]
-            ])->orderBy('created_at', 'ASC');
-        }
-        // Apply pagination if required, default to 4 items per page
-        $replies = $query->first();
-        return $replies;
+    // Validate and check if the thread exists
+    $thread = ForumThread::findOrFail($this->id);
+
+    $query = ForumReply::with('creator')->where('thread_id', '=', $thread->id)->orderBy('created_at', 'ASC');
+
+    // Filter based on user permissions
+    if (!Auth::check() || !Auth::user()->isstaff()) {
+        $query->where('is_deleted', false);
+    }
+
+    // Apply pagination using dedicated methods for clarity
+    return $query->paginate($perPage);
     }
 
     public function lastReply()
@@ -62,10 +58,20 @@ class ForumThread extends Model
         return ForumReply::where('thread_id', '=', $this->id)->orderBy('created_at', 'DESC')->first();
     }
 
-    public function slug()
+    public function slug(): string
     {
-        $title = str_replace('-', ' ', $this->title);
+    $text = $this->title;
 
-        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+    // Convert to lowercase and replace spaces with a separator
+    $text = strtolower(trim(preg_replace('/\s+/', '-', $text)));
+
+    $allowedChars = 'a-z0-9-'; // Adjust this to include desired characters
+    $text = preg_replace('/[^' . $allowedChars . ']/', '', $text);
+    $text = preg_replace('/-{2,}/', '-', $text);
+
+    // Handle trailing separators
+    $text = trim($text, '-');
+
+    return $text;
     }
 }
