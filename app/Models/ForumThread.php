@@ -44,21 +44,16 @@ class ForumThread extends Model
     
         // Check if the user is authenticated and has staff privileges
         if (Auth::check() && Auth::user()->isstaff()) {
-            $query = ForumReply::where('thread_id', $thread->id)->orderBy('created_at', 'ASC');
+            $query = ForumReply::with('creator')->where('thread_id', $thread->id)->orderBy('created_at', 'ASC');
         } else {
             // Regular user or guest, filter out deleted replies
-            $query = ForumReply::where([
+            $query = ForumReply::with('creator')->where([
                 ['thread_id', $thread->id],
                 ['is_deleted', false]
             ])->orderBy('created_at', 'ASC');
         }
-    
         // Apply pagination if required, default to 4 items per page
         $replies = $query->first();
-    
-        // Eager load creator relationship for each reply
-        $replies->load('creator'); // Load creator relationship on the replies collection
-    
         return $replies;
     }
 
