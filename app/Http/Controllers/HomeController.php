@@ -6,7 +6,6 @@ use App\Http\Controllers\ItemController;
 use App\Models\User;
 use App\Models\Status;
 use App\Models\ForumThread;
-use App\Models\Status;
 use Inertia\Inertia;
 
 class HomeController extends Controller
