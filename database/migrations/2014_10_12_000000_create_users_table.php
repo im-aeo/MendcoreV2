@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
             $table->string('wallet_address')->nullable();
+            $table->string('google_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
