@@ -2,11 +2,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Http\Controllers\ItemController;
 use App\Models\User;
+use App\Models\Item;
+use Inertia\Inertia;
 use App\Models\Status;
 use App\Models\ForumThread;
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
