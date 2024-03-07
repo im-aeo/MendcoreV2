@@ -2,16 +2,14 @@
 import { ref, onMounted, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { route, current } from "momentum-trail";
-	
-const { props } = usePage<any>();
-
-defineProps<{
-  sidebarShow: Boolean;
-}>();	
-	
 import SideLink from '../SideLink.vue';
-const chatopen = ref(false);
+defineProps<{
+  sidebarShow: Boolean,
+  image: String
+}>();
 
+const { props } = usePage<any>();
+const chatopen = ref(false);
 const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 const adblock = ref(false);
 
@@ -127,19 +125,19 @@ const lang = computed(() => usePage().props.locale);
         <ul class="sidebar-nav">
             <div class="hide-for-large" v-if="!props.auth.user">
                 <li class="side-item side-title">Account</li>
-                <Link :href="route('auth.register.page')" class="side-link">
-                <i class="fas fa-user-plus side-icon"></i>
-                <span>Get Started</span>
-                </Link>
-                <li class="side-item">
-                    <Link :href="route('auth.login.page')" class="side-link"><i
-                        class="fas fa-sign-in side-icon"></i><span>Log In</span></Link>
-                </li>
+		<SideLink :link="route('auth.register.page')" :ActiveLink="route('auth.register.page')">
+		    <i class="fas fa-user-plus side-icon"></i>
+		    <span>Get Started</span>
+		</SideLink>
+		<SideLink :link="route('auth.login.page')" :ActiveLink="route('auth.login.page')">
+		    <i class="fas fa-sign-in side-icon"></i>
+		    <span>Log In</span>
+		</SideLink>
             </div>
-            <li class="side-item">
-                <Link :href="route('Welcome')" :class="[current('my.dashboard.*' || 'Welcome') ? 'active' : '']"
-                    class="side-link"><i class="fas fa-home side-icon"></i><span>Home</span></Link>
-            </li>
+                <SideLink :link="route('Welcome')" :ActiveLink="route('Welcome')">
+		    <i class="fas fa-home side-icon"></i>
+		    <span>Home</span>
+		</SideLink>
             <template v-for="sidesections in sidebarsections" class="hide-for-large">
                 <li class="side-item side-title">{{ sidesections[lang].name }}</li>
                 <!-- Iterate over links within the current section -->
@@ -160,6 +158,9 @@ const lang = computed(() => usePage().props.locale);
             </li>
         </ul>
     </nav>
+    <div v-if="image" class="profile-banner">
+        <img class="masoqi" src="{{ image }}" />
+    </div>
     <main class="container">
         <div v-if="adblock" class="py-2 mb-4 text-center alert alert-danger fw-semibold">
             <div class="gap-2 align-middle flex-container align-justify">
