@@ -13,6 +13,7 @@ defineProps({
     user: { type: Object },
     is_following: { type: Boolean },
 });
+    
 const followed = ref(false); // Initial follow status
 const following = usePage().props.is_following; // Initial follow status
 
@@ -34,7 +35,7 @@ const showSuccessMessage = (message) => {
 const followUser = (id) => {
     // Send a POST request to follow the user
     // Update the API endpoint and payload based on your server-side implementation
-    axios.get(route(`api.usePage<any>().props.user.follow`, { user: id }))
+    axios.get(route(`api.user.follow`, { user: id }))
         .then(response => {
             // Handle the success response here
             const successMessage = response.data.message;
@@ -48,7 +49,7 @@ const followUser = (id) => {
 const unfollowUser = (id) => {
     // Send a POST request to unfollow the user
     // Update the API endpoint and payload based on your server-side implementation
-    axios.post(route(`api.usePage<any>().props.user.unfollow`, { user: id }))
+    axios.post(route(`api.user.unfollow`, { user: id }))
         .then(response => {
             // Handle the success response here
             const successMessage = response.data.message;
@@ -149,9 +150,11 @@ const unfollowUser = (id) => {
                 <div class="flex-container align-justify align-middle mb-2">
                     <div class="flex-container align-middle gap-3">
                         <div class="text-xl" style="line-height: 16px">
-                            <div class="fw-semibold mb-1">{{ usePage<any>().props.user.display_name }}<img
-                                        src="https://hatscripts.github.io/circle-flags/flags/gy.svg"
-                                        style="width: 26px;height: 16px;"></div>
+                            <div class="fw-semibold mb-1">
+                                {{ usePage<any>().props.user.display_name }}
+                                <img src="https://hatscripts.github.io/circle-flags/flags/gy.svg" style="width: 26px;height: 16px;"></div>
+                                <v-lazy-image :src="{{ 'assets/img/flags' + usePage<any>().props.user.settings.country_code }}" src-placeholder="&" />
+
                             <div class="text-sm text-muted fw-semibold">
                                 {{ "@" + usePage<any>().props.user.username }}
                             </div>
