@@ -152,9 +152,8 @@ const unfollowUser = (id) => {
                         <div class="text-xl" style="line-height: 16px">
                             <div class="fw-semibold mb-1">
                                 {{ usePage<any>().props.user.display_name }}
-                                <img src="https://hatscripts.github.io/circle-flags/flags/gy.svg" style="width: 26px;height: 16px;"></div>
-                                <v-lazy-image :src="{{ 'assets/img/flags' + usePage<any>().props.user.settings.country_code }}" src-placeholder="&" />
-
+                                <v-lazy-image :src="{{ 'assets/img/flags' + usePage<any>().props.user.settings.country_code }}" style="width: 26px;height: 16px;" src-placeholder="assets/img/flags/us.svg" />
+                            </div>
                             <div class="text-sm text-muted fw-semibold">
                                 {{ "@" + usePage<any>().props.user.username }}
                             </div>
