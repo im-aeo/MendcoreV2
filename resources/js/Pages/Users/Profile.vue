@@ -64,7 +64,7 @@ const unfollowUser = (id) => {
 <template>
     <AppHead />
     <Navbar />
-    <Sidebar>
+    <Sidebar :image="usePage<any>().props.user.settings.profile_banner_enabled ? usePage<any>().props.user.settings.profile_banner_url : null">
         <div class="modal" id="following-modal">
             <div class="modal-card modal-card-body">
                 <div class="section-borderless">
