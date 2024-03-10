@@ -5,10 +5,9 @@ import { route, current } from "momentum-trail";
 import SideLink from '../SideLink.vue';
 
 defineProps<{
-  sidebarShow: Boolean,
   image: String
 }>();
-
+defineEmits(['sidebarShow']);
 const { props } = usePage<any>();
 const chatopen = ref(false);
 const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
@@ -122,7 +121,7 @@ const sidebar = [
 const lang = computed(() => usePage().props.locale);
 </script>
 <template>
-    <nav class="sidebar" :class="{ 'show-for-large': !props.sidebarShow,  'hide-for-large': props.sidebarShow }">
+    <nav class="sidebar" :class="{ 'show-for-large': !sidebarShow,  'hide-for-large': sidebarShow }">
         <ul class="sidebar-nav">
             <div class="hide-for-large" v-if="!props.auth.user">
                 <li class="side-item side-title">Account</li>
