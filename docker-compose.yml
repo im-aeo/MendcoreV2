@@ -27,13 +27,15 @@ services:
             - meilisearch
             - selenium
     phpmyadmin:
-           image: 'phpmyadmin:latest'
-           ports:
-              - 8080:80
-           networks:
-              - sail
-           environment:
-              - PMA_ARBITRARY=1
+        image: 'phpmyadmin:latest'
+        links:
+          - mysql:mysql
+        ports:
+          - 8080:80
+        environment:
+          MYSQL_USERNAME: "${DB_USERNAME}"
+          MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+          PMA_HOST: mysql
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
