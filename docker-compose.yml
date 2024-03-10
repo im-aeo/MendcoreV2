@@ -27,6 +27,8 @@ services:
             - meilisearch
             - selenium
     phpmyadmin:
+        networks:
+          - sail
         image: 'phpmyadmin:latest'
         links:
           - mysql:mysql
