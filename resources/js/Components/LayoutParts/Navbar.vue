@@ -145,7 +145,7 @@ const { props } = usePage<any>();
                 <i class="fas fa-door-open"></i> &nbsp;
                 Login
             </Button>
-            <li v-if="props.auth.user" class="position-relative nav-item cell shrink">
+            <li v-if="props.auth.user && props.auth.user.settings.notifications_enabled" class="position-relative nav-item cell shrink">
                 <div class="show-for-small-only position-relative">
                     <a @click="addActiveClass(`notification_dropdown`)" href="#"
                         class="px-2 btn-circle squish text-body"><span class="notification-circle"></span><i
