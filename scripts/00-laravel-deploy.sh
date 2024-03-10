@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 
 echo "Running composer"
-composer install --no-dev --no-interaction --no-autoloader --no-scripts --working-dir=/var/www/html
+composer install --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
 composer dump-autoload --optimize
 
 echo "Clearing old caches..."
 php artisan cache:clear
 
-echo "Caching config..."
+echo "Caching routes and configuration..."
 php artisan config:cache
-
-echo "Caching and generating routes..."
-php artisan trail:generate
 php artisan route:cache
 
 echo "Running migrations..."
