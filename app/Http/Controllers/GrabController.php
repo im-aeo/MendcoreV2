@@ -148,7 +148,11 @@ class GrabController extends Controller
         if (!$user) {
             abort(404);
         }
-
+        if ($user->settings->private_profile) {
+           return inertia('App/ProfileDisabled', [
+            'username' => $user->username,
+           ]
+        }
         // Check if the current user is authenticated
         if (!Auth::check()) {
             abort(403);
