@@ -10,7 +10,8 @@ import Button from "../Button.vue";
 import SearchResultSkeleton from "../SearchResultSkeleton.vue";
 import VLazyImage from "v-lazy-image";
 import PageLoader from '../Loaders/PageLoader.vue';
-
+    
+const emit = defineEmits(['sidebarShow']);
 const logout = () => {
     router.post(route('auth.logout'));
 };
