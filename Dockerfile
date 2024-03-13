@@ -7,7 +7,7 @@ COPY . .
 FROM oven/bun:latest AS base
 FROM base as build
 COPY bun.lockb package.json ./
-RUN bun install --production
+RUN bun install
 
 COPY --link . .
 
@@ -16,6 +16,7 @@ RUN bun install --frozen-lockfile
   
 # Copy the application sources into the build stage
 COPY . .
+
 # Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
