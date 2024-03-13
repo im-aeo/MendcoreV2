@@ -4,6 +4,8 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 # Install Bun
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash
+RUN export PATH="$BUN_INSTALL/bin:$PATH"; echo $PATH
+RUN export BUN_INSTALL="$HOME/.bun"
 
 # Copy the application sources into the build stage
 COPY . .
@@ -14,8 +16,6 @@ ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
-RUN export PATH="$BUN_INSTALL/bin:$PATH"; echo $PATH
-RUN export BUN_INSTALL="$HOME/.bun"
 
 # Env for both laravel and node
 ENV APP_ENV production
