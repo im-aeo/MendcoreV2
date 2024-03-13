@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-echo "Running composer"
+echo "Installing Packages"
 composer install --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
 composer dump-autoload --optimize
+npm install -g bun
 
 echo "Clearing old caches..."
 php artisan cache:clear
@@ -18,5 +19,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm i --progress=false
-npm run build
+bun install
+bun run build
