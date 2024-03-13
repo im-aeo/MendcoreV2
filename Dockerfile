@@ -4,15 +4,14 @@ COPY . .
 
 # Install Bun in the specified version
 RUN apk add --update curl zip unzip
-RUN curl -fsSL https://bun.sh/install | bash
+RUN curl -fsSL https://bun.sh/install | bash && \
+  ln -s $HOME/.bun/bin/bun /usr/local/bin/bu
 
 ENV PATH="${PATH}:/root/.bun/bin"
 COPY bun.lockb package.json ./
 
 RUN bun install --frozen-lockfile
-RUN rm -rf node_modules && \
-  rm -rf /root/.bun/install/cache/ && \
-  bun install --frozen-lockfile --production
+
   
 # Copy the application sources into the build stage
 COPY . .
