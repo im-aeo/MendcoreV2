@@ -5,9 +5,8 @@ COPY . .
 # Install Bun in the specified version
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash && \
-  ln -s $HOME/root/.bun/bin /bin/bun
+  ln -s $PATH/root/.bun/bin
 
-ENV PATH="${PATH}:/root/.bun/bin"
 COPY bun.lockb package.json ./
 
 RUN bun install --frozen-lockfile
