@@ -2,15 +2,11 @@ FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 COPY . .
 
-# Install Bun in the specified version
+# Install Bun
+RUN apk add --update curl zip unzip
+RUN curl -fsSL https://bun.sh/install | bash
+RUN ~/.bun/bin/bun install
 
-FROM oven/bun:latest AS base
-FROM base as build
-COPY bun.lockb package.json ./
-RUN bun install
-
-COPY --link . .
-  
 # Copy the application sources into the build stage
 COPY . .
 
