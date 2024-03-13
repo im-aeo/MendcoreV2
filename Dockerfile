@@ -5,7 +5,8 @@ COPY . .
 # Install Bun
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash
-
+ENV BUN_INSTALL="$HOME/.bun"
+ENV PATH="$BUN_INSTALL/bin:$PATH"
 # Copy the application sources into the build stage
 COPY . .
 
