@@ -1,5 +1,5 @@
 FROM oven/bun
-WORKDIR /usr/src/app
+WORKDIR /var/www/html/public
 COPY package*.json bun.lockb ./
 RUN bun install
 COPY . .
