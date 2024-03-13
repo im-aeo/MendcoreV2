@@ -21,6 +21,11 @@ RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip r
 RUN apk add --update nodejs npm
 RUN npm install @oven/bun-linux-x64
 RUN npm install @oven/bun-linux-x64-baseline
+RUN apk --no-cache add ca-certificates wget
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk
+RUN apk add --no-cache --force-overwrite glibc-2.28-r0.apk
+# Install Bun
 RUN npm install -g bun
 RUN bun install --frozen-lockfile
 
