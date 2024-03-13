@@ -1,8 +1,9 @@
 FROM richarvey/nginx-php-fpm:latest
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-COPY . .
+ADD oven/bun:latest
 
+COPY . .
 # Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
