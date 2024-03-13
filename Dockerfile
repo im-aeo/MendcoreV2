@@ -21,12 +21,15 @@ FROM oven/bun:latest
 COPY bun.lockb .
 COPY package.json .
 
-# Install Bun and project dependencies
-RUN apk add --update nodejs npm
-RUN bun install --frozen-lockfile
+# Stage 3: Combine with Laravel application
+FROM richarvey/nginx-php-fpm:latest
 
 # Copy your application code
 COPY . .
+
+# Install Bun and project dependencies
+RUN apk add --update nodejs npm
+RUN bun install --frozen-lockfile
 
 # Laravel config
 ENV APP_ENV production
