@@ -17,10 +17,6 @@ ENV REAL_IP_HEADER 1
 RUN export PATH="$BUN_INSTALL/bin:$PATH"; echo $PATH
 RUN export BUN_INSTALL="$HOME/.bun"
 
-
-ENV BUN_INSTALL="$HOME/.bun"
-ENV PATH="${PATH}:${HOME}/.bun/bin"
-
 # Env for both laravel and node
 ENV APP_ENV production
 ENV APP_DEBUG false
