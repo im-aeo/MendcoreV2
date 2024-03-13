@@ -3,7 +3,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 COPY . .
 
 # Install Bun in the specified version
-RUN RUN apk add --update curl zip unzip
+RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash
 
 ENV PATH="${PATH}:/root/.bun/bin"
