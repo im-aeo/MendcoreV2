@@ -1,12 +1,9 @@
 FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-COPY . .
 
 # Install Bun
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash
-
-# Copy the application sources into the build stage
 COPY . .
 
 # Image config
