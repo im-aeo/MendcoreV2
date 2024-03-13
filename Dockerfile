@@ -1,13 +1,20 @@
-FROM oven/bun:latest
-COPY package*.json bun.lockb ./
-RUN bun install
-COPY . .
-
-
 FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 COPY . .
 
+# Install Bun in the specified version
+ARG BUN_VERSION=1.0.15
+WORKDIR /build
+RUN apt update && apt install -y bash curl unzip && \
+ curl https://bun.sh/install | bash -s -- bun-v${BUN_VERSION}
+
+ENV PATH="${PATH}:/root/.bun/bin"
+COPY bun.lockb package.json ./
+
+RUN bun install --frozen-lockfile
+
+# Copy the application sources into the build stage
+COPY . .
 # Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
