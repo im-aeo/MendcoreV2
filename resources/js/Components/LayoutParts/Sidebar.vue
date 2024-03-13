@@ -7,7 +7,6 @@ import SideLink from '../SideLink.vue';
 defineProps<{
   image: String
 }>();
-defineEmits(['sidebarShow']);
 const { props } = usePage<any>();
 const chatopen = ref(false);
 const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
