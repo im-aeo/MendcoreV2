@@ -28,6 +28,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install node, npm vite, and bun
 RUN apk add --update nodejs npm
+RUN npm install -g bun 
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
 CMD ["/start.sh", "bun", "start"]
