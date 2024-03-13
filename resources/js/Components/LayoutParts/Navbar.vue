@@ -11,7 +11,6 @@ import SearchResultSkeleton from "../SearchResultSkeleton.vue";
 import VLazyImage from "v-lazy-image";
 import PageLoader from '../Loaders/PageLoader.vue';
     
-const emit = defineEmits(['sidebarShow']);
 const logout = () => {
     router.post(route('auth.logout'));
 };
@@ -93,7 +92,7 @@ const { props } = usePage<any>();
     <LanguageModal />
     <nav class="navbar">
         <ul class="navbar-nav grid-x">
-            <li class="nav-item cell shrink show-for-small hide-for-large me-1" @click="$emit('sidebarToggle')">
+            <li class="nav-item cell shrink show-for-small hide-for-large me-1" @click="sidebarOpen()">
                     <button class="btn-circle squish" id="sidebar-toggler">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
