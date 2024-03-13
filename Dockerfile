@@ -4,8 +4,8 @@ COPY . .
 
 # Install Bun
 RUN apk add --update curl zip unzip
-RUN curl -fsSL https://bun.sh/install | bash
-RUN ~/.bun/bin/bun install
+RUN curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash
+RUN bun install
 
 # Copy the application sources into the build stage
 COPY . .
