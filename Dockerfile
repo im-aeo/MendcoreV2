@@ -10,11 +10,6 @@ ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 
-FROM oven/bun:latest
-COPY bun.lockb . 
-COPY package.json .
-RUN bun install --frozen-lockfile
-
 # Laravel config
 ENV APP_ENV production
 ENV APP_DEBUG false
