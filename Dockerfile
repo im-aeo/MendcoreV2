@@ -31,8 +31,13 @@ RUN bun install --frozen-lockfile
 # Stage 3: Combine with Laravel application
 FROM richarvey/nginx-php-fpm:latest
 
-# Copy Laravel environment variables (consider a separate .env file)
-COPY .env .  # Assuming a .env file exists in the project directory
+# Laravel config
+ENV APP_ENV production
+ENV APP_DEBUG false
+ENV LOG_CHANNEL stderr
+
+# Allow composer to run as root
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Set working directory
 WORKDIR $WEBROOT
@@ -40,5 +45,5 @@ WORKDIR $WEBROOT
 # Expose PHP-FPM port (default: 9000)
 EXPOSE 9000
 
-# Run Laravel commands
-CMD ["php", "artisan", "serve"]
+# Run commands
+CMD ["bun", "index.ts", "/start.sh"]
