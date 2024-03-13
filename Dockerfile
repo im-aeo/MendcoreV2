@@ -18,7 +18,7 @@ ENV REAL_IP_HEADER 1
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
 # Stage 2: Bun environment
-FROM oven/bun AS build # tag it as build
+FROM oven/bun AS build
 
 WORKDIR /app
 COPY bun.lockb .
