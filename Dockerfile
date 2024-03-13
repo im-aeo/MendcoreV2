@@ -1,14 +1,13 @@
-FROM richarvey/nginx-php-fpm:latest
-
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-COPY . .
-
-#bun
-
+# Bun
 FROM oven/bun
 WORKDIR /usr/src/app
 COPY package*.json bun.lockb ./
 RUN bun install
+COPY . .
+
+
+FROM richarvey/nginx-php-fpm:latest
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 COPY . .
 
 # Image config
