@@ -46,4 +46,4 @@ WORKDIR $WEBROOT
 EXPOSE 9000
 
 # Run commands
-CMD ["bun", "index.ts", "/start.sh"]
+CMD ["/start.sh"]
