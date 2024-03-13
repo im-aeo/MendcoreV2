@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Installing Packages"
+npm install -g bun 
 composer install --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
 composer dump-autoload --optimize
 
