@@ -1,32 +1,18 @@
-# Stage 1: Base image for PHP (Nginx and PHP-FPM)
 FROM richarvey/nginx-php-fpm:latest
 
-# Copy the install-php-extensions script with appropriate permissions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
-# Copy your application code
 COPY . .
 
-# Environment configuration
+# Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 
-# Install required PHP extensions
-RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
-
-# Install Bun and project dependencies
-RUN apk add --update nodejs npm
-RUN npm install @oven/bun-linux-x64
-RUN npm install @oven/bun-linux-x64-baseline
-RUN apk --no-cache add ca-certificates wget
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk
-RUN apk add --no-cache --force-overwrite glibc-2.28-r0.apk
-# Install Bun
-RUN npm install -g bun
+FROM oven/bun:latest
+COPY bun.lockb . 
+COPY package.json .
 RUN bun install --frozen-lockfile
 
 # Laravel config
@@ -37,11 +23,8 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-# Set working directory
-WORKDIR $WEBROOT
+# Install node, npm vite, and bun
+RUN apk add --update nodejs npm
+RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-# Expose PHP-FPM port (default: 9000)
-EXPOSE 9000
-
-# Run commands
 CMD ["/start.sh"]
