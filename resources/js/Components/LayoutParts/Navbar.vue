@@ -425,7 +425,12 @@ export default {
         sidebarOpen(): void {
             const sidebar = document.getElementById('sidebar');
             if (sidebar) {
-                sidebar.classList.toggle('show-for-large');
+                if (sidebar.classList.contains('show-for-large')) {
+                  sidebar.classList.remove('show-for-large');
+                  sidebar.classList.add("hide-for-large");
+                } else {
+                sidebar.classList.add('show-for-large');
+                }
             }
         },
         addActiveClassSSInput(elementId: string): void {
