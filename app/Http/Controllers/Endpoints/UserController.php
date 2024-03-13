@@ -71,9 +71,9 @@ class UserController extends Controller
         if ($loggedInUser->id === $user->id) {
             return response()->json(['message' => 'You cannot follow yourself.'], 400);
         }
-
+        
         $loggedInUser->following()->attach($user->id);
-
+        $user->notify(new FollowNotification($loggedInUser->id));
         return response()->json(['message' => 'Successfully followed.']);
     }
 
