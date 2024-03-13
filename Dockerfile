@@ -19,6 +19,8 @@ RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip r
 
 # Install Bun and project dependencies
 RUN apk add --update nodejs npm
+RUN npm install @oven/bun-linux-x64
+RUN npm install @oven/bun-linux-x64-baseline
 RUN npm install -g bun
 RUN bun install --frozen-lockfile
 
