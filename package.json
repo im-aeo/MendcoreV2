@@ -3,9 +3,9 @@
     "proxy": "http://localhost:4000",
     "scripts": {
         "dev": "run-s vite:dev artisan:serve",
-        "vite:dev": "bunx --bun vite",
+        "vite:dev": "bun run vite",
         "artisan:serve": "php artisan serve",
-        "build": "bunx --bun vite build && bunx --bun vite build",
+        "build": "bun run vite build && bun run vite build --ssr",
         "type-check": "vue-tsc --noEmit"
     },
     "eslintConfig": {
