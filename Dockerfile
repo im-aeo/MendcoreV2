@@ -5,9 +5,6 @@ COPY . .
 # Install Bun in the specified version
 
 FROM oven/bun:latest AS base
-RUN apk add --update curl zip unzip
-RUN curl -fsSL https://bun.sh/install | bash && \
-  ln -s $PATH/root/.bun/bin
 FROM base as build
 COPY bun.lockb package.json ./
 RUN bun install --production
