@@ -5,8 +5,7 @@ COPY . .
 # Install Bun
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash
-ENV BUN_INSTALL="$HOME/.bun"
-ENV PATH="$BUN_INSTALL/bin:$PATH"
+
 # Copy the application sources into the build stage
 COPY . .
 
@@ -16,6 +15,8 @@ ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
+ENV BUN_INSTALL="$HOME/.bun"
+ENV PATH="${PATH}:${HOME}/.bun/bin"
 
 # Env for both laravel and node
 ENV APP_ENV production
