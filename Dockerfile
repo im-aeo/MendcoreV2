@@ -7,7 +7,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 # Copy your application code
 COPY . .
 
-# Environment configuration (consider using a separate .env file)
+# Environment configuration
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
@@ -17,10 +17,8 @@ ENV REAL_IP_HEADER 1
 # Install required PHP extensions
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-# Stage 2: Node.js and Bun environment
-FROM node:18-alpine AS node-env  # Use a specific Node.js version for consistency
-
-WORKDIR /app
+# Stage 2: Bun environment
+FROM oven/bun:latest
 
 # Copy necessary project files
 COPY bun.lockb .
@@ -28,7 +26,6 @@ COPY package.json .
 
 # Install Bun and project dependencies
 RUN apk add --update nodejs npm
-RUN npm install
 RUN bun install --frozen-lockfile
 
 # Stage 3: Combine with Laravel application
