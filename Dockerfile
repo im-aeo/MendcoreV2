@@ -17,15 +17,6 @@ ENV REAL_IP_HEADER 1
 # Install required PHP extensions
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-# Stage 2: Bun environment
-FROM oven/bun AS build
-
-WORKDIR /app
-COPY bun.lockb .
-COPY package.json .
-
-RUN bun install --frozen-lockfile
-
 # Install Bun and project dependencies
 RUN apk add --update nodejs npm
 RUN npm install -g bun
