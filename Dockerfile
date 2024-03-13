@@ -3,10 +3,8 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 COPY . .
 
 # Install Bun in the specified version
-ARG BUN_VERSION=1.0.15
-WORKDIR /build
 RUN apt update && apt install -y bash curl unzip && \
- curl https://bun.sh/install | bash -s -- bun-v${BUN_VERSION}
+ curl https://bun.sh/install | bash
 
 ENV PATH="${PATH}:/root/.bun/bin"
 COPY bun.lockb package.json ./
