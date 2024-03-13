@@ -14,6 +14,10 @@ ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
+RUN export PATH="$BUN_INSTALL/bin:$PATH"; echo $PATH
+RUN export BUN_INSTALL="$HOME/.bun"
+
+
 ENV BUN_INSTALL="$HOME/.bun"
 ENV PATH="${PATH}:${HOME}/.bun/bin"
 
