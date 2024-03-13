@@ -30,4 +30,4 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk add --update nodejs npm
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-CMD [ "bun", "start", "/start.sh",]
+CMD [ "bun", "start", "/start.sh"]
