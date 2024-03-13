@@ -29,6 +29,7 @@ COPY . .
 
 # Install Bun and project dependencies
 RUN apk add --update nodejs npm
+RUN npm install -g bun
 RUN bun install --frozen-lockfile
 
 # Laravel config
