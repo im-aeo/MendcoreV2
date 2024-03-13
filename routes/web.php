@@ -84,7 +84,6 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::post('logout', [AuthController::class, 'UserExit'])->name('logout');
     Route::get('/set-language/{language}', function ($language) {
         Session()->put('locale', $language);
-
         return redirect()->back();
     })->name('language');
 
