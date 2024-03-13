@@ -5,7 +5,7 @@ COPY . .
 # Install Bun in the specified version
 RUN apk add --update curl zip unzip
 RUN curl -fsSL https://bun.sh/install | bash && \
-  ln -s $HOME/.bun/bin/bun /usr/local/bin/bu
+  ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
 
 ENV PATH="${PATH}:/root/.bun/bin"
 COPY bun.lockb package.json ./
