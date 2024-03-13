@@ -4,9 +4,6 @@ FROM richarvey/nginx-php-fpm:latest
 # Copy the install-php-extensions script with appropriate permissions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Copy your application code
-COPY . .
-
 # Environment configuration
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
@@ -28,8 +25,8 @@ COPY package.json .
 RUN apk add --update nodejs npm
 RUN bun install --frozen-lockfile
 
-# Stage 3: Combine with Laravel application
-FROM richarvey/nginx-php-fpm:latest
+# Copy your application code
+COPY . .
 
 # Laravel config
 ENV APP_ENV production
