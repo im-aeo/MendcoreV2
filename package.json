@@ -5,7 +5,7 @@
         "dev": "run-s vite:dev artisan:serve",
         "vite:dev": "bunx --bun vite",
         "artisan:serve": "php artisan serve",
-        "build": "vite build && vite build --ssr",
+        "build": "bunx --bun vite build && bunx --bun vite build",
         "type-check": "vue-tsc --noEmit"
     },
     "eslintConfig": {
