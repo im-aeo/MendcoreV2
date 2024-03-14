@@ -1,17 +1,5 @@
 FROM richarvey/nginx-php-fpm:latest
-
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-COPY . .
-
-# Install Bun
-FROM oven/bun:latest
-WORKDIR /home/bun/app
-COPY ./package.json .
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
-RUN bun install
-
-# Copy the application sources into the build stage
 COPY . .
 
 # Image config
@@ -20,6 +8,14 @@ ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
+
+# Install Bun
+FROM oven/bun:latest
+WORKDIR /home/bun/app
+COPY ./package.json .
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
+RUN bun install
 
 # Env for both laravel and node
 ENV APP_ENV production
