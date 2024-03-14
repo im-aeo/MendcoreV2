@@ -27,4 +27,9 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk add --update nodejs npm
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
+FROM oven/bun
+WORKDIR /home/bun/app
+COPY ./package.json .
+RUN bun install
+
 CMD ["/start.sh", "bun", "run", "build"]
