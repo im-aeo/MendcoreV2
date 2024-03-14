@@ -12,7 +12,7 @@ ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 
 # Install Bun
-FROM oven/bun
+FROM oven/bun:distroless
 WORKDIR /home/bun/app
 COPY ./package.json .
 RUN bun install
