@@ -2,7 +2,7 @@ FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Install Bun
-RUN apk add --update nodejs npm
+RUN apk add --update nodejs npm python
 
 FROM oven/bun
 WORKDIR /home/bun/app
