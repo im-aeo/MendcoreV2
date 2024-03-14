@@ -18,7 +18,7 @@ ENV NODE_ENV production
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install Bun
-FROM oven/bun
+FROM oven/bun as package
 WORKDIR /home/bun/app
 COPY ./package.json .
 RUN apk add --update python3 make g++\
