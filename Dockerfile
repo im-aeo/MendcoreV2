@@ -1,5 +1,7 @@
-FROM richarvey/nginx-php-fpm:latest
+FROM richarvey/nginx-php-fpm:latest as builder
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
 COPY . .
 
 # Image config
@@ -10,11 +12,9 @@ ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 
 # Install Bun
-FROM oven/bun:latest
+FROM oven/bun
 WORKDIR /home/bun/app
 COPY ./package.json .
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
 RUN bun install
 
 # Env for both laravel and node
@@ -30,4 +30,4 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk add --update nodejs npm
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-CMD ["bun", "run", "build", "/start.sh"]
+CMD ["/start.sh", "bun", "run", "build"]
