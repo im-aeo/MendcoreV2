@@ -2,10 +2,10 @@ FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Install Bun
-RUN apk add --update curl zip unzip
-RUN curl -fsSL https://bun.sh/install | bash
-RUN export PATH="$BUN_INSTALL/bin:$PATH"; echo $PATH
-RUN export BUN_INSTALL="$HOME/.bun"
+FROM oven/bun
+WORKDIR /home/bun/app
+COPY ./package.json .
+RUN bun install
 
 # Copy the application sources into the build stage
 COPY . .
@@ -30,4 +30,4 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk add --update nodejs npm
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
-CMD ["/start.sh"]
+CMD ["bun", "run", "build", "/start.sh"]
