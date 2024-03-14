@@ -1,4 +1,3 @@
-# Install Bun
 FROM oven/bun:debian
 WORKDIR /home/bun/app
 COPY ./package.json .
