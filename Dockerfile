@@ -1,9 +1,10 @@
 FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Install Bun
-RUN apk add --update nodejs npm python
+RUN apk add --update python make g++\
+   && rm -rf /var/cache/apk/*
 
+# Install Bun
 FROM oven/bun
 WORKDIR /home/bun/app
 COPY ./package.json .
@@ -29,6 +30,7 @@ ENV NODE_ENV production
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Update node, npm vite
+RUN apk add --update nodejs npm
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
 CMD ["bun", "run", "build", "/start.sh"]
