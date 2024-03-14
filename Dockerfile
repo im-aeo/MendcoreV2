@@ -1,13 +1,15 @@
 FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Install Bun
+
 RUN apk add --update python3 make g++\
    && rm -rf /var/cache/apk/*
-FROM oven/bun
-WORKDIR /home/bun/app
-COPY ./package.json .
-RUN bun install
+   
+# Install Bun
+#FROM oven/bun
+#WORKDIR /home/bun/app
+#COPY ./package.json .
+#RUN bun install
 
 # Copy the application sources into the build stage
 COPY . .
