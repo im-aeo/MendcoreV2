@@ -4,7 +4,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 COPY . .
 
 # Install Bun
-FROM oven/bun
+FROM oven/bun:latest
 WORKDIR /home/bun/app
 COPY ./package.json .
 RUN apk add --update python3 make g++\
