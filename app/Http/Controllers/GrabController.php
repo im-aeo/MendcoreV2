@@ -675,7 +675,9 @@ class GrabController extends Controller
         $post->title = $title;
         $post->body = $parsedBody;
         $post->save();
-
+        
+        Auth::user()->addPoints(10);
+        
         return Redirect::route('forum.post', $post->id, $post->slug())->with('message', 'Your post has been created.');
     }
 
@@ -698,7 +700,8 @@ class GrabController extends Controller
         $post->creator_id = Auth::user()->id;
         $post->body = $parsedBody;
         $post->save();
-
+        Auth::user()->addPoints(10);
+        
         return redirect()->back()->with('message', 'Your post has been created.');
     }
     public function IndexingIndex()
