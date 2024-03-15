@@ -20,4 +20,4 @@ php artisan db:seed
 echo "Running vite..."
 bun upgrade
 npm install
-npm run build
+bunx --bun vite build
