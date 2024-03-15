@@ -10,7 +10,6 @@
         "based/momentum-modal": "^0.2.0",
         "based/momentum-preflight": "^0.2.0",
         "based/momentum-trail": "^0.2.2",
-        "butschster/meta-tags": "^2.3",
         "cebe/markdown": "^1.2",
         "cjmellor/level-up": "^1.2.3",
         "cocur/slugify": "^4.3",
