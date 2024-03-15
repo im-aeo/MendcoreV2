@@ -28,7 +28,8 @@ RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/
 RUN apk add --no-cache --force-overwrite glibc-2.28-r0.apk
 
 # Install Bun
-RUN npm install -g bun
+# RUN npm install -g bun
+RUN npm install -g vite
 RUN install-php-extensions gd xdebug gmp intl mysqli pgsql sodium soap xsl zip redis curl pdo pdo_mysql bcmath json mbstring pdo_pgsql
 
 CMD ["/start.sh"]
