@@ -174,6 +174,7 @@ class MarketController extends Controller
     $purchase->currency_used = $currencyType;
     $purchase->price = $price;
     $purchase->save();
+    Auth::user()->addPoints(30);
 
     if ($item->special_type && $item->stock > 0) {
         $item->stock -= 1;
@@ -204,8 +205,8 @@ class MarketController extends Controller
         $reseller->inventory_id = $copy->id;
         $reseller->price = $request->price;
         $reseller->save();
-
-        return redirect()->route('catalog.item', [$copy->item->id, $copy->item->slug()])->with('success_message', 'Item has been put up for sale.');
+        Auth::user()->addPoints(10);
+        return redirect()->route('catalog.item', [$copy->item->id, $copy->item->slug()])->with('success_message', 'Item has been put up for sale, You have earned 10 XP.');
     }
 
     public function makeOffsale(Request $request)
