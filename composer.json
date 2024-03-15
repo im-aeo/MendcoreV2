@@ -18,7 +18,7 @@
         "ezyang/htmlpurifier": "^4.16",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/pagination": "*",
-        "inertiajs/inertia-laravel": "^0.6.3",
+        "inertiajs/inertia-laravel": "^1.0",
         "jbbcode/jbbcode": "^1.4",
         "kornrunner/keccak": "^1.1",
         "laravel-lang/lang": "^12.22",
