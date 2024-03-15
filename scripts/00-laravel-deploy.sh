@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Installing Packages"
-composer install --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
+composer update --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
 composer dump-autoload --optimize
 
 echo "Clearing old caches..."
