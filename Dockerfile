@@ -17,11 +17,9 @@ RUN apk add --update python3 make g++\
    && rm -rf /var/cache/apk/*
 COPY . .
 
-FROM oven/bun
-WORKDIR /home/bun/app
-COPY ./package.json .
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
+FROM oven/bun:latest
+COPY package.json ./
+COPY bun.lockb ./
 RUN bun install
 
 # Env for both laravel and node
