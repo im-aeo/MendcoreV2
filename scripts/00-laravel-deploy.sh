@@ -18,5 +18,6 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
+bun upgrade
 bun install
 bun run build
