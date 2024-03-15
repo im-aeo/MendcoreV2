@@ -78,10 +78,10 @@ const addStatus = (status: string): void => {
                         <div class="w-100">
                             <div class="mb-1 flex-container align-justify">
                                 <div class="text-xs fw-bold text-muted text-uppercase">
-                                    Rank Lvl. 2
+                                    {{ 'Rank Lvl. ' + usePage().props.auth.user.level }}
                                 </div>
                                 <div class="text-xs fw-bold text-muted text-uppercase">
-                                    50/200 EXP
+                                    {{ usePage().props.auth.user.xp + '/' + }}/200 EXP
                                 </div>
                             </div>
                             <div class="progress-bar">
