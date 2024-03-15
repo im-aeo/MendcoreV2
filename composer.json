@@ -12,6 +12,7 @@
         "based/momentum-trail": "^0.2.2",
         "butschster/meta-tags": "^2.3",
         "cebe/markdown": "^1.2",
+        "cjmellor/level-up": "^1.2.3",
         "cocur/slugify": "^4.3",
         "darkaonline/l5-swagger": "^8.5",
         "dg/rss-php": "^1.5",
