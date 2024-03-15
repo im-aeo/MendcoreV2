@@ -18,4 +18,5 @@ php artisan db:seed
 
 echo "Running vite..."
 npm install
+npm install -g vite
 npm run build
