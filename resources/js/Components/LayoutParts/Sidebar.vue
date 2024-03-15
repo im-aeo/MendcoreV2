@@ -7,8 +7,8 @@ import SideLink from '../SideLink.vue';
 defineProps<{
   image: String
 }>();
+
 const { props } = usePage<any>();
-const chatopen = ref(false);
 const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 const adblock = ref(false);
 
@@ -211,13 +211,7 @@ export default {
             if (element) {
                 element.classList.toggle('active');
             }
-        },
-        sidebarOpen(): void {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.toggle('show-for-large');
-            }
-        },
+	},
         addActiveClassSSInput(elementId: string): void {
             const element = document.getElementById(elementId) as HTMLInputElement;
             const isEmpty = (str: string): boolean => !str.trim().length;
