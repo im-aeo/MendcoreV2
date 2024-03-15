@@ -343,7 +343,7 @@ const { props } = usePage<any>();
                             {{ props.auth.user.display_name }}
                         </div>
                         <div class="text-xs text-muted fw-semibold">
-                            {{ '@' + props.auth.user.username }} • Lvl. 2
+                            {{ '@' + props.auth.user.username }} • {{ 'Lvl. ' + usePage().props.auth.user.level }}
                         </div>
                     </div>
                     <i class="text-sm fas fa-chevron-down text-muted show-for-large"></i>
@@ -361,19 +361,21 @@ const { props } = usePage<any>();
                                     {{ '@' + props.auth.user.username }}
                                 </div>
                                 <div class="text-xs text-muted fw-semibold">
-                                    Lvl. 2
+                                    {{ 'Lvl. ' + usePage().props.auth.user.level }}
                                 </div>
                             </div>
                         </div>
                         <li class="dropdown-item">
-                            <a href="#" class="dropdown-link dropdown-link-has-icon text-warning"><i
-                                    class="fas fa-coins text-warning dropdown-icon"></i>{{ props.auth.user.coins }}
-                                Coins</a>
+                            <a href="#" class="dropdown-link dropdown-link-has-icon text-warning">
+                                <i class="fas fa-coins text-warning dropdown-icon"></i>
+                                {{ props.auth.user.coins }} Coins
+                            </a>
                         </li>
                         <li class="dropdown-item">
-                            <a href="#" class="dropdown-link dropdown-link-has-icon text-success"><i
-                                    class="fas fa-money-bill-1-wave text-success dropdown-icon"></i>{{ props.auth.user.bucks
-                                    }} Cash</a>
+                            <a href="#" class="dropdown-link dropdown-link-has-icon text-success">
+                                <i class="fas fa-money-bill-1-wave text-success dropdown-icon"></i>
+                                {{ props.auth.user.bucks }} Cash
+                            </a>
                         </li>
                     </div>
                     <div class="align-middle flex-container">
