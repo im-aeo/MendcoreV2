@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "based/momentum-lock": "^0.2.0",
         "based/momentum-modal": "^0.2.0",
         "based/momentum-preflight": "^0.2.0",
         "based/momentum-trail": "^0.2.2",
