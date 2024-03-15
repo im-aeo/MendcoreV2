@@ -53,7 +53,7 @@ return [
             'driver' => 'file',
             'path' => storage_path('framework/cache/data'),
         ],
-/*
+
  'memcached' => [
     'driver' => 'memcached',
     'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
@@ -88,7 +88,7 @@ return [
         ];
       }, explode(",", env('MEMCACHIER_SERVERS', 'localhost:11211')))
 ],
-*/  
+
       'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
