@@ -36,6 +36,7 @@ class GiveDailyCurrency
             $amount = 10;
 
             $user->coins += $amount;
+            $user->addPoints(100);
             $user->next_currency_payout = Carbon::now()->addHours(24)->toDateTimeString();
             $user->save();
         }
