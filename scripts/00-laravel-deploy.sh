@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Installing Packages"
-composer update --no-dev --prefer-dist --no-interaction --no-autoloader --no-scripts -o --working-dir=/var/www/html
-composer dump-autoload --optimize
+composer update --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-scripts -o --working-dir=/var/www/html
 
 echo "Clearing old caches..."
 php artisan cache:clear
