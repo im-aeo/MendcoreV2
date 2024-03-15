@@ -17,5 +17,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm ci
+npm install
 npm run build
