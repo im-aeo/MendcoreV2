@@ -38,8 +38,8 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'client_id' =>  '564853151754-rdl5rdkjcs2r2bab8q007tbkk860bs8m.apps.googleusercontent.com', // env('GOOGLE_CLIENT_ID')
+        'client_secret' => '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', //env('GOOGLE_CLIENT_SECRET')
         'redirect' => env('GOOGLE_REDIRECT_URI')
     ],
 
