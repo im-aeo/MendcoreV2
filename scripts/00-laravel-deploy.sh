@@ -18,6 +18,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-bun upgrade
 npm install
-bunx --bun vite build
+npm vite build
