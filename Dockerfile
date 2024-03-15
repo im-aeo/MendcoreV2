@@ -1,10 +1,3 @@
-# Image config
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
-
 FROM richarvey/nginx-php-fpm:latest
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN apk add --update python3 make g++\
@@ -15,6 +8,13 @@ FROM oven/bun:latest
 COPY package.json ./
 COPY bun.lockb ./
 RUN bun install
+
+# Image config
+ENV SKIP_COMPOSER 1
+ENV WEBROOT /var/www/html/public
+ENV PHP_ERRORS_STDERR 1
+ENV RUN_SCRIPTS 1
+ENV REAL_IP_HEADER 1
 
 # Env for both laravel and node
 ENV APP_ENV local
