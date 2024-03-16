@@ -15,7 +15,7 @@ ENV REAL_IP_HEADER 1
 ENV APP_ENV local
 ENV APP_DEBUG true
 ENV LOG_CHANNEL stderr
-ENV NODE_ENV production
+# ENV NODE_ENV production
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
