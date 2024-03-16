@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+why#!/usr/bin/env bash
 
 echo "Installing Packages"
 composer update --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-scripts -o --working-dir=/var/www/html
@@ -17,6 +17,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm install
-npm install -g vite
+npm install --prefer-offline --no-audit --progress=false
 npm run build
