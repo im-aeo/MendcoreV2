@@ -1,4 +1,4 @@
-why#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 echo "Installing Packages"
 composer update --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-scripts -o --working-dir=/var/www/html
