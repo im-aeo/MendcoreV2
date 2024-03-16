@@ -17,5 +17,5 @@ echo "Running seeders..."
 php artisan db:seed
 
 echo "Running vite..."
-npm install --progress=false
+npm install --prefer-offline --no-audit --progress=false
 npm run build
