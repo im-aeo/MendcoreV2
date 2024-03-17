@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->default('bucks');
-            $table->integer('granted_amount')->default('1');
-            $table->integer('item_id');
+            $table->string('reward_type')->default('bucks');
+            $table->integer('reward')->default('10');
             $table->unsignedBigInteger('level_required');
             $table->boolean('membership_required')->default(false);
-            // You can add more columns for additional reward attributes
-
             $table->timestamps();
         });
     }
