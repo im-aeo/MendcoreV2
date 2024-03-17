@@ -62,9 +62,9 @@ const addStatus = (status: string): void => {
             <div class="gap-2 mb-3 align-middle card card-body flex-container flex-dir-column">
                 <img src="/assets/img/dummy_headshot.png" width="60" class="headshot" />
                 <div class="text-center" style="line-height: 16px">
-                    <div class="fw-semibold">{{ usePage().props.auth.user.display_name }}</div>
+                    <div class="fw-semibold">{{ usePage<any>().props.auth.user.display_name }}</div>
                     <div class="text-xs fw-semibold text-muted">
-                        {{ '@' + usePage().props.auth.user.username }}
+                        {{ '@' + usePage<any>().props.auth.user.username }}
                     </div>
                 </div>
                 <div class="divider w-100"></div>
