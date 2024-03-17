@@ -44,14 +44,11 @@ const addStatus = (status: string): void => {
   console.log(props.slist);
   slist.value.push(StatusUpdate);
 
-  axios
-    .post(route(`my.dashboard.validate`), {
+  axios.post(route(`my.dashboard.validate`), {
       message: status,
-    })
-    .then((status) => {
-      console.log("Success:", quote);
-    })
-    .catch((status) => {
+    }).then((status) => {
+      console.log("Success:", status);
+    }).catch((status) => {
       console.error("Error:", error);
     });
 };
