@@ -425,7 +425,7 @@ export default {
             }
         },
         sidebarOpen(): void {
-            const sidebar = document.getElementById('side-nav');
+            const sidebar = document.getElementById('sidebar');
             if (sidebar) {
                 if (sidebar.classList.contains('show-for-large')) {
                   sidebar.classList.remove('show-for-large');
