@@ -7,6 +7,7 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { route, current } from 'momentum-trail'
+import { StringTypeAnnotation } from '@babel/types';
 
 defineProps({
     mustVerifyEmail: Boolean,
@@ -22,7 +23,9 @@ function showModal(modalId: string): void {
     }
 };
 
-const ActiveCategory = "general";
+type ActiveCategorytype = string; 
+
+const ActiveCategory: ActiveCategorytype = "general";
 </script>
 
 <template>
@@ -145,7 +148,7 @@ const ActiveCategory = "general";
             <div class="mb-2 text-xl fw-semibold">Account Settings</div>
             <ul class="tabs flex-dir-column">
                 <li class="tab-item" v-for="category in categories">
-                    <Link @click="{{ ActiveCategory === category }}" :href="route(`user.settings.page`, { category: category })"
+                    <Link @click="{{ ActiveCategory === category }}"
                         :class="[current(`settings.page`, { category: ActiveCategory }) ? 'active' : '']" class="tab-link squish">
                     {{ capitalized(category) }}
                     </Link>
