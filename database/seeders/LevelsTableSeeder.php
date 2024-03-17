@@ -1,8 +1,6 @@
-Absolutely! Here's the Laravel seeder implementation based on the provided code:
-
-PHP
 <?php
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
