@@ -25,7 +25,11 @@ function showModal(modalId: string): void {
 
 type ActiveCategorytype = string; 
 
-const ActiveCategory: ActiveCategorytype = "general";
+var ActiveCategory: ActiveCategorytype = "general";
+
+function setActiveCategory(category: string): void {
+  ActiveCategory = category;
+};
 </script>
 
 <template>
@@ -148,7 +152,7 @@ const ActiveCategory: ActiveCategorytype = "general";
             <div class="mb-2 text-xl fw-semibold">Account Settings</div>
             <ul class="tabs flex-dir-column">
                 <li class="tab-item" v-for="category in categories">
-                    <Link @click="{{ ActiveCategory === category }}"
+                    <Link @click="setActiveCategory(category)"
                         :class="[current(`settings.page`, { category: ActiveCategory }) ? 'active' : '']" class="tab-link squish">
                     {{ capitalized(category) }}
                     </Link>
