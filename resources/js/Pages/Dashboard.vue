@@ -55,10 +55,10 @@ const slist = ref<StatusObject[]>(props.slist);
                         <div class="w-100">
                             <div class="mb-1 flex-container align-justify">
                                 <div class="text-xs fw-bold text-muted text-uppercase">
-                                    {{ 'Rank Lvl. ' + usePage().props.auth.user.level }}
+                                    {{ 'Rank Lvl. ' + usePage<any>().props.auth.user.level }}
                                 </div>
                                 <div class="text-xs fw-bold text-muted text-uppercase">
-                                    {{ usePage().props.auth.user.xp + '/' + }}/200 EXP
+                                    {{ usePage<any>().props.auth.user.xp + '/' + usePage<any>().props.auth.user.nextlevelxp }} EXP
                                 </div>
                             </div>
                             <div class="progress-bar">
