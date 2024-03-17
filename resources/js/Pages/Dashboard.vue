@@ -33,26 +33,6 @@ const props = defineProps({
 });
 
 const slist = ref<StatusObject[]>(props.slist);
-
-const addStatus = (status: string): void => {
-  const StatusUpdate: StatusObject = {
-    dname: usePage<any>().props.auth.user.display_name,
-    name: usePage<any>().props.auth.user.username,
-    message: status,
-    DateHum: "Just Now",
-  };
-  console.log(props.slist);
-  slist.value.push(StatusUpdate);
-
-  axios.post(route(`my.dashboard.validate`), {
-      message: status,
-    }).then((status) => {
-      console.log("Success:", status);
-    }).catch((status) => {
-      console.error("Error:", error);
-    });
-};
-
 </script>
 
 <template>
