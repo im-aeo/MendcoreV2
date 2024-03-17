@@ -61,7 +61,7 @@ class HandleInertiaRequests extends Middleware
                         'settings' => $request->user()->settings(),
                         'level' => $request->user()->getLevel(),
                         'xp' => $request->user()->getPoints(),
-                        'nextlevelxp' =>  $request->user()->nextLevelAt();
+                        'nextlevelxp' =>  $request->user()->nextLevelAt(),
                     ] : null,
                 ];
             },
