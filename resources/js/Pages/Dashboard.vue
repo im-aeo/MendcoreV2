@@ -144,8 +144,8 @@ const addStatus = (status: string): void => {
                             </div>
                         </div>
                     </div>
-                    <StatusCard v-else v-for="status in slist" :DisplayName="status.data.dname" :name="status.data.name"
-                        :message="status.data.message" :date="status.data.DateHum" />
+                    <StatusCard v-else v-for="status in slist" :DisplayName="status.dname" :name="status.name"
+                        :message="status.message" :date="status.DateHum" />
                 </div>
                 <AeoPagination v-bind:pagedata="slist" @page-clicked="getStatusList" />
         </div>
