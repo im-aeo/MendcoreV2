@@ -25,7 +25,7 @@ class LevelSeeder extends Seeder
 
         // Loop through levels starting from 2 (skip level 1)
         for ($level = 2; $level <= 200; $level++) {
-            $experience = $baseExperience + (0.3 * ($level - 1));
+            $experience = round($baseExperience + (0.3 * ($level - 1)));
             $baseExperience = $experience;
 
             $levels[] = [
