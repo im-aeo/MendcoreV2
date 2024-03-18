@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Forum;
 
+use JBBCode\Parser;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\ForumReply;
 use App\Models\ForumTopic;
 use App\Models\ForumThread;
+use App\Services\BBCodeService;
+use PhpParser\Node\Stmt\Return_;
 use App\Http\Controllers\Controller;
+use JBBCode\DefaultCodeDefinitionSet;
+use Illuminate\Support\Facades\Cache;
 
 class ForumController extends Controller
 {
