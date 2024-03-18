@@ -2,6 +2,7 @@
 
 echo "Installing Packages"
 composer update --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-scripts -o --working-dir=/var/www/html
+composer dump-autoload
 
 echo "Clearing old caches..."
 php artisan cache:clear
