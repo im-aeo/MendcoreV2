@@ -92,7 +92,7 @@ const unfollowUser = (id) => {
                                 <div class="gap-2 mt-2 mb-2 align-middle flex-container align-justify">
 
                                     <Link
-                                        :href="route(`usePage<any>().props.user.profile`, { username: followingUser.username })"
+                                        :href="route(`user.profile`, { username: followingUser.username })"
                                         class="min-w-0 btn btn-info btn-sm text-truncate">
                                     View Profile
                                     </Link>
@@ -132,7 +132,7 @@ const unfollowUser = (id) => {
                                 </div>
                                 <div class="gap-2 mt-2 mb-2 align-middle flex-container align-justify">
                                     <Link
-                                        :href="route(`usePage<any>().props.user.profile`, { username: followerUser.username })"
+                                        :href="route(`user.profile`, { username: followerUser.username })"
                                         class="min-w-0 btn btn-info btn-sm text-truncate">
                                     View Profile
                                     </Link>
@@ -152,7 +152,7 @@ const unfollowUser = (id) => {
                         <div class="text-xl" style="line-height: 16px">
                             <div class="fw-semibold mb-1">
                                 {{ usePage<any>().props.user.display_name }}
-                                <v-lazy-image :src="'assets/img/flags/' + user.settings.country_code + '.png'" alt="Country Flag" style="width: 26px;height: 16px;" src-placeholder="assets/img/flags/us.svg" />
+                                <v-lazy-image :src="'assets/img/flags/' + user.settings.country_code + '.png'" alt="Country Flag" style="width: 26px;height: 16px;" src-placeholder="assets/img/flags/pirate.svg" />
                             </div>
                             <div class="text-sm text-muted fw-semibold">
                                 {{ "@" + usePage<any>().props.user.username }}
