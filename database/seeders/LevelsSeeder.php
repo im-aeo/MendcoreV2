@@ -4,14 +4,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class LevelSeeder extends Seeder
+class LevelsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public function run() : void
     {
         $baseExperience = 250;
         $levels = [];
