@@ -4,7 +4,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class LevelsTableSeeder extends Seeder
+class LevelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +16,14 @@ class LevelsTableSeeder extends Seeder
         $baseExperience = 250;
         $levels = [];
 
-        // Loop through levels up to 200
-        for ($level = 1; $level <= 200; $level++) {
+        // Add level 1 with null next_level_experience
+        $levels[] = [
+            'level' => 1,
+            'next_level_experience' => null,
+        ];
+
+        // Loop through levels starting from 2 (skip level 1)
+        for ($level = 2; $level <= 200; $level++) {
             $experience = $baseExperience + (0.3 * ($level - 1));
             $baseExperience = $experience;
 
