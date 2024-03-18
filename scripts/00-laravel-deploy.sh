@@ -8,6 +8,7 @@ php artisan cache:clear
 
 echo "Caching routes and configuration..."
 php artisan config:cache
+php artisan trail:generate
 php artisan route:cache
 
 echo "Running migrations..."
