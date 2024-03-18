@@ -13,7 +13,7 @@ class LevelsTableSeeder extends Seeder
      */
     public function run()
     {
-        $baseExperience = 0;
+        $baseExperience = 250;
         $levels = [];
 
         // Loop through levels up to 200
