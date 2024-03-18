@@ -148,40 +148,40 @@ class GrabController extends Controller
         if (!$user) {
             abort(404);
         }
+        
         if ($user->settings->private_profile) {
            return inertia('App/ProfileDisabled', [
             'username' => $user->username,
            ]);
         }
-        // Check if the current user is authenticated
-        if (!Auth::check()) {
-            abort(403);
-        }
-
         // Load relationships and counts
-        $user->loadCount(['followers', 'following', 'posts']);
+        $userFollowing = $user->following()->get();
+        $FollowingCount = $userFollowing->count();
+        
+        $userFollowers = $user->followers()->get()
+        $FollowerCount = $userFollowers->count();
 
         // Determine if the authenticated user is following the profile user
-        $isFollowing = Auth::user()->isFollowing($user);
-
+        $isFollowing = Auth::user()->isFollowing($user) ?? false;
+        
         // Determine if the profile user is following the authenticated user
-        $thisFollowing = $user->isFollowing(Auth::user());
+        $thisFollowing = $user->isFollowing(Auth::user()) ?? false;
 
         // Format join date
         $joindate = Carbon::parse($user->created_at)->format('M d Y');
-
+        
         $response = inertia('Users/Profile', [
             'user' => $user,
-            'user.avatar' => $user->thumbnail(),
-            'user.followsYou' => $isFollowing,
-            'joindate' => $joindate,
-            'user.followers_count' => $user->followers_count,
-            'user.following_count' => $user->following_count,
-            'user.following' => $user->following()->get(),
-            'is_following' => $thisFollowing,
-            'user.followers' => $user->followers()->get(),
             'user.posts' => $user->posts_count,
+            'user.avatar' => $user->thumbnail(),
             'user.settings' =>  $user->settings,
+            'user.following' => $user->following()->get(),
+            'user.followers' => $user->followers()->get(),
+            'user.followsYou' => $isFollowing,
+            'user.followers_count' => $FollowerCount,
+            'user.following_count' => $FollowingCount,
+            'joindate' => $joindate,
+            'is_following' => $thisFollowing,
         ]);
 
         return $response;
@@ -255,7 +255,7 @@ class GrabController extends Controller
     
 
     public function purchase(int $id, string $currencyType, ?int $resellerId = null)
-{
+    {
     $item = Item::where('id', '=', $id)->firstOrFail();
     $item->timestamps = false;
 
@@ -482,7 +482,7 @@ class GrabController extends Controller
                 $avatar->$column = $item->id;
                 $avatar->save();
 
-                                $this->regenerate($request);
+                $this->regenerate($request);
 
                 return $vrs->getRenderHash($avatar->id);
 
