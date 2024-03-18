@@ -6,6 +6,7 @@ use Closure;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class GiveDailyCurrency
 {
@@ -19,28 +20,20 @@ class GiveDailyCurrency
     public function handle(Request $request, Closure $next)
     {
         // Check if the user agent contains known adblock keywords
-        $userAgent = $request->header('User-Agent');
-        $adblockKeywords = ['adblock', 'ublock', 'ad blocker', 'uBlockOrigin', 'adguard'];
+        $response = Http::get('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
         
-        foreach ($adblockKeywords as $keyword) {
-            if (stripos($userAgent, $keyword) !== false) {
-                // Adblock keyword found in user agent, take appropriate action
-                return response()->json(['error' => 'Adblock detected. Please disable it to receive daily currency.']);
-            }
-        }
-
-        // Continue with the regular logic if no adblock keyword is detected
-        if (Auth::check() && strtotime(Auth::user()->next_currency_payout) < time()) {
-            $user = Auth::user();
-
+        if($response->failed()) {
+            // Adblock keyword found in user agent, take appropriate action
+            return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
+        } elseif (Auth::check() && strtotime(Auth::user()->next_currency_payout) < time()) {
+            // Continue with the regular logic if no adblock keyword is detected
             $amount = 10;
-
+            $user = Auth::user();
             $user->coins += $amount;
             $user->addPoints(100);
             $user->next_currency_payout = Carbon::now()->addHours(24)->toDateTimeString();
             $user->save();
         }
-
         return $next($request);
     }
 }
