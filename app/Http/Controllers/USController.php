@@ -22,6 +22,7 @@ class USController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $countries = Country::all();
         switch ($request->category) {
             case '':
             case 'general':
@@ -32,14 +33,13 @@ class USController extends Controller
             default:
                 abort(404);
         }
-        $countries = Country::all();
+        
         return inertia('Settings/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'country' => $countries,
             'categories' => $categories,
             'themes' => config('themes.roster'),
-
         ]);
     }
 
@@ -54,7 +54,7 @@ class USController extends Controller
             case 'account':
                 return $this->updateAccountSettings($request, $user);
             case 'billing':
-                return $this->updatePassword($request, $user);
+                return $this->updateBillingSettings($request, $user);
             default:
                 abort(404);
         }
