@@ -23,33 +23,34 @@ class AchievementChecker
             $itemCount = Inventory::where('user_id', '=', $user->id)->count();
 
             // Administrator
-            if ($user->isStaff() && !$user->Achieved(1))
-                $user->Acheive(1);
-            else if (!$user->isStaff() && $user->Achieved(1))
+            if ($user->isStaff() && !$user->AlreadyAchieved(1))
+                $user->grantAchievement(1);
+                
+            else if (!$user->isStaff() && $user->AlreadyAchieved(1))
                 $user->removeAchievement(1);
 
-            // Forumer
-            if ($user->Level >= 7 && !$user->Achieved(2))
-                $user->Acheive(2);
-            else if ($user->Level < 7 && $user->Achieved(2))
+            // Level 20 Reward
+            if ($user->getLevel() >= 20 && !$user->AlreadyAchieved(2))
+                $user->grantAchievement(2);
+            else if ($user->Level < 7 && $user->AlreadyAchieved(2))
                 $user->removeAchievement(2);
 
             // Friendship
-            if ($user->friends()->count() >= 20 && !$user->Achieved(3))
-                $user->Acheive(3);
+            if ($user->friends()->count() >= 20 && !$user->AlreadyAchieved(3))
+                $user->grantAchievement(2);
 
             // Rich
-            if ($user->coins >= 500 && !$user->Achieved(5))
-                $user->Acheive(5);
+            if ($user->coins >= 500 && !$user->AlreadyAchieved(5))
+                $user->grantAchievement(5);
 
             // Stockpiler
-            if ($itemCount >= 50 && !$user->Achieved(6))
-                $user->Acheive(6);
+            if ($itemCount >= 50 && !$user->AlreadyAchieved(6))
+                $user->grantAchievement(6);
 
             // Membership
-            if ($user->hasMembership() && !$user->Achieved(9))
-                $user->Acheive(9);
-            else if (!$user->hasMembership() && $user->Achieved(9))
+            if ($user->hasMembership() && !$user->AlreadyAchieved(9))
+                $user->grantAchievement(9);
+            else if (!$user->hasMembership() && $user->AlreadyAchieved(9))
                 $user->removeAchievement(9);
         }
 
