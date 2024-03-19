@@ -160,8 +160,6 @@ function setActiveCategory(category: string): void {
             </ul>
         </div>
         <div class="cell medium-8">
-
-            <div v-for="category in categories" :key="category">
                 <div v-if="ActiveCategory === 'general'">
                     <div class="mb-1 text-xl fw-semibold">General</div>
                     <div class="section-borderless">
@@ -634,7 +632,7 @@ function setActiveCategory(category: string): void {
                                         No Previous Purchases
                                     </div>
                                     <div class="text-xs text-muted fw-semibold">
-                                        You have not made any purchases.
+                                         You have not made any purchases.
                                     </div>
                                 </div>
                             </div>
@@ -642,7 +640,6 @@ function setActiveCategory(category: string): void {
                     </div>
                 </div>
             </div>
-        </div>
     </Sidebar>
     <Footer />
 </template>
