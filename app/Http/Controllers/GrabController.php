@@ -182,6 +182,7 @@ class GrabController extends Controller
             'user.following_count' => $FollowingCount,
             'joindate' => $joindate,
             'is_following' => $thisFollowing,
+            'online' => $user->online(),
         ]);
 
         return $response;
