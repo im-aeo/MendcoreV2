@@ -23,7 +23,7 @@ class RenderController extends Controller
         $this->makeRenderRequest($requestData);
 
         // Retrieve the rendered image path
-        $imagePath = config('Values.storage.url') . '/thumbnails/' . $avatar_thumbnail_name . '.png';
+        $imagePath = env('STORAGE_URL') . '/thumbnails/' . $avatar_thumbnail_name . '.png';
 
         // Read the rendered image file
         $imageData = file_get_contents($imagePath);
@@ -39,7 +39,7 @@ class RenderController extends Controller
     public function getRenderHash($id)
     {
         $user = Avatar::findOrFail($id);
-        return config('Values.storage.url') . '/thumbnails/' . $user->image . '.png';
+        return env('STORAGE_URL') . '/thumbnails/' . $user->image . '.png';
     }
 
     private function prepareRequestData($user, $avatar_thumbnail_name)
@@ -70,6 +70,10 @@ class RenderController extends Controller
 
     private function makeRenderRequest($requestData)
     {
-        Http::get(config('Values.render.url'), $requestData);
+        if(env('RENDERER_HOST') && env('RENDERER_PORT')) {
+            Http::get(env('RENDERER_HOST'), ':', env('RENDERER_PORT'), $requestData);
+        } else {
+            Http::get(env('RENDERER_HOST'), $requestData);
+        }
     }
 }
