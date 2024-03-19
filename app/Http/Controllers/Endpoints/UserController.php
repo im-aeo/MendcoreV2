@@ -78,7 +78,7 @@ class UserController extends Controller
     }
 
     public function unfollow(User $user)
-    {
+    {   
         $loggedInUser = Auth::user();
 
         // Check if the logged-in user is the same as the user they are trying to unfollow
@@ -89,5 +89,11 @@ class UserController extends Controller
         $loggedInUser->following()->detach($user->id);
 
         return response()->json(['message' => 'Successfully unfollowed.']);
+    }
+    
+    public function getUserItems(Request $request, $userID)
+    {
+        $inventory = Inventory::where('id', $userID);
+        return response()->json($inventory);
     }
 }
