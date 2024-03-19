@@ -158,7 +158,7 @@ class GrabController extends Controller
         $userFollowing = $user->following()->get();
         $FollowingCount = $userFollowing->count();
         
-        $userFollowers = $user->followers()->get()
+        $userFollowers = $user->followers()->get();
         $FollowerCount = $userFollowers->count();
 
         // Determine if the authenticated user is following the profile user
