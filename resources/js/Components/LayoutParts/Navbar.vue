@@ -342,7 +342,13 @@ const { props } = usePage<any>();
                         <div class="text-sm fw-semibold text-body">
                             {{ props.auth.user.display_name }}
                         </div>
-                        <div class="text-xs text-muted fw-semibold">
+                        <div v-if="props.auth.user.settings.beta_tester" class="badge badge-position badge-success fw-semibold mb-1">
+                                Beta Tester
+                        </div>
+                        <div v-else-if="props.auth.user.staff" class="badge badge-position badge-danger fw-semibold mb-1">
+                                Administrator
+                        </div>
+                        <div v-else class="text-xs text-muted fw-semibold">
                             {{ '@' + props.auth.user.username }} • {{ 'Lvl. ' + usePage().props.auth.user.level }}
                         </div>
                     </div>
@@ -376,6 +382,16 @@ const { props } = usePage<any>();
                                 <i class="fas fa-money-bill-1-wave text-success dropdown-icon"></i>
                                 {{ props.auth.user.bucks }} Cash
                             </a>
+                        </li>
+                        <li v-if="props.auth.user.settings.beta_tester" class="dropdown-item">
+                                <div class="badge badge-position-mobile badge-success fw-semibold mt-1 mb-1">
+                                    Beta Tester
+                                </div>
+                        </li>
+                        <li v-if="props.auth.user.staff" class="dropdown-item">
+                                <div class="badge badge-position-mobile badge-danger fw-semibold mt-1 mb-1">
+                                    Administrator
+                                </div>
                         </li>
                     </div>
                     <div class="align-middle flex-container">
