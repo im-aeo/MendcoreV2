@@ -80,6 +80,16 @@
     box-shadow: 0 1px 3px rgb(0, 0, 0, 0.2);
     font-size: 12px;
 }
+.badge-position {
+    padding: 1px 7px;
+    text-align: center;
+    text-overflow: unset;
+}
+.badge-position-mobile {
+    padding: 0px 50px;
+    text-align: center;
+    text-overflow: unset;
+}
 .badge-success {
     background: var(--success-500);
     color: #ffffff !important;
