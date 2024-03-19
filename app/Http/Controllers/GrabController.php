@@ -162,10 +162,10 @@ class GrabController extends Controller
         $FollowerCount = $userFollowers->count();
 
         // Determine if the authenticated user is following the profile user
-        $isFollowing = Auth::user()->isFollowing($user) ?? false;
+        $isFollowing = Auth::check() && Auth::user()->isFollowing($user);
         
         // Determine if the profile user is following the authenticated user
-        $thisFollowing = $user->isFollowing(Auth::user()) ?? false;
+        $thisFollowing = Auth::check() && $user->isFollowing(Auth::user()) ?? false;
 
         // Format join date
         $joindate = Carbon::parse($user->created_at)->format('M d Y');
