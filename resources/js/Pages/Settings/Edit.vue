@@ -153,8 +153,8 @@ function setActiveCategory(category: string): void {
             <ul class="tabs flex-dir-column">
                 <li class="tab-item" v-for="category in categories">
                     <Link @click="setActiveCategory(category)"
-                        :class="[current(`settings.page`, { category: ActiveCategory }) ? 'active' : '']" class="tab-link squish">
-                    {{ capitalized(category) }}
+                        :class="{ active: category === ActiveCategory }" class="tab-link squish">
+                        {{ capitalized(category) }}
                     </Link>
                 </li>
             </ul>
@@ -660,12 +660,12 @@ export default {
         const themeBtn = document.getElementById(theme + "-theme-btn");
 
         if (themeBtn) {
-            themeBtn.classList.remove('active');
-
-            if (storedTheme === theme || this.activeTheme === theme) {
-                themeBtn.classList.add('active');
+                if (themeBtn.classList.contains('active')) {
+                    themeBtn.classList.remove('active');
+                } else if (storedTheme === theme || this.activeTheme === theme) {
+                    themeBtn.classList.add('active');
+                }
             }
-        }
     },
     methods: {
         capitalized(name: string) {
@@ -675,8 +675,10 @@ export default {
             return capitalizedFirst + rest;
         },
         applyTheme(theme) {
+            var lowercaseTheme = theme.toLowerCase();
+            
             let style = document.getElementById('theme-style');
-            const themeBtn = document.getElementById(theme + "-theme-btn");
+            const themeBtn = document.getElementById(lowercaseTheme + "-theme-btn");
 
             if (!style) {
                 style = document.createElement('link');
@@ -685,13 +687,18 @@ export default {
                 document.head.appendChild(style);
             }
 
-            style.href = `/assets/css/themes/variables-${theme}.css`;
+            style.href = `/assets/css/themes/variables-${lowercaseTheme}.css`;
 
             // Save the selected theme in localStorage
             localStorage.setItem('theme', theme);
-            if (themeBtn) {
-                themeBtn.classList.remove('active');
+            const storedTheme = localStorage.getItem('theme');
 
+            if (themeBtn) {
+                if (themeBtn.classList.contains('active')) {
+                    themeBtn.classList.remove('active');
+                } else if (storedTheme === theme || this.activeTheme === theme) {
+                    themeBtn.classList.add('active');
+                }
             }
         },
         setTheme(theme) {
@@ -702,9 +709,9 @@ export default {
             const themeBtn = document.getElementById(theme + "-theme-btn");
 
             if (themeBtn) {
-                themeBtn.classList.remove('active');
-
-                if (storedTheme === theme || this.activeTheme === theme) {
+                if (themeBtn.classList.contains('active')) {
+                    themeBtn.classList.remove('active');
+                } else if (storedTheme === theme || this.activeTheme === theme) {
                     themeBtn.classList.add('active');
                 }
             }
