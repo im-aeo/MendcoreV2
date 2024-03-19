@@ -59,7 +59,7 @@ const unfollowUser = (id) => {
             // Handle the error response here
             console.error('Error unfollowing user:', error);
         });
-};
+};  
 </script>
 <template>
     <AppHead />
@@ -188,7 +188,7 @@ const unfollowUser = (id) => {
                         </ul>
                     </div>
                 </div>
-                <div :class="['card', 'card-body', 'mb-3', 'card-status', userStatusClass]"
+                <div :class="['card', 'card-body', 'mb-3', 'card-status', usePage<any>().props.user.online ? 'online' : 'offline']"
                     style="usePage<any>().props.user.settings.calling_card_enabled ? { 'background-image': 'url(' + usePage<any>().props.user.settings.calling_card_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' } : null">
                     <v-lazy-image :src="usePage<any>().props.user.avatar" src-placeholder="&" />
                 </div>
@@ -467,38 +467,13 @@ export default {
     data() {
         return {
             userstat: { // Replace this with your actual user object
-                online: false,
                 following: false,
                 id: this.user.id,
                 fetchingStatus: false,
             },
         };
     },
-    created() {
-        this.fetchUserStatus();
-    },
-    computed: {
-        userStatus() {
-            return this.userstat.online ? 'Online' : 'Offline';
-        },
-        userStatusClass() {
-            return this.userstat.online ? 'online' : 'offline';
-        },
-    },
     methods: {
-        async fetchUserStatus() {
-            this.userstat.fetchingStatus = true;
-            const cachedOnlineStatus = this.userstat.online;
-            try {
-                const response = await axios.get(route(`api.user.online`, { id: this.userstat.id })); // Update the API endpoint as per your Laravel routes
-                this.userstat.online = response.data.online;
-            } catch (error) {
-                console.error(error);
-                this.userstat.online = cachedOnlineStatus;
-            } finally {
-                this.userstat.fetchingStatus = false;
-            }
-        },
         async fetchFollowStatus() {
             this.userstat.fetchingStatus = true;
             const cachedFollowStatus = this.userstat.follow;
