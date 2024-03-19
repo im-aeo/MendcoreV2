@@ -698,7 +698,7 @@ export default {
             }
         },
         setTheme(theme) {
-            this.activeTheme = theme;
+            this.activeTheme = theme.toLowerCase();
             this.applyTheme(theme);
             const storedTheme = localStorage.getItem('theme');
 
