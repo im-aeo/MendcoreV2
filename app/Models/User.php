@@ -73,6 +73,20 @@ class User extends AeoAuthenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id');
     }
+    
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
+    }
+    
+    public function isFollowing(User $user)
+    {
+        return !is_null(
+            $this->following() 
+            ->where('user_id', $user->id)
+            ->first()
+        );
+    }
 
     public function posts()
     {
@@ -88,12 +102,7 @@ class User extends AeoAuthenticatable
     {
         return $this->hasMany(UserMessages::class, 'receiving_id');
     }
-
-    public function following()
-    {
-        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
-    }
-
+    
     public function ownsItem($id)
     {
         return Inventory::where([
