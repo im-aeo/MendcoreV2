@@ -83,9 +83,14 @@ class User extends AeoAuthenticatable
     {
         return !is_null(
             $this->following() 
-            ->where('user_id', $user->id)
+            ->where('follower_id', $user->id)
             ->first()
         );
+    }
+    
+    public function isFollowedBy(User $userToCheck)
+    {
+        return $this->followers()->where('follower_id', $userToCheck->id)->exists();
     }
 
     public function posts()
@@ -262,11 +267,6 @@ class User extends AeoAuthenticatable
     public function latestStatus()
     {
         return $this->hasOne(Status::class, 'creator_id')->latest();
-    }
-    
-    public function isFollowedBy(User $userToCheck)
-    {
-        return $this->followers()->where('follower_id', $userToCheck->id)->exists();
     }
 
     public function getStatusAttribute()
