@@ -132,6 +132,9 @@ class AuthController extends Controller
 
         UserSettings::create([
             'user_id' => $user->id,
+            if (config('Values.in_testing_phase')) {
+                'beta_tester' => true
+            }
             // Add other setting fields here
         ]);
 
