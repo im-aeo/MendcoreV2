@@ -6,6 +6,7 @@ return [
     'icon' => '/assets/img/logo.svg',
     'in_event' => true,
     'system_account_id' => 1,
+    'in_testing_phase' => true,
     
     'price' => [
         'username' => '250',
