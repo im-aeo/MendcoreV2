@@ -10,7 +10,6 @@
       <meta http-equiv="Content-Type" content="application/x-html+html; charset=UTF-8">
       <meta name="robots" content="index,follow">
       <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-      <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
       <meta name="msapplication-config" content="{{ asset('browserconfig.ae3u4gn3.xml') }}">
       <link rel="manifest" href="{{ asset('Aeow2mf3.webmanifest') }}" crossorigin="use-credentials" />
       <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v6.1.2/css/pro.min.css">
