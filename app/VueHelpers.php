@@ -59,7 +59,6 @@ function site_setting($key)
 }
 function getItemHash($id)
 {
-
         $item = Item::where([
             ['item_id', '=', $id]
         ])->count();
