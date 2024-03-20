@@ -29,7 +29,6 @@ const { from, to, total, previous, next, pages } = usePaginator(props.pagedata);
       :class="{
         'page-link page-active': page.isCurrent,
         'page-link': page.isActive,
-        'page-link': !page.isCurrent && page.isActive,
       }"
     >
       {{ page.label }}
