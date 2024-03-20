@@ -19,8 +19,6 @@ class SiteConfigMiddleware
             'announcement_message' => $siteConfig ? $siteConfig->announcement_message : null,
             'announcement' => $siteConfig ? $siteConfig->announcement_enabled : false,
             'in_maintenance' => $siteConfig ? $siteConfig->site_maintenance : false,
-
-
         ]);
 
         return $next($request);
