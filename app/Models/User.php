@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use LevelUp\Experience\Concerns\GiveExperience;
+use LevelUp\Experience\Concerns\HasAchievements;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AeoAuthenticatable;
 
 class User extends AeoAuthenticatable
 {
-    use HasApiTokens, HasFactory, GiveExperience, Notifiable;
+    use HasApiTokens, HasFactory, GiveExperience, HasAchievements, Notifiable;
 
     /**
      * The attributes that are mass assignable.
