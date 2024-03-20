@@ -21,18 +21,25 @@ class GiveDailyCurrency
     {
         // Check if the user agent contains known adblock keywords
         $response = Http::get('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
-        if (config('Values.in_testing_phase')) {
-                 $user->settings->beta_tester = true;
-        }
         if($response->failed()) {
             // Adblock keyword found in user agent, take appropriate action
             return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
-        } elseif (Auth::check() && strtotime(Auth::user()->next_currency_payout) < time()) {
-            // Continue with the regular logic if no adblock keyword is detected
-            $amount = 10;
+        } elseif (Auth::check() && strtotime(Auth::user()->next_currency_payout) < time()) { 
+            // Continue with the regular logic if no adblock keyword is detected 
             $user = Auth::user();
+            if (config('Values.in_testing_phase')) {
+                 $user->settings->beta_tester = true;
+            }
+            if ($user->settings->beta_tester) {
+                 $amount = 200;
+                 $Pointsamount = 400;
+            } else {
+                 $amount = 10;
+                 $Pointsamount = 100;
+            }
+           
             $user->coins += $amount;
-            $user->addPoints(100);
+            $user->addPoints($Pointsamount);
             $user->next_currency_payout = Carbon::now()->addHours(24)->toDateTimeString();
             $user->save();
         }
