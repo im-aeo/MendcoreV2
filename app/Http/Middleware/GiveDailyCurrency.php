@@ -21,7 +21,9 @@ class GiveDailyCurrency
     {
         // Check if the user agent contains known adblock keywords
         $response = Http::get('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
-        
+        if (config('Values.in_testing_phase')) {
+                 $user->settings->beta_tester = true;
+        }
         if($response->failed()) {
             // Adblock keyword found in user agent, take appropriate action
             return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
