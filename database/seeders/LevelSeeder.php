@@ -15,6 +15,7 @@ class LevelSeeder extends Seeder
     public function run() : void
     {
         $baseExperience = 250;
+        $multiplier = 1.3; //used to be 0.3
         $levels = [];
 
         // Add level 1 with null next_level_experience
@@ -25,7 +26,7 @@ class LevelSeeder extends Seeder
 
         // Loop through levels starting from 2 (skip level 1)
         for ($level = 2; $level <= 200; $level++) {
-            $experience = round($baseExperience + (0.3 * ($level - 1)));
+            $experience = round($baseExperience + ($multiplier * ($level - 1)));
             $baseExperience = $experience;
 
             $levels[] = [
