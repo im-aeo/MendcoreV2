@@ -152,10 +152,10 @@ function setActiveCategory(category: string): void {
             <div class="mb-2 text-xl fw-semibold">Account Settings</div>
             <ul class="tabs flex-dir-column">
                 <li class="tab-item" v-for="category in categories">
-                    <Link @click="setActiveCategory(category)"
+                    <a href="#" @click="setActiveCategory(category)"
                         :class="{ active: category === ActiveCategory }" class="tab-link squish">
                         {{ capitalized(category) }}
-                    </Link>
+                    </a>
                 </li>
             </ul>
         </div>
