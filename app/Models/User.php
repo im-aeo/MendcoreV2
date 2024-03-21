@@ -208,54 +208,16 @@ class User extends AeoAuthenticatable
             ['user_id', '=', $this->id],
         ])->exists();
     }
-
-    public function currentLevel()
-    {
-        return $this->belongsTo(Level::class, 'current_level_id');
-    }
-
-    public function levelUp()
-    {
-        // Logic to check if user's experience crosses the next level threshold
-        $nextLevel = Level::where('experience_required', '>', $this->experience)->orderBy('experience_required')->first();
-        // If it does, update user's level and perform additional actions
-        if ($nextLevel) {
-            $this->current_level_id = $nextLevel->id;
-            // Additional actions: reward items, currency, etc.
-            $this->save();
-        }
-    }
-
-    public function gainExperience(int $experience)
-    {
-        $curentLevel = $this->settings->current_level;
-
-        if ($experience < 0) {
-            return "Negative Experience Is Not Accepted";
-        }
-
-        if ($curentLevel > 0 && !isset($this->levels[$curentLevel])) {
-            return "You've reached the max level";
-        }
-
-        $resultOfCalculation = $this->calculate($experience + $this->settings->experience, $curentLevel);
-
-        $this->updateAttributes($resultOfCalculation['level'], $resultOfCalculation['experience_remainder']);
-
-        if ($curentLevel !== $resultOfCalculation['level']) {
-            $this->settings->current_level + 1;
-        }
-    }
-
+    
     public function thumbnail()
     {
-        $url = config('Values.storage.url');
+        $url = env('STORAGE_URL');
         $image = ($this->avatar()?->image === 'default') ? config('Values.render.default_avatar') : $this->avatar()?->image;
         return "{$url}/thumbnails/{$image}.png";
     }
     public function headshot()
     {
-        $url = config('Values.storage.url');
+        $url = env('STORAGE_URL');
         if ($this->settings->profile_picture_enabled != false) {
             $image = ($this->settings->profile_picture_url) || $this->avatar()?->image;
             return "{$url}/thumbnails/pfp/{$image}.png";
