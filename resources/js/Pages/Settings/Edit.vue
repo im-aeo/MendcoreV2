@@ -220,9 +220,11 @@ function setActiveCategory(category: string): void {
                                             class="gap-2 align-middle card card-body card-inner flex-container align-justify">
                                             <div class="min-w-0">
                                                 <div class="text-xs text-truncate fw-bold text-muted text-uppercase">
-                                                    Email Address<span style="font-size: 10px" class="text-success ms-2"><i
-                                                            class="fas fa-check me-1"></i>Verified</span>
-                                                    <!-- <span style="font-size: 10px;" class="text-danger ms-2"><i class="fas fa-times me-1"></i>Unverified</span> -->
+                                                    Email Address
+                                                    <span style="font-size: 10px" :class="{{ usePage<any>().props.auth.user.settings.verified_email ? 'text-success' : 'text-danger' }}" class="ms-2">
+                                                        <i class="fas me-1" :class="{{ usePage<any>().props.auth.user.settings.verified_email ? 'fa-check' : 'fa-times' }}"></i>
+                                                        {{ usePage<any>().props.auth.user.settings.verified_email ? 'Verified' : 'Unverified' }}
+                                                    </span>                                               
                                                 </div>
                                                 <div class="text-truncate fw-semibold">
                                                     {{ usePage<any>().props.auth.user.email }}
