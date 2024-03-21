@@ -31,8 +31,8 @@ class GiveDailyCurrency
                  $user->settings->beta_tester = true;
             }
             if ($user->settings->beta_tester) {
-                 $amount = 200;
-                 $Pointsamount = 400;
+                 $amount = 100;
+                 $Pointsamount = 200;
             } else {
                  $amount = 10;
                  $Pointsamount = 100;
