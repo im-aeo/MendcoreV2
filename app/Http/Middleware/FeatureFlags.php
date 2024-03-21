@@ -139,7 +139,7 @@ class FeatureFlags
             'spaces_enabled' => 'Spaces',
             'user_settings_enabled' => 'Settings',
             'real_life_purchases_enabled' => 'Real Life Purchases',
-            'registration_enabled' => 'Registration',
+            'registration_enabled' => 'Register',
             // ... add more aliases as needed
         ];
 
