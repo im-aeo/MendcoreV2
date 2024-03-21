@@ -25,7 +25,7 @@ function showModal(modalId: string): void {
 
 type ActiveCategorytype = string; 
 
-var ActiveCategory: ActiveCategorytype = "general";
+let ActiveCategory: ActiveCategorytype = "general";
 
 function setActiveCategory(category: string): void {
   ActiveCategory = category;
