@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('achievement_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId(config('level-up.user.foreign_key'))->constrained(config('level-up.user.users_table'));
-            $table->foreignId('achievement_id')->constrained();
+            $table->foreignId('achievement_id')->constrained('acheivements');
             $table->integer('progress')->nullable()->index();
             $table->timestamps();
         });
