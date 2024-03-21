@@ -19,7 +19,7 @@ defineProps({
         <div class="cell small-12">
             <div class="mb-2 text-3xl fw-semibold align-center">Users</div>
             <div class="grid-x align-center">
-                <div class="mx-2 mb-3 row card avatar card-body" :class="['mb-3', 'card', 'card-body', 'card-status', userStatusClass]" v-for="user in users.data" :key="users.id">
+                <div class="mx-2 mb-3 row card avatar card-body card-status" :class="{ 'online': user.online ? 'offline'}" v-for="user in users.data" :key="users.id">
                     <div class="gap-2 align-middle flex-container">
                         <Link :href="route('user.profile', { username: user.username })">
                         <img :src="user.avatar" style="max-width:65px"
@@ -50,61 +50,3 @@ defineProps({
     </Sidebar>
     <Footer />
 </template>
-
-<script lang="ts">
-export default {
-    data() {
-        return {
-	    currentPage: slist.current_page,
-            totalPages: slist.last_page, // Set the total number of pages
-            userstat: { // Replace this with your actual user object
-                online: false,
-                id: this.users.id,
-                fetchingStatus: false,
-            },
-        };
-    },
-    methods: {
-        getUserList(page: number | undefined): void {
-            var vm = this;
-            var pageUrl = page ? `/users/discover/?page=${page}` : '/users/discover';
-
-            axios
-                .get(pageUrl)
-                .then(function (response) {
-                    if (response.data.hasOwnProperty('success')) {
-                        vm.users = response.data.users;
-                        vm.tags = response.data.users.data;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-	async fetchUserStatus() {
-            this.userstat.fetchingStatus = true;
-            const cachedOnlineStatus = this.userstat.online;
-            try {
-                const response = await axios.get(route(`api.user.online`, { id: this.userstat.id })); // Update the API endpoi>
-                this.userstat.online = response.data.online;
-            } catch (error) {
-                console.error(error);
-                this.userstat.online = cachedOnlineStatus;
-            } finally {
-                this.userstat.fetchingStatus = false;
-            }
-        },
-    },
-    created() {
-        this.fetchUserStatus();
-    },
-    computed: {
-        userStatus() {
-            return this.userstat.online ? 'Online' : 'Offline';
-        },
-        userStatusClass() {
-            return this.userstat.online ? 'online' : 'offline';
-        },
-    },
-}
-</script>
