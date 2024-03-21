@@ -220,7 +220,7 @@ class User extends AeoAuthenticatable
         $url = env('STORAGE_URL');
         if ($this->settings->profile_picture_enabled != false) {
             $image = ($this->settings->profile_picture_url) || $this->avatar()?->image;
-            return "{$url}/thumbnails/pfp/{$image}.png";
+            return "{$url}/thumbnails/profile-pictures/{$image}.png";
         } else {
             $image = ($this->avatar()?->image === 'default') ? config('Values.render.default_avatar') : $this->avatar()?->image;
             return "{$url}/thumbnails/{$image}_headshot.png";
