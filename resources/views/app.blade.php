@@ -18,6 +18,7 @@
       @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
    </head>
    <body>
+      {{ Auth::user()->settings }}
       @inertia
    </body>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
