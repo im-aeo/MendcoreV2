@@ -12,7 +12,7 @@ php artisan trail:generate
 php artisan route:cache
 
 echo "Running migrations..."
-php artisan migrate:fresh --seed
+php artisan migrate:fresh
 
 echo "Running vite..."
 npm install --prefer-offline --no-audit --progress=false
