@@ -23,7 +23,7 @@ defineProps({
                     <div class="gap-2 align-middle flex-container">
                         <Link :href="route('user.profile', { username: user.username })">
                         <img :src="user.avatar" style="max-width:65px"
-                            class="border img-fluid headshot rounded-circle border-secondary bg-dark" :alt="{{ user.username }}">
+                            class="border img-fluid headshot rounded-circle border-secondary bg-dark" :alt="user.username">
                         </Link>
                         <div class="flex-wrap col-md-4 d-flex justify-content-center align-content-start"
                             style="flex-direction: column">
