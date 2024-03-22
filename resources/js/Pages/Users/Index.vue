@@ -29,12 +29,11 @@ defineProps({
                             style="flex-direction: column">
                             <div class="text-start">
                                 <Link :href="route('user.profile', { username: user.username })" class="text-md">
-                                {{ user.dname }}
+                                      {{ user.dname }}
                                 </Link>
                                 <div></div>
-                                <Link :href="route('user.profile', { username: user.username })"
-                                    class="text-sm fw-semibold text-body">
-                                {{ '@' + user.username }}
+                                <Link :href="route('user.profile', { username: user.username })" class="text-sm fw-semibold text-body">
+                                      {{ '@' + user.username }}
                                 </Link>
                                 <div></div>
                             </div>
