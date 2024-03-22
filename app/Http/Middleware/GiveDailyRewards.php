@@ -31,14 +31,18 @@ class GiveDailyRewards
                  $user->settings->beta_tester = true;
             }
             if ($user->settings->beta_tester) {
-                 $amount = 100;
+                 $coinAmount = 50;
+                 $buckAmount = 10;
                  $Pointsamount = 400;
             } else {
-                 $amount = 10;
+                 $coinAmount = 10;
+                 $buckAmount = 1;
+                 $Pointsamount = 400;
                  $Pointsamount = 100;
             }
            
-            $user->coins += $amount;
+            $user->coins += $coinAmount;
+            $user->bucks += $buckAmount;
             $user->addPoints($Pointsamount);
             $user->next_currency_payout = Carbon::now()->addHours(24)->toDateTimeString();
             $user->save();
