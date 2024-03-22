@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-class GiveDailyCurrency
+class GiveDailyRewards
 {
     /**
      * Handle an incoming request.
