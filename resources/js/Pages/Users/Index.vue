@@ -19,11 +19,11 @@ defineProps({
         <div class="cell small-12">
             <div class="mb-2 text-3xl fw-semibold align-center">Users</div>
             <div class="grid-x align-center">
-                <div class="mx-2 mb-3 row card avatar card-body card-status" :class="{ 'online': user.online ? 'offline'}" v-for="user in users.data" :key="users.id">
+                <div class="mx-2 mb-3 row card avatar card-body card-status" :class="{ 'online': user.online ? 'offline' : 'offline' }" v-for="user in users.data" :key="users.id">
                     <div class="gap-2 align-middle flex-container">
                         <Link :href="route('user.profile', { username: user.username })">
                         <img :src="user.avatar" style="max-width:65px"
-                            class="border img-fluid headshot rounded-circle border-secondary bg-dark" alt="2oddMacs1">
+                            class="border img-fluid headshot rounded-circle border-secondary bg-dark" :alt="{{ user.username }}">
                         </Link>
                         <div class="flex-wrap col-md-4 d-flex justify-content-center align-content-start"
                             style="flex-direction: column">
