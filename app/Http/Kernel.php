@@ -42,7 +42,7 @@ class Kernel extends AeosKernel
             \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\Localization::class,
             \App\Http\Middleware\RedirectIfBanned::class,
-            \App\Http\Middleware\PreventProxyConnections::class,
+            // \App\Http\Middleware\PreventProxyConnections::class,
             \App\Http\Middleware\GiveDailyRewards::class,
             \App\Http\Middleware\UpdateOnlineStatus::class,
             \App\Http\Middleware\VerifyAccount::class,
