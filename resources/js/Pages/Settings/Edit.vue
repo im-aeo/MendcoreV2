@@ -8,7 +8,8 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import { Head, usePage } from '@inertiajs/vue3';
 import { route, current } from 'momentum-trail'
 import { StringTypeAnnotation } from '@babel/types';
-
+import { computed } from 'vue';
+    
 defineProps({
     mustVerifyEmail: Boolean,
     status: String,
@@ -30,6 +31,10 @@ let ActiveCategory: ActiveCategorytype = "general";
 function setActiveCategory(category: string): void {
   ActiveCategory = category;
 };
+    
+const isVerifiedEmail = computed(() => {
+      return usePage<any>().props.auth.user.settings.verified_email || false;
+});    
 </script>
 
 <template>
@@ -221,9 +226,9 @@ function setActiveCategory(category: string): void {
                                             <div class="min-w-0">
                                                 <div class="text-xs text-truncate fw-bold text-muted text-uppercase">
                                                     Email Address
-                                                    <span style="font-size: 10px" :class="{{ usePage<any>().props.auth.user.settings.verified_email ? 'text-success' : 'text-danger' }}" class="ms-2">
-                                                        <i class="fas me-1" :class="{{ usePage<any>().props.auth.user.settings.verified_email ? 'fa-check' : 'fa-times' }}"></i>
-                                                        {{ usePage<any>().props.auth.user.settings.verified_email ? 'Verified' : 'Unverified' }}
+                                                    <span style="font-size: 10px" :class="{ 'text-success': isVerifiedEmail, 'text-danger': !isVerifiedEmail }" class="ms-2">
+                                                        <i class="fas me-1" :class="{ 'fa-check': isVerifiedEmail, 'fa-times': !isVerifiedEmail }"></i>
+                                                        {{ isVerifiedEmail ? 'Verified' : 'Unverified' }}
                                                     </span>                                               
                                                 </div>
                                                 <div class="text-truncate fw-semibold">
