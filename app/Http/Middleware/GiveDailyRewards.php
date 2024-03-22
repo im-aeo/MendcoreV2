@@ -37,7 +37,6 @@ class GiveDailyRewards
             } else {
                  $coinAmount = 10;
                  $buckAmount = 1;
-                 $Pointsamount = 400;
                  $Pointsamount = 100;
             }
            
