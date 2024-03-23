@@ -29,7 +29,7 @@ type ActiveCategorytype = string;
 let ActiveCategory: ActiveCategorytype = "general";
 
 function setActiveCategory(category: string): void {
-  ActiveCategory = category;
+  ActiveCategory === category;
 };
     
 const isVerifiedEmail = computed(() => {
