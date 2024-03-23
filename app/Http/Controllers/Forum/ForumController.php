@@ -86,9 +86,10 @@ class ForumController extends Controller
     {
         // Define a cache key for this forum post
         $cacheKey = 'forum_post_' . $id;
+        $cacheRepliesKey = 'forum_replies_' . $id;
 
         // Attempt to retrieve the forum post from cache
-        $post = cache()->remember($cacheKey, now()->addMinutes(30), function () use ($id) {
+        $post = cache()->remember($cacheKey, now()->addMinutes(10), function () use ($id) {
             return ForumThread::findOrFail($id);
         });
 
@@ -96,7 +97,10 @@ class ForumController extends Controller
         $topic = ForumTopic::findOrFail($post->in_topic_id);
 
         // Fetch replies based on staff status
-        $replies = $post->replies();
+        $replies = cache()->remember($cacheRepliesKey, now()->addMinutes(10), function () use ($id) {
+            return ForumReply::where('thread_id', '=', $id);
+        });
+
 
         // Parse the post body using BBCodeService
         $post->body = $bbcodeService->parse($post->body);
