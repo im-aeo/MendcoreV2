@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
-class AdminController extends Controller {
-  public function PanelIndex() {
-      if (!Auth::user()->isStaff()) {
-          abort(403);
+class AdminController extends Controller 
+{
+      public function PanelIndex() {
+          if (!Auth::user()->isStaff()) {
+              abort(403);
+          }
       }
-  }
 }
