@@ -27,34 +27,65 @@ class RenderController extends Controller
         $user->save();
 
         // Return the rendered image as a response
-        return $this->getRenderHash($user->id);
+        return $this->getAvatarRenderHash($user->id);
     }
+    
+    public function ItemRender(Request $request, $id)
+    {
+        // Retrieve parameters for the request
+        $item = Item::findOrFail($id);
 
-    public function getRenderHash($id)
+        // Verify the encryption or any other required validations
+        $item_hash_name = bin2hex(random_bytes(22));
+        $requestData = $this->prepareRequestData('item', $item, $avatar_thumbnail_name);
+
+        // Make HTTP request to the rendering server
+        $this->makeRenderRequest($requestData);
+        
+        // Update the user's image and save
+        $item->hash = $avatar_thumbnail_name;
+        $item->preview = $;
+        $item->save();
+
+        // Return the rendered image as a response
+        return $this->getAvatarRenderHash($user->id);
+    }
+    public function getAvatarRenderHash($type, $id)
     {
         $user = Avatar::findOrFail($id);
         return env('STORAGE_URL') . '/thumbnails/' . $user->image . '.png';
     }
 
-    private function prepareRequestData($user, $avatar_thumbnail_name)
+    private function prepareRequestData($type, $db, $hash)
     {
         return [
-            'hash' => $avatar_thumbnail_name,
-            'head_color' => $this->getColor($user->color_head, 'ffffff'),
-            'torso_color' => $this->getColor($user->color_torso, '055e96'),
-            'leftLeg_color' => $this->getColor($user->color_left_leg, 'ffffff'),
-            'rightLeg_color' => $this->getColor($user->color_right_leg, 'ffffff'),
-            'leftArm_color' => $this->getColor($user->color_left_arm, 'ffffff'),
-            'rightArm_color' => $this->getColor($user->color_right_arm, 'ffffff'),
-            'hat_1' => $user->hat1,
-            'hat_2' => $user->hat2,
-            'hat_3' => $user->hat3,
-            'hat_4' => $user->hat4,
-            'hat_5' => $user->hat5,
-            'hat_6' => $user->hat6,
-            'face' => $user->face,
-            'tool' => $user->tool,
-        ];
+            'renderType' => $type,
+            'hash' => $hash,
+            'head_color' => $this->getColor($db->color_head, 'ffffff'),
+            'torso_color' => $this->getColor($db->color_torso, '055e96'),
+            'leftLeg_color' => $this->getColor($db->color_left_leg, 'ffffff'),
+            'rightLeg_color' => $this->getColor($db->color_right_leg, 'ffffff'),
+            'leftArm_color' => $this->getColor($db->color_left_arm, 'ffffff'),
+            'rightArm_color' => $this->getColor($db->color_right_arm, 'ffffff'),
+            if ($type == 'user') {
+                'hat_1' => getItemHash($db->hat1),
+                'hat_2' => getItemHash($db->hat2),
+                'hat_3' => getItemHash($db->hat3),
+                'hat_4' => getItemHash($db->hat4),
+                'hat_5' => getItemHash($db->hat5),
+                'hat_6' => getItemHash($db->hat6),
+                'face' => getItemHash($db->face),
+                'tool' => getItemHash($db->tool),
+            } elseif($type == 'item') {
+              if($db->type == 'hat') {
+                'hat_1' => getItemHash($item->hat1),
+              } elseif($db == 'face') {
+                'face' => getItemHash($db->face),
+              } else {
+                'tool' => getItemHash($db->tool),
+              }
+            }
+            ];
     }
 
     private function getColor($value, $default)
