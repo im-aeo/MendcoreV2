@@ -21,13 +21,7 @@ class RenderController extends Controller
 
         // Make HTTP request to the rendering server
         $this->makeRenderRequest($requestData);
-
-        // Retrieve the rendered image path
-        $imagePath = env('STORAGE_URL') . '/thumbnails/' . $avatar_thumbnail_name . '.png';
-
-        // Read the rendered image file
-        $imageData = file_get_contents($imagePath);
-
+        
         // Update the user's image and save
         $user->image = $avatar_thumbnail_name;
         $user->save();
