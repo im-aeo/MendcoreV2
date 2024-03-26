@@ -367,9 +367,11 @@ const purchaseCoins = () => {
                         Are you sure you want to buy
                         <span class="text-body fw-semibold">{{ usePage<any>().props.item.name }}</span>
                         for
-                        <span class="text-success"><i class="fas fa-money-bill-1-wave me-1"></i>{{ usePage<any>
-                            ().props.item.cost_bucks }}
-                                Bucks</span>?
+                        <span class="text-success">
+                            <i class="fas fa-money-bill-1-wave me-1"></i>
+                            {{ usePage<any>().props.item.cost_bucks }}
+                            Bucks
+                        </span>?
                     </div>
 
                 </div>
@@ -400,9 +402,11 @@ const purchaseCoins = () => {
                         Are you sure you want to buy
                         <span class="text-body fw-semibold">{{ usePage<any>().props.item.name }}</span>
                         for
-                        <span class="text-warning"><i class="fas fa-coins me-1"></i>{{ usePage<any>().props.item.cost_coins
-                        }}
-                                Coins</span>?
+                        <span class="text-warning">
+                            <i class="fas fa-coins me-1"></i>
+                            {{ usePage<any>().props.item.cost_coins }}
+                                Coins
+                        </span>?
                     </div>
                 </div>
                 <div class="gap-2 flex-container align-right section-borderless">
@@ -430,7 +434,7 @@ const purchaseCoins = () => {
                     <i class="mb-3 text-6xl fas fa-shield-check text-success"></i>
                     <div class="text-sm text-muted fw-semibold">
                         This account is verified because it's a noteable and
-                        trustworthy figure in Eclipse.
+                        trustworthy figure on {{ usePage<any>().props.site.name }}.
                     </div>
                 </div>
                 <div class="gap-2 flex-container align-center section-borderless">
