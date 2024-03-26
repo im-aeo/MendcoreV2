@@ -16,6 +16,7 @@ defineProps({
 </script>
 <style scoped src="@/Pages/landing.css"></style>
 <template>
+<AppHead :pageTitle="{{ 'Welcome -' + site.name }}" :description="{{ usePage<any>().props.user.about_me }}" :url="route(`user.profile`, { username: usePage<any>().props.user.username })" />
     <Navbar>
         <header class="masthead-landing bg-info">
         <div class="cell">
