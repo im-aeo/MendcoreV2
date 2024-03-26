@@ -147,7 +147,7 @@ const addStatus = (status: string): void => {
                     <StatusCard v-else v-for="status in slist" :DisplayName="status.dname" :name="status.name"
                         :message="status.message" :date="status.DateHum" />
                 </div>
-                <AeoPagination v-bind:pagedata="slist" @page-clicked="getStatusList" />
+                <AeoPagination v-bind:pagedata="slist" />
         </div>
     </Sidebar>
     <Footer />
@@ -176,21 +176,6 @@ export default {
                 this.NewsLoading = true;
                 console.error(error);
             }
-        },
-        getStatusList(page: number | undefined): void {
-            var vm = this;
-            var pageUrl = page ? `/my/dashboard?page=${page}` : '/my/dashboard';
-
-            axios
-                .get(pageUrl)
-                .then(function (response) {
-                    if (response.data.hasOwnProperty('success')) {
-                        vm.users = response.data;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
         },
     }
 }
