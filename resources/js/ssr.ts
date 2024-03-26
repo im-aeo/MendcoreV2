@@ -1,24 +1,22 @@
 // フレームワーク
+//import './bootstrap';
 import '../css/style.css';
 import '../css/NProgress.css';
 import 'vue-skeletor/dist/vue-skeletor.css';
-//import './bootstrap';
 
 // アプリの作成
+import { createSSRApp, h } from 'vue';
+import { trail } from "momentum-trail";
 import { Skeletor } from 'vue-skeletor';
-import AeoPagination from './Components/Pagination.vue';
-import { trail } from "momentum-trail"
+import type { DefineComponent } from 'vue';
+import AppHead from './Components/AppHead.vue';
 import routes from "../routes/js/routing.json";
-import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';
 import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, h } from 'vue';
-import type { DefineComponent } from 'vue';
-
+import AeoPagination from './Components/Pagination.vue';
+import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
 
 // エクストラ
-
-
 import VueTippy from 'vue-tippy';
 import 'tippy.js/dist/tippy-bundle.umd.min.js';
 import '@popperjs/core/dist/umd/popper.min.js';
@@ -43,6 +41,7 @@ createServer(page =>
         .use(VueTippy)
         .component('Skeletor', Skeletor)
         .component('AeoPagination', AeoPagination) // Pagination コンポーネントを登録する
+        .component('AppHead', AppHead)
         .component('Head', Head)
         .component('Link', Link)
     },
