@@ -51,7 +51,9 @@ provide('selectedCategory', selectedCategory);
 </script>
 
 <template>
-    <AppHead />
+    <AppHead pageTitle="Market" description="usePage<any>().props.item.description"
+        :url="route(`store.item`, { id: item.id })" :item="true" :iid="usePage<any>().props.item.id"
+        :itime="usePage<any>().props.item.time_off_sale" :cover="usePage<any>().props.item.thumbnail" />
     <Navbar />
     <Sidebar>
         <div class="cell large-3">
@@ -61,18 +63,7 @@ provide('selectedCategory', selectedCategory);
             <MarketSorting :selectedCategory="selectedCategory" />
             <div v-if="ItemLoading || items && items.length > 0" class="grid-x grid-margin-x grid-padding-y">
                 <template v-if="ItemLoading">
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
-                <ItemCardSkeleton  />
+                  <ItemCardSkeleton v-for="n in 12" :key="n" />
                 </template>
                 <div v-else class="cell large-2 medium-3 small-6" v-for="(item, index) in items" :key="index">
                     <Link :href="itemRoute(item.id)" class="d-block">
