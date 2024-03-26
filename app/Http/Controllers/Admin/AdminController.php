@@ -16,9 +16,11 @@ use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller 
 {
-      public function PanelIndex() {
-          if (!Auth::user()->isStaff()) {
-              abort(403);
+      public function PanelIndex() 
+      {
+          if (Auth::check() && !Auth::user()->isStaff()) {
+              abort(404);
           }
+            
       }
 }
