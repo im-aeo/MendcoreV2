@@ -1,4 +1,5 @@
 <template>
+  <AppHead pageTitle="Feature Disabled" :description="'Feature Disabled' + usePage<any>().props.site.name + '.'" :url="route('auth.login.page')" />
   <Navbar />
   <Sidebar>
     <div class="cell medium-7">
