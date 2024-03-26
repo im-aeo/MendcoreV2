@@ -14,6 +14,7 @@ defineProps({
 </script>
 
 <template>
+<AppHead :pageTitle="{{ 'Users -' + site.name }}" description="View all users here." :url="route(`user.page`)" />
     <Navbar />
     <Sidebar>
         <div class="cell small-12">
