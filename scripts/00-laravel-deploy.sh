@@ -17,6 +17,3 @@ php artisan migrate:fresh --seed
 echo "Running vite..."
 npm install --prefer-offline --no-audit --progress=false
 npm run build
-
-echo "Starting Servers..."
-php artisan inertia:start-ssr
