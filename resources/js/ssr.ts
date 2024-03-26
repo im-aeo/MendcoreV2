@@ -1,5 +1,5 @@
 // フレームワーク
-//import './bootstrap';
+import './bootstrap';
 import '../css/style.css';
 import '../css/NProgress.css';
 import 'vue-skeletor/dist/vue-skeletor.css';
