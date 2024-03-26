@@ -19,7 +19,7 @@ import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
 import { route, current } from 'momentum-trail';
 interface Props {
-  title: string
+  username: string
 }
 
 const props = defineProps<Props>()
