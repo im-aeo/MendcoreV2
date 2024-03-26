@@ -188,7 +188,7 @@ const unfollowUser = (id) => {
                         </ul>
                     </div>
                 </div>
-                <div :class="['card', 'card-body', 'mb-3', 'card-status', usePage<any>().props.user.online ? 'online' : 'offline']"
+                <div :class="['card', 'card-body', 'mb-3', 'card-status', 'online': usePage<any>().props.user.online ? 'offline' : 'offline']"
                     style="usePage<any>().props.user.settings.calling_card_enabled ? { 'background-image': 'url(' + usePage<any>().props.user.settings.calling_card_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' } : null">
                     <v-lazy-image :src="usePage<any>().props.user.avatar" src-placeholder="&" />
                 </div>
