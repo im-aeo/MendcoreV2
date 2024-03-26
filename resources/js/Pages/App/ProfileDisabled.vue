@@ -5,7 +5,7 @@
       <div class="card text-center">
         <div class="card-body">
           <i class="fas fa-shield-plus text-muted mb-3" style="font-size:80px;"></i>
-          <h3>Nothing to see here.</h3>
+          <h3>Nothing to see here</h3>
           <p>{{ props.username }} has their profile disabled.</p>
         </div>
       </div>
