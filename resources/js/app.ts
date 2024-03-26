@@ -13,6 +13,7 @@ import { createSSRApp, h } from 'vue';
 import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
 import type { DefineComponent } from 'vue';
 import AeoPagination from './Components/Pagination.vue';
+import AppHead from './Components/AppHead.vue';
 import { trail } from "momentum-trail"
 import routes from "../routes/js/routing.json";
 
@@ -39,6 +40,7 @@ createInertiaApp({
             .use(VueTippy)
             .component('Skeletor', Skeletor)
             .component('AeoPagination', AeoPagination)
+            .component('AppHead', AppHead)
             .component('Head', Head)
             .component('Link', Link);
 
