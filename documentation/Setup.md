@@ -72,7 +72,7 @@ Install the Node.js Version Manager (NVM) by following these steps:
 1. Install nvm (Node.js Version manager):
 
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 2. Apply fnm configuration to your shell:
@@ -147,4 +147,4 @@ Modify the settings in this file as needed.
 
 Remember, for other components like the database, renderer, games, security patches, and Git, please refer to the respective files in the /documentation/ folder.
 
-With these steps completed, your setup is nearly finished, and you're ready to host your code.
+With these steps completed, your setup is nearly finished, and you're ready to host the code.
