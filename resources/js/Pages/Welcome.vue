@@ -32,7 +32,7 @@ defineProps({
                             more.
                         </h3>
                         <div class="min-w-0 gap-4 mt-3 flex-container align-center">
-                            <button :href="route('auth.login.page')" class=" btn btn-landing btn-warning">
+                            <button :href="route('auth.login.page')" class="btn btn-landing btn-warning">
                                 <i class="mr-1 fas fa-key"></i>
                                 Login
                             </button>
@@ -170,7 +170,7 @@ defineProps({
                     </div>
                     <div class="cell large-4 mt-4">
                         <div class="landing-text-landing fw-semibold">Socialize With Others</div>
-                        <div>Head over to Discussion to socialize with all kinds of users on Netisu, from
+                        <div>Head over to Discussion to socialize with all kinds of users on {{ site.name }}, from
                             the funny to the professional, and find new friends!</div>
                     </div>
                 </div>
