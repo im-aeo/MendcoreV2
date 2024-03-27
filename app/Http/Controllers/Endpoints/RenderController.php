@@ -36,15 +36,15 @@ class RenderController extends Controller
         $item = Item::findOrFail($id);
 
         // Verify the encryption or any other required validations
-        $item_hash_name = bin2hex(random_bytes(22));
-        $requestData = $this->prepareRequestData('item', $item, $avatar_thumbnail_name);
-
+        $itemHashName = bin2hex(random_bytes(22));
+        $requestData = $this->prepareRequestData('item', $item, $itemHashName);
+        $itemPreview = "{$itemHashName}_preview";
         // Make HTTP request to the rendering server
         $this->makeRenderRequest($requestData);
         
-        // Update the user's image and save
-        $item->hash = $avatar_thumbnail_name;
-        $item->preview = $;
+        // Update the items image and save
+        $item->hash = $itemHashName;
+        $item->preview = $itemPreview;
         $item->save();
 
         // Return the rendered image as a response
