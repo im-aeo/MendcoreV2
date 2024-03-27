@@ -15,12 +15,13 @@ function translations($json)
 }
 
 public function grant(int $userID, int $itemID) {
+        $user = User::where('id', '=', $userID)->firstOrFail();
         $inventory = new Inventory;
-        $inventory->user_id = $userID;
+    
+        $inventory->user_id = $user->id;
         $inventory->item_id = $itemID;
         $inventory->save();
-    
-        Auth::user()->addPoints(50);
+        $user->addPoints(50);
 }
 
 function crateRarity($data, $rarity)
