@@ -65,18 +65,6 @@ public function grant(int $userId, int $itemId, array $data = []): JsonResponse
     }
 }
 
-
-public function grant(int $userID, int $itemID) {
-        $user = User::where('id', '=', $userID)->firstOrFail();
-        $item = User::where('id', '=', $userID)->firstOrFail();
-        $inventory = new Inventory;
-    
-        $inventory->user_id = $user->id;
-        $inventory->item_id = $itemID;
-        $inventory->save();
-        $user->addPoints(50);
-}
-
 function crateRarity($data, $rarity)
 {
     switch ($data) {
