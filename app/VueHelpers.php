@@ -1,7 +1,9 @@
 <?php
-use App\Models\SiteSettings;
-use App\Models\CrateItem;
+
 use App\Models\Item;
+use App\Models\CrateItem;
+use App\Models\Inventory;
+use App\Models\SiteSettings;
 
 function translations($json)
 {
@@ -10,6 +12,15 @@ function translations($json)
     }
 
     return json_decode(file_get_contents($json), true);
+}
+
+public function grant(int $userID, int $itemID) {
+        $inventory = new Inventory;
+        $inventory->user_id = $userID;
+        $inventory->item_id = $itemID;
+        $inventory->save();
+    
+        Auth::user()->addPoints(50);
 }
 
 function crateRarity($data, $rarity)
