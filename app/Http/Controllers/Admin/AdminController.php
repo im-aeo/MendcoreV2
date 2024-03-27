@@ -21,6 +21,9 @@ class AdminController extends Controller
           if (Auth::check() && !Auth::user()->isStaff()) {
               abort(404);
           }
+          $userCount == User::count();
+          $userCount == Item::count();
+          
             
       }
 }
