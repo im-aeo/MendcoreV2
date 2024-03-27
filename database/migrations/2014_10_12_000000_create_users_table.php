@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('birthdate')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('next_currency_payout')->nullable();
+            $table->timestamp('next_reward_payout')->nullable();
             $table->string('password');
             $table->integer('coins')->default(10);
             $table->integer('bucks')->default(1);
