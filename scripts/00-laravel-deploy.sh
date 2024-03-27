@@ -11,9 +11,6 @@ php artisan config:cache
 php artisan trail:generate
 php artisan route:cache
 
-echo "Running migrations..."
-php artisan migrate:fresh --seed
-
 echo "Running vite..."
 npm install --prefer-offline --no-audit --progress=false
 npm run build
