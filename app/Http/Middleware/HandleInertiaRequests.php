@@ -52,12 +52,11 @@ class HandleInertiaRequests extends Middleware
                         'birthdate' => $request->user()->birthdate,
                         'coins' => $request->user()->coins,
                         'bucks' => $request->user()->bucks,
-                        'views' => $request->user()->views,
                         'status' => $request->user()->status,
                         'staff' => $request->user()->isStaff(),
                         'about_me' => $request->user()->about_me,
                         'following' => $request->user()->following(),
-                        'settings' => $request->user()->settings(),
+                        'settings' => $request->user()->settings,
                         'level' => $request->user()->getLevel(),
                         'xp' => $request->user()->getPoints(),
                         'nextlevelxp' =>  $request->user()->nextLevelAt(),
@@ -67,7 +66,6 @@ class HandleInertiaRequests extends Middleware
             'site' => config('Values'),
             'message' => $request->session()->get('message'),
             'error' => $request->session()->get('error'),
-
         ]);
     }
     public function handle(Request $request, \Closure $next)
