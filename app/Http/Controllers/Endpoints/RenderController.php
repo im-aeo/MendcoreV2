@@ -27,7 +27,7 @@ class RenderController extends Controller
         $user->save();
 
         // Return the rendered image as a response
-        return $this->getAvatarRenderHash($user->id);
+        return $item->getAvatarRenderHash($user->id);
     }
     
     public function ItemRender(Request $request, $id)
@@ -48,14 +48,20 @@ class RenderController extends Controller
         $item->save();
 
         // Return the rendered image as a response
-        return $this->getAvatarRenderHash($user->id);
+        return $this->getItemThumb($user->id);
     }
     public function getAvatarRenderHash($type, $id)
     {
         $user = Avatar::findOrFail($id);
         return env('STORAGE_URL') . '/thumbnails/' . $user->image . '.png';
     }
-
+    
+    public function getItemThumb($type, $id)
+    {
+        $item = Item::findOrFail($id);
+        return env('STORAGE_URL') . '/uploads/' . $item->hash . '.png';
+    }
+    
     private function prepareRequestData($type, $db, $hash)
     {
         return [
