@@ -13,16 +13,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->boolean('verified')->default(false)->index();
             $table->boolean('verified_email')->default(false);
-            $table->integer('current_level')->default(0);
-            $table->integer('last_level')->default(0);
-            $table->integer('experience')->default(0);
             $table->boolean('beta_tester')->default(false)->index();
             $table->boolean('private_profile')->default(false)->index();
             $table->boolean('followers_enabled')->default(true)->index(); // Index added to followers_enabled
             $table->boolean('trading_enabled')->default(true)->index(); // Index added to trading_enabled
             $table->boolean('posting_enabled')->default(true)->index(); // Index added to posting_enabled
-            $table->boolean('inbox_enabled')->default(true)->index(); // Index added to inbox_enabled
-            $table->boolean('mentionable')->default(true)->index();
+            $table->boolean('chat_enabled')->default(true)->index(); // Index added to inbox_enabled
             $table->boolean('notifications_enabled')->default(true)->index(); // Index added to notifications_enabled
             $table->boolean('profile_picture_enabled')->default(false)->index();
             $table->string('profile_picture_url')->default('none');
