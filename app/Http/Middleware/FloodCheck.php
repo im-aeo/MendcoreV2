@@ -12,7 +12,7 @@ class FloodCheck
 {
   public const FLOOD_ROUTES = [
     'market.purchase',
-    'user.settings.update',
+    'user.settings.validate',
     // ... other routes
   ];
 
