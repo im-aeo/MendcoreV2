@@ -25,14 +25,21 @@ defineProps({
                     <div class="col-xl-12-landing">
                         <div class="text-center text-white">
                             <!-- Page heading-->
-                            <h1 class="mb-5"><v-lazy-image :src="site.logo" width="512" /></h1>
-                            <h3 class="mt-3 fw-semibold">Join in on the action today. Buy &amp; sell items, participate
-                                in groups, make friends, and more.</h3>
+                            <h1 class="mb-5">
+                                <v-lazy-image :src="site.logo" width="512" />
+                            </h1>
+                            <h3 class="mt-3 fw-semibold">
+                                Join in on the action today. Buy &amp; sell items, participate in groups, make friends, and more.
+                            </h3>
                             <div class="min-w-0 gap-4 mt-3 flex-container align-center">
-                                <button :href="route('auth.login.page')" class=" btn btn-landing btn-warning"><i
-                                        class="mr-1 fas fa-key"></i> Login</button>
-                                <button :href="route('auth.register.page')" class="btn btn-landing btn-success"><i
-                                        class="mr-1 fas fa-user-plus"></i> Register</button>
+                                <button :href="route('auth.login.page')" class=" btn btn-landing btn-warning">
+                                    <i class="mr-1 fas fa-key"></i> 
+                                    Login
+                                </button>
+                                <button :href="route('auth.register.page')" class="btn btn-landing btn-success">
+                                    <i class="mr-1 fas fa-user-plus"></i> 
+                                    Register
+                                </button>
                             </div>
                         </div>
                     </div>
