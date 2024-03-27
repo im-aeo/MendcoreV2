@@ -1,12 +1,20 @@
 header.masthead-landing {
-    position: relative;
     background-image: url('https://www.transparenttextures.com/patterns/inspiration-geometry.png'), linear-gradient(to top, var(--info-600), var(--black));
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+    height: auto;    
+    background-attachment: fixed;
+    position: relative;
     background-repeat: repeat-x;
     background-size: contain;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
+    position: relative;
+    max-width: 100%;
 }
-
+header img {
+    width: auto;
+    max-width: 300px;
+    height: auto;
+}
 header.bh-landing {
     position: relative;
     background-image: url('https://css.brkcdn.com/images/c53b643bf7949430d3c7.png'), linear-gradient(to top, var(--info-600), var(--black));
@@ -29,7 +37,7 @@ header.bh-landing {
 }
 
 .btn-landing {
-    padding: 0 20px;
+    padding: 0 30px;
     border-radius: 50px;
     display: inline-block;
     text-decoration: none;
@@ -43,7 +51,7 @@ header.bh-landing {
     cursor: pointer;
     transition: all 0.2s;
     font-weight: 600;
-    width: 230px;
+    width: auto;
 }
 
 #YASQUEEN,
@@ -51,6 +59,15 @@ header.bh-landing {
 .arcs,
 .row-landing {
     min-height: 180px;
+}
+.card.card-item {
+    min-height: auto !important;
+    padding: 18px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to bottom right, var(--upgrade-500) 0%, var(--info-500) 25%, var(--success-500) 50%, var(--warning-600) 75%, var(--love-500) 100%);
+    border-image-slice: 1;
+    border-radius: var(--rounded-lg) !important;
+    text-size-adjust: 180px;
 }
 
 .align-items-center-landing {
@@ -310,7 +327,10 @@ section-landing {
     flex: 0 0 75%;
     max-width: 75%;
 }
-
+.col-md-12-landing {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
 .text-center-sm-landing {
     text-align: center !important;
 }
