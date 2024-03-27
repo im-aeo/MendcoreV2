@@ -28,7 +28,7 @@ class FeatureFlags
 
     private function isMaintenanceEnabled($route)
     {
-        $maintenancePasswords = config('Values.maintenance_passwords');
+        $maintenancePasswords = env('MAINTENANCE_PASSWORD');
         $maintenancePassword = session('maintenance_password');
 
         return $this->isSiteMaintenanceEnabled($maintenancePassword, $maintenancePasswords)
