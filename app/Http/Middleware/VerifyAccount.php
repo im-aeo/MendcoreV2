@@ -27,7 +27,7 @@ class VerifyAccount
     public function handle(Request $request, Closure $next)
     {
         $route = $request->route()->getName();
-        $url = str_replace("{$request->root()}/vite/AeoApiEndpoints/", '', $request->url());
+        $url = str_replace("{$request->root()}/api", '', $request->url());
 
         if (config('app.env') == 'production' && Auth::check() && !Auth::user()->hasVerifiedEmail() && (in_array($url, $this::API_VERIFY_URLS) || in_array($route, $this::VERIFY_ROUTES)))
             return redirect()->route('account.verify.index')->withErrors(['You must verify your email first to do this.']);
