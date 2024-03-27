@@ -24,7 +24,7 @@ class GiveDailyRewards
         if($response->failed()) {
             // Adblock keyword found in user agent, take appropriate action
             return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
-        } elseif (Auth::check() && strtotime(Auth::user()->next_currency_payout) < time()) { 
+        } elseif (Auth::check() && strtotime(Auth::user()->next_reward_payout) < time()) { 
             // Continue with the regular logic if no adblock detected 
             $user = Auth::user();
             if (config('Values.in_testing_phase')) {
