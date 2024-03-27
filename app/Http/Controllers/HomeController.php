@@ -19,7 +19,7 @@ class HomeController extends Controller
 
         // Use caching to store the user count query result
         $landingItems = cache()->remember($cacheKeyItems, now()->addHours(1), function () {
-            return Item::inRandomOrder()->limit(4)->get();
+            return Item::inRandomOrder()->limit(6)->get();
         });
       
          $landingPosts = cache()->remember($cacheKeyPosts, now()->addHours(1), function () {
