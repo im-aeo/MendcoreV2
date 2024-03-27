@@ -14,57 +14,6 @@ function translations($json)
     return json_decode(file_get_contents($json), true);
 }
 
-public function grant(int $userId, int $itemId, array $data = []): JsonResponse
-{
-    try {
-        // Validate user and item existence
-        $user = User::findOrFail($userId);
-        $item = Item::findOrFail($itemId);
-
-        // Create a new inventory record
-        $inventory = new Inventory;
-        $inventory->user_id = $userId;
-        $inventory->item_id = $itemId;
-
-        // Store additional data if provided
-        if (isset($data['reason'])) {
-            $inventory->reason = $data['reason'];
-        }
-
-        // Handle gift scenario (logic depends on your requirements)
-        if (isset($data['gift'])) {
-            // Implement gift-specific logic here (e.g., record gifting details)
-        }
-
-        $inventory->save();
-
-        // Award points (assuming this is the intended behavior)
-        $user->addPoints(50);
-
-        // Grant successful, return JSON response
-        return response()->json([
-            'success' => true,
-            'message' => 'Item granted successfully!',
-        ], 201); // Created status code
-
-    } catch (ModelNotFoundException $e) {
-        // Handle user or item not found exceptions
-        return response()->json([
-            'success' => false,
-            'message' => "User or item not found!", // Adjust the message as needed
-            'error' => $e->getMessage(), // Optional: Include error details (be cautious in production)
-        ], 404); // Not Found status code
-
-    } catch (\Exception $e) {
-        // Catch any other unexpected exceptions
-        return response()->json([
-            'success' => false,
-            'message' => "An error occurred during granting!", // Generic error message
-            'error' => $e->getMessage(), // Optional: Include error details (be cautious in production)
-        ], 500); // Internal Server Error status code
-    }
-}
-
 function crateRarity($data, $rarity)
 {
     switch ($data) {
