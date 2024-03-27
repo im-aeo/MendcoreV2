@@ -152,7 +152,7 @@ const unfollowUser = (id) => {
                         <div class="text-xl" style="line-height: 16px">
                             <div class="fw-semibold mb-1">
                                 {{ usePage<any>().props.user.display_name }}
-                                <v-lazy-image :src="'assets/img/flags/' + user.settings.country_code + '.png'" alt="Country Flag" style="width: 26px;height: 16px;" src-placeholder="assets/img/flags/pirate.svg" />
+                                <v-lazy-image :src="'assets/img/flags/' + user.settings.country_code + '.svg'" alt="Country Flag" style="width: 26px;height: 16px;" src-placeholder="assets/img/flags/pirate.svg" />
                             </div>
                             <div class="text-sm text-muted fw-semibold">
                                 {{ "@" + usePage<any>().props.user.username }}
