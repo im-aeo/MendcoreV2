@@ -64,34 +64,36 @@ class RenderController extends Controller
     
     private function prepareRequestData($type, $db, $hash)
     {
-        return [
+        $requestData = [
             'renderType' => $type,
             'hash' => $hash,
-            'head_color' => $this->getColor($db->color_head, 'ffffff'),
-            'torso_color' => $this->getColor($db->color_torso, '055e96'),
-            'leftLeg_color' => $this->getColor($db->color_left_leg, 'ffffff'),
-            'rightLeg_color' => $this->getColor($db->color_right_leg, 'ffffff'),
-            'leftArm_color' => $this->getColor($db->color_left_arm, 'ffffff'),
-            'rightArm_color' => $this->getColor($db->color_right_arm, 'ffffff'),
-            if ($type == 'user') {
-                'hat_1' => getItemHash($db->hat1),
-                'hat_2' => getItemHash($db->hat2),
-                'hat_3' => getItemHash($db->hat3),
-                'hat_4' => getItemHash($db->hat4),
-                'hat_5' => getItemHash($db->hat5),
-                'hat_6' => getItemHash($db->hat6),
-                'face' => getItemHash($db->face),
-                'tool' => getItemHash($db->tool),
-            } elseif($type == 'item') {
-              if($db->type == 'hat') {
-                'hat_1' => getItemHash($item->hat1),
-              } elseif($db == 'face') {
-                'face' => getItemHash($db->face),
-              } else {
-                'tool' => getItemHash($db->tool),
-              }
+        // ... other color properties
+      ];
+        if ($type == 'user') {
+            $requestData['head_color'] = $this->getColor($db->color_head, 'ffffff'),
+            $requestData['torso_color'] = $this->getColor($db->color_torso, '055e96'),
+            $requestData['leftLeg_color'] = $this->getColor($db->color_left_leg, 'ffffff'),
+            $requestData['rightLeg_color'] = $this->getColor($db->color_right_leg, 'ffffff'),
+            $requestData['leftArm_color'] = $this->getColor($db->color_left_arm, 'ffffff'),
+            $requestData['rightArm_color'] = $this->getColor($db->color_right_arm, 'ffffff'),
+                
+            for ($i = 1; $i <= 6; $i++) {
+              $key = "hat_$i";
+              $value = $db->{"hat$i"};
+              $requestData[$key] = getItemHash($value);
             }
-            ];
+            
+            $requestData['face'] = getItemHash($db->face),
+            $requestData['tool'] =  getItemHash($db->tool),
+        } elseif($type == 'item') {
+            if($db->type == 'hat') {
+                $requestData['hat_1'] = getItemHash($item->hat1),
+              } elseif($db == 'face') {
+                $requestData['face'] = getItemHash($db->face),
+              } else {
+                $requestData['tool'] = getItemHash($db->tool),
+              }
+        }
     }
 
     private function getColor($value, $default)
