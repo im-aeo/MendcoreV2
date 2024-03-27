@@ -128,7 +128,6 @@ class AuthController extends Controller
 
         UserSettings::create([
             'user_id' => $user->id,
-            'beta_tester' => config('Values.in_testing_phase'),
         ]);
 
         // Create associated avatar
