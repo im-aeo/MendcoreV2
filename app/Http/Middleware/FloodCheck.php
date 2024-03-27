@@ -11,13 +11,13 @@ use Illuminate\Support\Str;
 class FloodCheck
 {
   public const FLOOD_ROUTES = [
-    'account.inbox.create',
-    'account.settings.update',
+    'market.purchase',
+    'user.settings.update',
     // ... other routes
   ];
 
   public const API_FLOOD_URLS = [
-    'render/validare',
+    'render/validate',
     // ... other routes soon
   ];
 
