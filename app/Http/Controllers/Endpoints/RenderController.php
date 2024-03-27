@@ -70,12 +70,12 @@ class RenderController extends Controller
         // ... other color properties
       ];
         if ($type == 'user') {
-            $requestData['head_color'] = $this->getColor($db->color_head, 'ffffff'),
-            $requestData['torso_color'] = $this->getColor($db->color_torso, '055e96'),
-            $requestData['leftLeg_color'] = $this->getColor($db->color_left_leg, 'ffffff'),
-            $requestData['rightLeg_color'] = $this->getColor($db->color_right_leg, 'ffffff'),
-            $requestData['leftArm_color'] = $this->getColor($db->color_left_arm, 'ffffff'),
-            $requestData['rightArm_color'] = $this->getColor($db->color_right_arm, 'ffffff'),
+            $requestData['head_color'] = $this->getColor($db->color_head, 'ffffff');
+            $requestData['torso_color'] = $this->getColor($db->color_torso, '055e96');
+            $requestData['leftLeg_color'] = $this->getColor($db->color_left_leg, 'ffffff');
+            $requestData['rightLeg_color'] = $this->getColor($db->color_right_leg, 'ffffff');
+            $requestData['leftArm_color'] = $this->getColor($db->color_left_arm, 'ffffff');
+            $requestData['rightArm_color'] = $this->getColor($db->color_right_arm, 'ffffff');
                 
             for ($i = 1; $i <= 6; $i++) {
               $key = "hat_$i";
@@ -83,15 +83,15 @@ class RenderController extends Controller
               $requestData[$key] = getItemHash($value);
             }
             
-            $requestData['face'] = getItemHash($db->face),
-            $requestData['tool'] =  getItemHash($db->tool),
+            $requestData['face'] = getItemHash($db->face);
+            $requestData['tool'] =  getItemHash($db->tool);
         } elseif($type == 'item') {
             if($db->type == 'hat') {
-                $requestData['hat_1'] = getItemHash($item->hat1),
+                $requestData['hat_1'] = getItemHash($item->hat1);
               } elseif($db == 'face') {
-                $requestData['face'] = getItemHash($db->face),
+                $requestData['face'] = getItemHash($db->face);
               } else {
-                $requestData['tool'] = getItemHash($db->tool),
+                $requestData['tool'] = getItemHash($db->tool);
               }
         }
     }
