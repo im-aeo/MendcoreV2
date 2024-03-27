@@ -19,6 +19,35 @@ defineProps({
 <AppHead :pageTitle="{{ 'Welcome -' + site.name }}" description="Join in on the action today. Buy &amp; sell items, participate in spaces, make friends, and more." :url="route(`Welcome`)" />
     <Navbar>
         <header class="masthead-landing bg-info">
+        <div class="cell large-12">
+            <div class="justify-center row-landing align-center">
+                <div class="row-landing justify-content-center">
+                    <div class="text-center text-white">
+                        <!-- Page heading-->
+                        <h1 class="mb-5">
+                         <v-lazy-image :src="site.logo" width="300px" />
+                        </h1>
+                        <h3 class="mt-3 fw-semibold">
+                            Join in on the action today. Buy &amp; sell items, participate in groups, make friends, and
+                            more.
+                        </h3>
+                        <div class="min-w-0 gap-4 mt-3 flex-container align-center">
+                            <button :href="route('auth.login.page')" class=" btn btn-landing btn-warning">
+                                <i class="mr-1 fas fa-key"></i>
+                                Login
+                            </button>
+                            <button :href="route('auth.register.page')" class="btn btn-landing btn-success">
+                                <i class="mr-1 fas fa-user-plus"></i>
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+        
+        <header class="masthead-landing bg-info">
         <div class="cell">
             <div class="justify-center row-landing align-center">
                 <div class="row-landing justify-content-center">
@@ -32,12 +61,12 @@ defineProps({
                                 Join in on the action today. Buy &amp; sell items, participate in groups, make friends, and more.
                             </h3>
                             <div class="min-w-0 gap-4 mt-3 flex-container align-center">
-                                <button :href="route('auth.login.page')" class=" btn btn-landing btn-warning">
-                                    <i class="mr-1 fas fa-key"></i> 
+                                <button :href="route('auth.login.page')" class="btn btn-landing btn-warning">
+                                    <i class="mr-1 fas fa-door-open"></i> 
                                     Login
                                 </button>
                                 <button :href="route('auth.register.page')" class="btn btn-landing btn-success">
-                                    <i class="mr-1 fas fa-user-plus"></i> 
+                                    <i class="mr-1 fas fa-person-to-portal"></i> 
                                     Register
                                 </button>
                             </div>
