@@ -43,7 +43,7 @@ class GiveDailyRewards
             $user->coins += $coinAmount;
             $user->bucks += $buckAmount;
             $user->addPoints($pointsAmount);
-            $user->next_currency_payout = Carbon::now()->addHours(24)->toDateTimeString();
+            $user->next_reward_payout = Carbon::now()->addHours(24)->toDateTimeString();
             $user->save();
         }
         return $next($request);
