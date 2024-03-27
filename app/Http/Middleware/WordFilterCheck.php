@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Middleware;
@@ -6,18 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Added for logging
+use Illuminate\Support\Facades\Log;
 
 class WordFilterCheck
 {
-  public const FILTER_ROUTES = [
-    // ... Your route mappings with filterable fields
-  ];
-
-  public const API_FILTER_URLS = [
-    // ... Your API URL mappings with filterable fields
-  ];
-
   /**
    * Handle an incoming request.
    *
@@ -32,14 +23,13 @@ class WordFilterCheck
     $enabled = (Auth::check() && Auth::user()->isStaff()) ? false : true;
 
     if ($enabled && $request->isMethod('post') && 
-        (array_key_exists($url, self::API_FILTER_URLS) || 
-         array_key_exists($route, self::FILTER_ROUTES))) {
+        (array_key_exists($url, config('filter.api_urls')) || 
+         array_key_exists($route, config('filter.routes')))) {
 
       $api = $request->is('api/*');
-      $params = (!$api) ? self::FILTER_ROUTES[$route] : self::API_FILTER_URLS[$url];
+      $params = (!$api) ? config('filter.routes')[$route] : config('filter.api_urls')[$url];
 
       $blacklist = config('filter.blacklist');
-      $whitelistDomains = config('filter.whitelist_domains');
 
       foreach ($params as $param) {
         if ($this->isProfanity($request->$param, $blacklist)) {
@@ -52,22 +42,6 @@ class WordFilterCheck
             ]);
           }
         }
-      }
-
-      // Domain whitelisting check
-      $domainContent = str_replace(['https://', 'http://'], '', $request->url());
-      $domainContent = preg_replace('/[^a-z0-9.-]/', '', $domainContent);
-      $domainOk = false;
-
-      foreach ($whitelistDomains as $whitelistDomain) {
-        if (substr_compare($domainContent, $whitelistDomain, -strlen($whitelistDomain)) === 0) {
-          $domainOk = true;
-          break;
-        }
-      }
-
-      if (!$domainOk) {
-        Log::warning("Suspicious domain detected: " . $domainContent);
       }
     }
 
@@ -87,17 +61,39 @@ class WordFilterCheck
     $tempContent = preg_replace('/\s+/', ' ', $tempContent);
     $wordsRegex = '/(' . implode('|', $blacklist) . ')/i';
 
+    $violatingWords = [];
     $flag = false;
+    $domainOk = true;
 
     foreach ($blacklist as $blword) {
       if (stripos($tempContent, $blword) !== false) {
         $flag = true;
+        $violatingWords[] = $blword;
+      }
+    }
+
+    $domainContent = str_replace(['https://', 'http://'], '', $content);
+    $domainContent = preg_replace('/[^a-z0-9.-]/', '', $domainContent);
+    $whitelistCheck = false;
+
+    $whitelistDomains = config('filter.whitelist_domains');
+
+    foreach ($whitelistDomains as $whitelistDomain) {
+      if (substr_compare($domainContent, $whitelistDomain, -strlen($whitelistDomain)) === 0) {
+        $whitelistCheck = true;
         break;
       }
     }
 
+    $domainOk = $whitelistCheck;
+
+    if (!$domainOk) {
+      $flag = true;
+      $violatingWords[] = $domainContent; // Flag suspicious domains
+    }
+
     if ($flag) {
-      Log::warning("Profanity detected in request: " . $content);
+      Log::warning("Profanity detected in request: " . implode(', ', $violatingWords)); // Log for later review
     }
 
     return $flag;
