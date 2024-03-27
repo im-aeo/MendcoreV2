@@ -62,7 +62,7 @@ const unfollowUser = (id) => {
 };  
 </script>
 <template>
-<AppHead :pageTitle="usePage<any>().props.user.username + '&#39;s Profile'" :description="usePage<any>().props.user.about_me" :url="route(`user.profile`, { username: usePage<any>().props.user.username })" />
+<AppHead :pageTitle="usePage<any>().props.user.username + '\'s Profile'" :description="usePage<any>().props.user.about_me" :url="route(`user.profile`, { username: usePage<any>().props.user.username })" />
     <Navbar />
     <Sidebar :image="usePage<any>().props.user.settings.profile_banner_enabled ? usePage<any>().props.user.settings.profile_banner_url : null">
         <div class="modal" id="following-modal">
