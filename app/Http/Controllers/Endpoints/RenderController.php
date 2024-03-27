@@ -48,7 +48,7 @@ class RenderController extends Controller
         $item->save();
 
         // Return the rendered image as a response
-        return $this->getItemThumb($user->id);
+        return $this->getItemThumb($item->id);
     }
     public function getAvatarRenderHash($type, $id)
     {
