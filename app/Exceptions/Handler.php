@@ -43,7 +43,7 @@ class Handler extends ExceptionHandler
 
     protected $icons = [
         500 => 'fa-duotone fa-bomb text-danger',
-        503 => 'E_SERVICE_UNAVAILABLE',
+        503 => 'fa-solid fa-cloud-slash text-danger',
         404 => 'fa-duotone fa-exclamation text-warning',
         403 => 'fa-duotone fa-shield-keyhole text-danger',
     ];
