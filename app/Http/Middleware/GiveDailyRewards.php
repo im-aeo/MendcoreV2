@@ -33,11 +33,11 @@ class GiveDailyRewards
             if ($user->settings->beta_tester) {
                  $coinAmount = 50;
                  $buckAmount = 10;
-                 $pointsAmount = 400;
+                 $pointsAmount = 100;
             } else {
                  $coinAmount = 10;
                  $buckAmount = 1;
-                 $pointsAmount = 100;
+                 $pointsAmount = 50;
             }
            
             $user->coins += $coinAmount;
