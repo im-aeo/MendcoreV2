@@ -1,5 +1,5 @@
 <template>
-  <AppHead :pageTitle="'Feature Disabled -' + usePage<any>().props.site.name" :description="'Feature Disabled -' + usePage<any>().props.site.name" :url="route('Welcome.')" />
+  <AppHead :pageTitle="'Feature Disabled -' + usePage<any>().props.site.name" :description="'Feature Disabled -' + usePage<any>().props.site.name" :url="route('Welcome')" />
   <Navbar />
   <Sidebar>
     <div class="cell medium-7">
