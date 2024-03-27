@@ -15,6 +15,8 @@ defineProps<{
 </script>
 
 <template>
+      <AppHead :pageTitle="status + usePage<any>().props.site.name" :description="message" :url="route('Welcome')" />
+
     <Navbar />
     <Sidebar>
         <div class="cell medium-7">
