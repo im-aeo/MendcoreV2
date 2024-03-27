@@ -1,5 +1,5 @@
 <template>
-<AppHead :pageTitle="{{ props.username + '&#39;s Profile'}}" :description="'Login to' + usePage<any>().props.site.name + '.'" :url="route('auth.login.page')" />
+<AppHead :pageTitle="props.username + 's Profile'" :description="'Login to' + usePage<any>().props.site.name + '.'" :url="route('auth.login.page')" />
   <Navbar />
   <Sidebar>
     <div class="cell medium-7">
