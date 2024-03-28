@@ -9,20 +9,24 @@ use Illuminate\Support\Facades\Log;
 
 class Event
 {
-    public $items = []; // Array of item IDs
-    public $keys = [];  // Array of key strings associated with item IDs (key => item ID)
+    public $items = [
+    '1'
+    ]; // Array of item IDs
+    public $keys = [
+    'giftme<3'
+    ];  // Array of key strings associated with item IDs (key => item ID)
 
     public function grantItem(Item $item, User $user, string $key, bool $internalRedeem = false): bool
     {
         // Validate key existence
         if (!array_key_exists($key, $this->keys) || $this->keys[$key] !== $item->id) {
-            Log::error("Invalid key for granting item: $key (user: {$user->id}, item: {$item->id})"); // Log error details (optional)
+            Log::error("Invalid key for granting item: $key (user: {$user->id}, item: {$item->id})"); // Log error details 
             return false;
         }
 
         $lockKey = 'event_' . $user->id . '_lock';
         if (!Cache::lock($lockKey, 5)) {
-            Log::error("Failed to acquire lock for granting item (user: {$user->id}, item: {$item->id})"); // Log error details (optional)
+            Log::error("Failed to acquire lock for granting item (user: {$user->id}, item: {$item->id})"); // Log error details 
             return false;
         }
 
@@ -35,7 +39,7 @@ class Event
             // Grant the item (assuming `create` creates a new record in the crate table)
             return $user->inventory()->create(['crateable_id' => $item->id, 'crateable_type' => 1])->exists();
         } catch (\Exception $e) {
-            Log::error("Error granting item (user: {$user->id}, item: {$item->id}): " . $e->getMessage()); // Log error details (optional)
+            Log::error("Error granting item (user: {$user->id}, item: {$item->id}): " . $e->getMessage()); // Log error details
             return false;
         } finally {
             optional(Cache::store())->forget($lockKey); // Release lock using current store
