@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
 
         $status = $response->getStatusCode();
 
-        if (app()->environment(['local', 'testing'])) {
+        if (app()->environment(['localhost', 'testing'])) {
             return $response;
         }
 
