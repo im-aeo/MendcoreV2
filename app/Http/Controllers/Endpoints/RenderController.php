@@ -50,6 +50,7 @@ class RenderController extends Controller
         // Return the rendered image as a response
         return $this->getItemThumb($item->id);
     }
+    
     public function getAvatarRenderHash($type, $id)
     {
         $user = Avatar::findOrFail($id);
