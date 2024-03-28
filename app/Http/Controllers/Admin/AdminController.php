@@ -22,8 +22,6 @@ class AdminController extends Controller
               abort(404);
           }
           $userCount == User::count();
-          $userCount == Item::count();
-          
-            
+          $userCount == Item::count();  
       }
 }
