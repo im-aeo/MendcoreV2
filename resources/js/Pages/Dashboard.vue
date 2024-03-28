@@ -133,7 +133,7 @@ const addStatus = (status: string): void => {
             <div class="mb-1 text-xl fw-semibold">Posts</div>
             <div class="card card-body">
             
-                    <div class="gap-3 text-center flex-container flex-dir-column" v-if="!slist">
+                    <div class="gap-3 text-center flex-container flex-dir-column" v-if="!slist.length">
                         <i class="text-5xl fas fa-face-sleeping text-muted"></i>
                         <div style="line-height: 16px">
                             <div class="text-xs fw-bold text-muted text-uppercase">
