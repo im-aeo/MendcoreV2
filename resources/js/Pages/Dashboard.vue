@@ -42,7 +42,7 @@ const addStatus = (status: string): void => {
     DateHum: "Just Now",
   };
   console.log(props.slist);
-  slist.value.push(StatusUpdate);
+  slist.value.push([StatusUpdate]);
 
   axios.post(route(`my.dashboard.validate`), {
       message: status,
@@ -51,6 +51,10 @@ const addStatus = (status: string): void => {
     }).catch((status) => {
       console.error("Error:", error);
     });
+};
+const getXPProgressWidth = (currentxp, nextxp) => {
+    const progress = (currentStep.value / totalSteps) * 100;
+    return `${progress}%`;
 };
 </script>
 
@@ -81,7 +85,7 @@ const addStatus = (status: string): void => {
                                 </div>
                             </div>
                             <div class="progress-bar">
-                                <span class="progress" style="width: 25%;"></span>
+                                <span class="progress" :style="{ width: getXPProgressWidth(usePage<any>().props.auth.user.xp, usePage<any>().props.auth.user.nextlevelxp) }"></span>
                             </div>
                         </div>
                     </div>
