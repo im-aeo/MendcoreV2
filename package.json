@@ -78,7 +78,7 @@
         "momentum-paginator": "^1.0.6",
         "momentum-preflight": "^0.1.1",
         "momentum-trail": "^0.3.3",
-        "npm": "^9.7.1",
+        "npm": "^10.5.2",
         "npm-check": "^6.0.1",
         "nprogress": "^0.2.0",
         "portal-vue": "^3.0.0",
