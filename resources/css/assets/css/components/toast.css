@@ -1,0 +1,22 @@
+.toast-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    width: 260px;
+    padding-top: 62px;
+    padding-right: 6px;
+    overflow-y: auto;
+    transition: transform .3s ease-in-out;
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+}
+
+.toast-menu-slide {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+}
