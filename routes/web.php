@@ -13,6 +13,7 @@ use App\Http\Controllers\GoogleSocialiteController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Forum\ForumController;
+use App\Http\Controllers\Leaderboard\LeaderboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,11 @@ Route::group(['as' => 'maintenance.', 'prefix' => 'maintenance'], function () {
     Route::post('/password', [MaintenanceController::class, 'authenticate'])->name('authenticate.password');
     Route::get('/exit', [MaintenanceController::class, 'Exit'])->name('exit');
 });
+
+Route::group(['as' => 'leaderboard.', 'prefix' => 'leaderboard'], function () {
+    Route::get('/', [LeaderboardController::class, 'LeaderboardIndex'])->name('page');
+});
+
 Route::group(['as' => 'my.', 'prefix' => 'my', 'middleware' => 'auth'], function () {
 
     Route::group(['Middleware' => 'auth'], function () {
@@ -125,8 +131,7 @@ Route::group(['as' => 'store.', 'prefix' => 'market'], function () {
     Route::get('/', [MarketController::class, 'StoreIndex'])->name('page');
     Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
         Route::get('/', [MarketController::class, 'CreateIndex'])->name('page');
-        Route::get('/', [MarketController::class, 'CreateItem'])->name('validate');
-
+        Route::post('/validate', [MarketController::class, 'uploadItem'])->name('validate');
     });
     Route::get('/item/{id}', [MarketController::class, 'StoreItem'])->name('item');
     Route::post('/item/purchase/{id}/{currencyType}', [MarketController::class, 'purchase'])->name('purchase');
@@ -134,10 +139,8 @@ Route::group(['as' => 'store.', 'prefix' => 'market'], function () {
 Route::group(['as' => 'spaces.', 'prefix' => 'spaces'], function () {
     Route::get('/', [GrabController::class, 'SpacesIndex'])->name('page');
     Route::get('/{id}/{slug}', [GrabController::class, 'spacesView'])->name('view');
-    
 });
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'AdminIndex'])->name('page');
-    
 });

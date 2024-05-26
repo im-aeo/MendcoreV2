@@ -100,9 +100,9 @@ const sidebar = [
         jp: { title: "スペース" }
     },
     {
-        url: "#",
+        url: route(`leaderboard.page`),
         section: "SOCIAL",
-        active_link: "leaderboard.*",
+        active_link:  route(`leaderboard.page`),
 	icon: "fas fa-list-ol",
         en: { title: "Leaderboard" },
         ru: { title: "Таблица лидеров" },
@@ -172,7 +172,6 @@ const lang = computed(() => usePage<any>().props.locale);
     <div v-if="image" class="profile-banner">
         <img class="masoqi" :src="image" />
     </div>
-    
     <FlashMessages />
     <main class="container">
         <div v-if="adblock" class="py-2 mb-4 text-center alert alert-danger fw-semibold">

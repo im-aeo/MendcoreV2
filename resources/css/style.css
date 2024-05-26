@@ -37,6 +37,12 @@ Testing fonts
     font-family: Lexend, Sans-Serif !important;
 
 }
+::-webkit-file-upload-button {
+    display: none;
+ }
+ ::file-selector-button {
+    display: none;
+  }
 
 .card.avatar {
     width: 300px;

@@ -3,10 +3,15 @@ import axios from 'axios'; // Import Axios
 import { route, current } from 'momentum-trail'
 import { ref } from 'vue';
 import "../../../../public/assets/css/themes/variables-dark.css";
+import AppHead from '@/Components/AppHead.vue';
+import { usePage } from '@inertiajs/vue3';
 </script>
 
 
 <template>
+  <AppHead pageTitle="Maintenence"
+  :description="'We are working on ' + usePage<any>().props.site.name + ', We\'ll be back soon.'"
+  :url="route(`maintenance.page`)" />
   <div class="modal" id="DeveloperCode">
     <form @submit.prevent="submitPassword">
       <div class="modal-card modal-card-body modal-card-sm">

@@ -35,6 +35,7 @@
         "laravel/socialite": "^5.8",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "league/html-to-markdown": "^5.1",
         "mariuzzo/laravel-js-localization": "^1.10",
         "martinbean/socialite-discord-provider": "^1.2",

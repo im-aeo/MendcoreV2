@@ -11,10 +11,6 @@ import SearchResultSkeleton from "../SearchResultSkeleton.vue";
 import VLazyImage from "v-lazy-image";
 import PageLoader from '../Loaders/PageLoader.vue';
 
-const logout = () => {
-    router.post(route('auth.logout'));
-};
-
 // Define the SearchResult interface
 interface SearchResult {
     url: string;
@@ -341,7 +337,7 @@ const { props } = usePage<any>();
                     </li>
                     <li class="divider"></li>
                     <li class="dropdown-item">
-                        <Link @click="logout" href="#" class="dropdown-link dropdown-link-has-icon text-danger"><i
+                        <Link :href="route('auth.logout')" method="post"  class="dropdown-link dropdown-link-has-icon text-danger"><i
                             class="fas fa-sign-out text-danger dropdown-icon"></i>Logout</Link>
                     </li>
                 </ul>

@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\UploadedFile;
+
 class MarketController extends Controller
 {
     public function StoreIndex()
@@ -36,16 +39,16 @@ class MarketController extends Controller
         // Define cache keys
         $cacheKey = 'store_item_' . $id;
         $recommendationCacheKey = 'recommendation_' . $id;
-    
+
         // Retrieve item data with caching
         $item = cache()->remember($cacheKey, now()->addHours(6), function () use ($id) {
             return Item::where('id', $id)->first();
         });
-    
+
         if (!$item) {
             abort(404);
         }
-    
+
         // Retrieve recommendations with caching
         $recommendations = cache()->remember($recommendationCacheKey, now()->addHours(6), function () use ($item) {
             return Item::where([
@@ -55,8 +58,8 @@ class MarketController extends Controller
                 ['creator_id', $item->creator->id]
             ])->inRandomOrder()->take(6)->get();
         });
-        
-    
+
+
         return inertia('Store/Item', [
             'item' => $item,
             'creator' => $item->creator,
@@ -65,129 +68,133 @@ class MarketController extends Controller
             'recommendations' => $recommendations,
         ]);
     }
-    
+
+    public function CreateIndex()
+    {
+        return inertia('Store/Create');
+    }
 
     public function purchase(int $id, string $currencyType, ?int $resellerId = null)
     {
-    $item = Item::where('id', '=', $id)->firstOrFail();
-    $item->timestamps = false;
+        $item = Item::where('id', '=', $id)->firstOrFail();
+        $item->timestamps = false;
 
-    $listing = null;
-    $isReseller = $resellerId !== null;
+        $listing = null;
+        $isReseller = $resellerId !== null;
 
-    if ($isReseller) {
-        $listing = ItemReseller::where('id', '=', $resellerId)->first();
-    }
-
-    if (!Auth::user()->isStaff() && !$item->public_view) {
-        abort(403);
-    }
-
-    if ($item->status != 'approved') {
-        return back()->withErrors(['This item is not approved.']);
-    }
-
-    if (!$isReseller && $item->rare && $item->stock <= 0) {
-        return back()->withErrors(['This item is out of stock.']);
-    }
-
-    if (!$isReseller && !$item->onsale()) {
-        return back()->withErrors(['This item is not on sale.']);
-    }
-
-    if ($isReseller && Auth::user()->id == $listing->seller->id) {
-        return back()->withErrors(['You cannot buy your own item.']);
-    }
-
-    if (!$isReseller && Auth::user()->ownsItem($item->id)) {
-        return back()->withErrors(['You already own this item.']);
-    }
-
-    if ($isReseller && $currencyType != 'bucks') {
-        return back()->withErrors(['You can only buy resold items for bucks.']);
-    }
-
-    switch ($currencyType) {
-        case 'coins':
-            $price = $item->cost_coins;
-            $column = 'coins';
-
-            if ($price == 0) {
-                return back()->withErrors(['This item cannot be purchased with coins.']);
-            }
-            break;
-        case 'bucks':
-            $price = ($isReseller) ? $listing->price : $item->cost_bucks;
-            $column = 'bucks';
-
-            if ($price == 0) {
-                return back()->withErrors(['This item cannot be purchased with bucks.']);
-            }
-            break;
-        case 'free':
-            $price = 0;
-            $column = null;
-
-            if ($item->cost_coins > 0 && $item->cost_bucks > 0) {
-                return back()->withErrors(['This item cannot be purchased for free.']);
-            }
-            break;
-        default:
-            abort(404);
-    }
-
-    $seller = (!$isReseller) ? $item->creator : $listing->seller;
-
-    if ($currencyType != 'free') {
-        if (Auth::user()->$column < $price && $price > 0) {
-            return back()->withErrors(["You do not have enough {$currencyType} to purchase this item."]);
+        if ($isReseller) {
+            $listing = ItemReseller::where('id', '=', $resellerId)->first();
         }
 
-        $seller->timestamps = false;
-        $seller->$column += round(($price / 1.3), 0, PHP_ROUND_HALF_UP);
-        $seller->save();
-
-        $myU = Auth::user();
-        $myU->$column -= $price;
-        $myU->save();
-    }
-
-    if ($isReseller) {
-        $inventory = $listing->inventory;
-        $inventory->user_id = Auth::user()->id;
-        $inventory->save();
-
-        $listing->delete();
-
-        if (!$seller->ownsItem($item->id) && $seller->isWearingItem($item->id)) {
-            $seller->takeOffItem($item->id);
-
-            $this->regeneratewithID($resellerId, $seller->id);
+        if (!Auth::user()->isStaff() && !$item->public_view) {
+            abort(403);
         }
-    } else {
-        $inventory = new Inventory;
-        $inventory->user_id = Auth::user()->id;
-        $inventory->item_id = $item->id;
-        $inventory->save();
+
+        if ($item->status != 'approved') {
+            return back()->withErrors(['This item is not approved.']);
+        }
+
+        if (!$isReseller && $item->rare && $item->stock <= 0) {
+            return back()->withErrors(['This item is out of stock.']);
+        }
+
+        if (!$isReseller && !$item->onsale()) {
+            return back()->withErrors(['This item is not on sale.']);
+        }
+
+        if ($isReseller && Auth::user()->id == $listing->seller->id) {
+            return back()->withErrors(['You cannot buy your own item.']);
+        }
+
+        if (!$isReseller && Auth::user()->ownsItem($item->id)) {
+            return back()->withErrors(['You already own this item.']);
+        }
+
+        if ($isReseller && $currencyType != 'bucks') {
+            return back()->withErrors(['You can only buy resold items for bucks.']);
+        }
+
+        switch ($currencyType) {
+            case 'coins':
+                $price = $item->cost_coins;
+                $column = 'coins';
+
+                if ($price == 0) {
+                    return back()->withErrors(['This item cannot be purchased with coins.']);
+                }
+                break;
+            case 'bucks':
+                $price = ($isReseller) ? $listing->price : $item->cost_bucks;
+                $column = 'bucks';
+
+                if ($price == 0) {
+                    return back()->withErrors(['This item cannot be purchased with bucks.']);
+                }
+                break;
+            case 'free':
+                $price = 0;
+                $column = null;
+
+                if ($item->cost_coins > 0 && $item->cost_bucks > 0) {
+                    return back()->withErrors(['This item cannot be purchased for free.']);
+                }
+                break;
+            default:
+                abort(404);
+        }
+
+        $seller = (!$isReseller) ? $item->creator : $listing->seller;
+
+        if ($currencyType != 'free') {
+            if (Auth::user()->$column < $price && $price > 0) {
+                return back()->withErrors(["You do not have enough {$currencyType} to purchase this item."]);
+            }
+
+            $seller->timestamps = false;
+            $seller->$column += round(($price / 1.3), 0, PHP_ROUND_HALF_UP);
+            $seller->save();
+
+            $myU = Auth::user();
+            $myU->$column -= $price;
+            $myU->save();
+        }
+
+        if ($isReseller) {
+            $inventory = $listing->inventory;
+            $inventory->user_id = Auth::user()->id;
+            $inventory->save();
+
+            $listing->delete();
+
+            if (!$seller->ownsItem($item->id) && $seller->isWearingItem($item->id)) {
+                $seller->takeOffItem($item->id);
+
+                $this->regeneratewithID($resellerId, $seller->id);
+            }
+        } else {
+            $inventory = new Inventory;
+            $inventory->user_id = Auth::user()->id;
+            $inventory->item_id = $item->id;
+            $inventory->save();
+        }
+
+        $purchase = new ItemPurchase;
+        $purchase->seller_id = $seller->id;
+        $purchase->buyer_id = Auth::user()->id;
+        $purchase->item_id = $item->id;
+        $purchase->ip = Auth::user()->lastIP();
+        $purchase->currency_used = $currencyType;
+        $purchase->price = $price;
+        $purchase->save();
+        Auth::user()->addPoints(30);
+
+        if ($item->special_type && $item->stock > 0) {
+            $item->stock -= 1;
+            $item->save();
+        }
+
+        return back()->with('success_message', 'You now own this item!');
     }
-
-    $purchase = new ItemPurchase;
-    $purchase->seller_id = $seller->id;
-    $purchase->buyer_id = Auth::user()->id;
-    $purchase->item_id = $item->id;
-    $purchase->ip = Auth::user()->lastIP();
-    $purchase->currency_used = $currencyType;
-    $purchase->price = $price;
-    $purchase->save();
-    Auth::user()->addPoints(30);
-
-    if ($item->special_type && $item->stock > 0) {
-        $item->stock -= 1;
-        $item->save();
-    }
-
-    return back()->with('success_message', 'You now own this item!');
-}
 
 
     public function resell(Request $request)
@@ -231,24 +238,32 @@ class MarketController extends Controller
     public function uploadItem(Request $request)
     {
         $this->validateRequest($request);
-
+        $itemHashName = bin2hex(random_bytes(22));
+        $previewName = "{$itemHashName}_preview";
 
         $item = new Item;
         $item->name = $request->name;
-        $item->type = $request->type;
+        $item->description = $request->description;
 
-        $imagePath = $this->uploadImage($request->file('image'));
-        $item->image = $imagePath;
-
-        if ($request->hasFile('obj') && $request->type === 'hat') {
-            // Upload OBJ only if item type is hat
-            $objPath = $this->uploadOBJ($request->file('obj'));
-            $item->obj = $objPath;
+        if (Auth::user()->isStaff() && $request->type === 'face') {
+            return $this->uploadImage($request->file('image'), $itemHashName);
+        } elseif (Auth::user()->isStaff() && $request->hasFile('obj') && $request->type === 'hat' || $request->type === 'addon' || $request->type === 'tool') {
+            // Upload OBJ only if item type deals with models
+            return $this->uploadOBJ($request->file('obj'), $itemHashName);
+        } else {
+            return $this->uploadImage($request->file('image'), $itemHashName);
         }
+        $item->hash = $itemHashName;
+        $item->item_type = $request->type;
+        $item->status = 'pending';
+        $item->public_view = false;
+        $item->cost_coins =  $request->price_coins;
+        $item->cost_bucks =  $request->price_bucks;
+        $item->avatar_preview = $previewName;
 
         $item->save();
 
-        return inertia('Store/Create', [ 
+        return inertia('Store/Create', [
             'flash' => [
                 'message' => 'Item created successfully!',
                 'type' => 'success' // Optional: specify message type for styling
@@ -256,26 +271,24 @@ class MarketController extends Controller
         ], 201);
     }
 
-    private function uploadImage(Request $file)
+    private function uploadImage(UploadedFile $file, string $name): string
     {
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = Storage::disk('public')->put('items/images', $file, $fileName);
+        $path = Storage::disk('public')->putFileAs('', $file, $name);
 
         return $path;
     }
 
-    private function uploadOBJ(Request $file)
+    private function uploadOBJ(UploadedFile $file, string $name): string
     {
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = Storage::disk('public')->put('items/models', $file, $fileName);
+        $path = Storage::disk('public')->putFileAs('', $file, $name);
 
         return $path;
     }
     private function validateRequest(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|string|max:255',
-            'desc' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [ // <---
+            'name' => 'required|string|max:30',
+            'description' => 'required|string|max:255',
             'type' => 'required|string|in:shirt,tshirt,pants', // Allowed item types
             'image' => 'required|image|mimes:png', // Validate PNG image
         ]);

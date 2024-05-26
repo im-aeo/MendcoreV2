@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Item;
+namespace App\Http\Controllers\Leaderboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rules;
 use LevelUp\Experience\Services\LeaderboardService;
+use App\Models\User;
 
 class LeaderboardController extends Controller
 {
@@ -16,10 +17,11 @@ class LeaderboardController extends Controller
 
         $leaderboardService = new LeaderboardService();
         $leaderboard = $leaderboardService->generate();
+        $bucksLeaderboard = User::orderBy('bucks', 'desc')->take(10)->get();
 
         return inertia('Leaderboard/Index', [ 
-            'list_xp' => $leaderboard,
-            'list_currency' => null, // soon
+            'XP' => $leaderboard,
+            'Bucks' => $bucksLeaderboard, // soon
         ]);
     }
 }

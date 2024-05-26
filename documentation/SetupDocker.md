@@ -1,4 +1,4 @@
-## Aeo's Setup Guide (no docker)
+## Aeo's Setup Guide
 
 ### Prerequisites:
 
