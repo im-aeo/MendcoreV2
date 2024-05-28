@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Inventory;
 use Laravel\Scout\Searchable;
+use Spatie\LaravelData\Attributes\Validation\InArray;
 
 class Item extends Model
 {
@@ -67,5 +68,17 @@ class Item extends Model
         return Inventory::where([
             ['item_id', '=', $this->id]
         ])->count();
+    }
+    public function thumbnail()
+    {
+        $url = env('STORAGE_URL');
+        $PreviewTypes = config('Values.preview_types');
+
+        if (in_array($this->item_type, $PreviewTypes ?? [])) {
+            return "{$url}/thumbnails/{$this->avatar_preview}.png";
+
+        } else {
+        return "{$url}/thumbnails/{$this->hash}.png";
+        }
     }
 }

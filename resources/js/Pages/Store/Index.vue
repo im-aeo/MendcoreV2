@@ -60,7 +60,7 @@ provide('selectedCategory', selectedCategory);
             <MarketSorting :selectedCategory="selectedCategory" />
             <div v-if="ItemLoading || items && items.length > 0" class="grid-x grid-margin-x grid-padding-y">
                 <template v-if="ItemLoading">
-                  <ItemCardSkeleton v-for="n in 12" :key="n" />
+                    <ItemCardSkeleton v-for="n in 12" :key="n" />
                 </template>
                 <div v-else class="cell large-2 medium-3 small-6" v-for="(item, index) in items" :key="index">
                     <Link :href="itemRoute(item.id)" class="d-block">
@@ -84,20 +84,17 @@ provide('selectedCategory', selectedCategory);
                                 <i class="fas fa-clock" style="width: 18px"></i>Timed
                             </div>
                         </div>
-                        <div style="
-                                position: absolute;
-                                top: 10px;
-                                right: 10px;
-                            ">
-                            <div class="mb-1 badge badge-warning fw-semibold">
-                                <i class="fas fa-coins" style="width: 18px"></i>{{ item.cost_coins }}
-                            </div>
-                            <div class="mb-1 badge badge-success fw-semibold">
-                                <i class="fas fa-money-bill-1-wave" style="width: 18px"></i>{{ item.cost_bucks }}
-                            </div>
-                        </div>
-                        <img src="/assets/img/item_dummy_4.png" />
+                        <img :src="item.thumbnail" />
                     </div>
+                    <div class="gap-2 align-middle flex-container">
+                            <div class="mb-2 text-success w-100">
+                                <i class="fas fa-money-bill-1-wave">&nbsp;</i>{{item.cost_bucks }}
+                            </div>
+                            <div class="mb-2 text-warning w-100">
+                                <i class="fas fa-coins">&nbsp;</i>{{ item.cost_coins
+                                    }}
+                                </div>
+                        </div>
                     <div class="text-body fw-semibold text-truncate">
                         {{ item.name }}
                     </div>
@@ -105,7 +102,7 @@ provide('selectedCategory', selectedCategory);
                     <div class="text-xs fw-semibold text-truncate">
                         <span class="text-muted">By:</span>&nbsp;
                         <Link :href="creatorRoute(item.creator.username)">
-                            {{ '@' + item.creator.username }}<i class="fas fa-shield-check text-success ms-1"></i></Link>
+                        {{ '@' + item.creator.username }}<i class="fas fa-shield-check text-success ms-1"></i></Link>
                     </div>
                 </div>
             </div>
@@ -114,7 +111,9 @@ provide('selectedCategory', selectedCategory);
                     <div class="gap-3 mb-2 text-center flex-container flex-dir-column"><i
                             class="text-5xl fas fa-store-slash text-muted"></i>
                         <div style="line-height: 16px;">
-                            <div class="text-xs fw-bold text-muted">Looks like a gremlin got into the code again! We're sending our best programmers with bug spray to fix the issue</div>
+                            <div class="text-xs fw-bold text-muted">Looks like a gremlin got into the code again! We're
+                                sending our
+                                best programmers with bug spray to fix the issue</div>
                             <div class="text-muted fw-semibold">
                                 <p class="text-xs">{{ items.error }}</p>
                             </div>
@@ -135,7 +134,7 @@ provide('selectedCategory', selectedCategory);
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </Sidebar>
     <Footer />

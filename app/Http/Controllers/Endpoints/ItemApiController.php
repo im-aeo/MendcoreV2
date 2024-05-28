@@ -9,6 +9,8 @@ use App\Models\Inventory;
 use App\Models\CrateItem;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use App\Models\ItemReseller;
+use App\Models\ItemPurchase;
 
 class ItemApiController extends Controller
 {
@@ -57,11 +59,14 @@ class ItemApiController extends Controller
 
 
             foreach ($items as $item) {
-                $item->creator = $item->creator;
+                $item->thumbnail = $item->thumbnail();
             }
         } else {
             // Get items for the specific category
             $items = Item::where('item_type', $category)->with('creator')->orderBy('updated_at')->get();
+            foreach ($items as $item) {
+                $item->thumbnail = $item->thumbnail();
+            }
         }
         return response()->json($items);
     }
@@ -174,5 +179,165 @@ class ItemApiController extends Controller
     {
         // Add return statement to get the query result
         return Item::where(['in_event' => true, 'event_id' => $eventId])->get();
+    }
+    public function purchase(int $itemId, string $currencyType, ?int $resellerId = null)
+    {
+        // Fetch item and validate access
+        $item = $this->getItemAndValidateAccess($itemId);
+
+        // Handle reseller purchase logic
+        if ($resellerId) {
+            return $this->handleResellerPurchase($item, $resellerId, $currencyType);
+        }
+
+        // Handle direct purchase logic
+        return $this->handleDirectPurchase($item, $currencyType);
+    }
+
+    private function getItemAndValidateAccess(int $itemId): Item
+    {
+        $item = Item::where('id', $itemId)->firstOrFail();
+
+        if (!Auth::user()->isStaff() && !$item->public_view) {
+            abort(403);
+        }
+
+        if ($item->status != 'approved') {
+            return back()->withErrors(['This item is not approved.']);
+        }
+
+        if (!$item->onsale) {
+            return back()->withErrors(['This item is not on sale.']);
+        }
+
+        if (Auth::user()->ownsItem($itemId)) {
+            return back()->withErrors(['You already own this item.']);
+        }
+
+        return $item;
+    }
+
+    private function handleResellerPurchase(Item $item, int $resellerId, string $currencyType)
+    {
+        $listing = ItemReseller::where('id', $resellerId)->first();
+
+        if (Auth::user()->id == $listing->seller->id) {
+            return back()->withErrors(['You cannot buy your own item.']);
+        }
+
+        if ($currencyType != 'bucks') {
+            return back()->withErrors(['You can only buy resold items for bucks.']);
+        }
+
+        $price = $listing->price;
+        $seller = $listing->seller;
+
+        // Validate user currency
+        $this->validateUserCurrency($currencyType, $price);
+
+        // Update seller currency and deduct buyer currency
+        $this->updateCurrencies($seller, $price);
+        Auth::user()->{$currencyType} -= $price;
+
+        // Transfer ownership and delete listing
+        $inventory = $listing->inventory;
+        $inventory->user_id = Auth::user()->id;
+        $inventory->save();
+        $listing->delete();
+
+        // Handle seller wearing item case
+        if (!$seller->ownsItem($item->id) && $seller->isWearingItem($item->id)) {
+            $seller->takeOffItem($item->id);
+            $this->regeneratewithID($resellerId, $seller->id);
+        }
+
+        // Create purchase record
+        $this->createPurchaseRecord($item, $seller, $currencyType, $price);
+        Auth::user()->addPoints(30);
+
+        return back()->with('success_message', 'You now own this item!');
+    }
+
+    private function handleDirectPurchase(Item $item, string $currencyType)
+    {
+        if (!$item->rare || $item->initial_stock > 0) {
+            $price = ($currencyType === 'coins') ? $item->cost_coins : $item->cost_bucks;
+            $seller = $item->creator;
+
+            // Validate user currency
+            $this->validateUserCurrency($currencyType, $price);
+
+            // Update seller currency and deduct buyer currency
+            $this->updateCurrencies($seller, $price);
+            Auth::user()->{$currencyType} -= $price;
+
+            // Create inventory record (if not a free item)
+            if ($currencyType !== 'free') {
+                $inventory = new Inventory;
+                $inventory->user_id = Auth::user()->id;
+                $inventory->item_id = $item->id;
+                $inventory->save();
+            }
+
+            // Create purchase record
+            $this->createPurchaseRecord($item, $seller, $currencyType, $price);
+            Auth::user()->addPoints(30);
+
+            // Reduce stock if applicable
+            if ($item->rare && $item->initial_stock > 0) {
+                $item->remaining_stock -= 1;
+                $item->save();
+            }
+
+            return back()->with('success_message', 'You now own this item!');
+        }
+
+        return back()->withErrors(['This item is out of stock.']);
+    }
+    private function validateUserCurrency(string $currencyType, float $price)
+    {
+        if ($currencyType != 'free' && Auth::user()->{$currencyType} < $price) {
+            return back()->withErrors(["You do not have enough {$currencyType} to purchase this item."]);
+        }
+    }
+
+
+    public function resell(Request $request)
+    {
+        $copy = Inventory::where([
+            ['id', '=', $request->id],
+            ['user_id', '=', Auth::user()->id]
+        ])->firstOrFail();
+        $isReselling = ItemReseller::where('inventory_id', '=', $copy->id)->exists();
+
+        if (!$copy->item->limited || ($copy->item->limited && $copy->item->stock > 0) | $isReselling) abort(404);
+
+        $this->validate($request, [
+            'price' => ['required', 'numeric', 'min:1', 'max:1000000']
+        ]);
+
+        $reseller = new ItemReseller;
+        $reseller->seller_id = Auth::user()->id;
+        $reseller->item_id = $copy->item->id;
+        $reseller->inventory_id = $copy->id;
+        $reseller->price = $request->price;
+        $reseller->save();
+        Auth::user()->addPoints(10);
+        return redirect()->route('catalog.item', [$copy->item->id, $copy->item->slug()])->with('success_message', 'Item has been put up for sale, You have earned 10 XP.');
+    }
+
+    public function makeOffsale(Request $request)
+    {
+        $copy = ItemReseller::where([
+            ['id', '=', $request->id],
+            ['seller_id', '=', Auth::user()->id]
+        ])->firstOrFail();
+
+        $id = $copy->item_id;
+        $slug = Item::where('id', '=', $id)->first()->slug();
+
+        $copy->delete();
+
+        return redirect()->route('catalog.item', [$id, $slug])->with('success_message', 'Item has been taken off sale.');
     }
 }

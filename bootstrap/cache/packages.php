@@ -17,44 +17,11 @@
       'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
     ),
   ),
-  'based/momentum-lock' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Momentum\\Lock\\LockServiceProvider',
-    ),
-  ),
-  'based/momentum-modal' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Momentum\\Modal\\ModalServiceProvider',
-    ),
-  ),
-  'based/momentum-preflight' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Momentum\\Preflight\\PreflightServiceProvider',
-    ),
-  ),
   'based/momentum-trail' => 
   array (
     'providers' => 
     array (
       0 => 'Momentum\\Trail\\TrailServiceProvider',
-    ),
-  ),
-  'butschster/meta-tags' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Butschster\\Head\\Providers\\MetaTagsServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Meta' => 'Butschster\\Head\\Facades\\Meta',
-      'PackageManager' => 'Butschster\\Head\\Facades\\PackageManager',
     ),
   ),
   'cjmellor/level-up' => 
@@ -241,13 +208,6 @@
       0 => 'PHPOpenSourceSaver\\JWTAuth\\Providers\\LaravelServiceProvider',
     ),
   ),
-  'spatie/laravel-data' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelData\\LaravelDataServiceProvider',
-    ),
-  ),
   'spatie/laravel-ignition' => 
   array (
     'providers' => 
@@ -270,25 +230,11 @@
       'ResponseCache' => 'Spatie\\ResponseCache\\Facades\\ResponseCache',
     ),
   ),
-  'spatie/laravel-typescript-transformer' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelTypeScriptTransformer\\TypeScriptTransformerServiceProvider',
-    ),
-  ),
-  'spatie/php-structure-discoverer' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\StructureDiscoverer\\StructureDiscovererServiceProvider',
-    ),
-  ),
   'tightenco/ziggy' => 
   array (
     'providers' => 
     array (
-      0 => 'Tightenco\\Ziggy\\ZiggyServiceProvider',
+      0 => 'Tighten\\Ziggy\\ZiggyServiceProvider',
     ),
   ),
 );

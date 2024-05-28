@@ -165,7 +165,9 @@ watch(following, (newValue, oldValue) => {
                     <div class="gap-3 align-middle flex-container">
                         <div class="text-xl" style="line-height: 16px">
                             <div class="mb-1 fw-semibold">
-                                {{ usePage<any>().props.user.display_name }}
+                                {{ usePage<any>().props.user.display_name }} 
+                                    <i v-if="usePage<any>().props.user.staff" class="fas fa-gavel text-danger">&nbsp;</i>
+                                    <i v-else-if="usePage<any>().props.user.settings.beta_tester" class="fas fa-hard-hat text-success">&nbsp;</i>
                                     <v-lazy-image
                                         :src="'assets/img/flags/' + usePage<any>().props.user.settings.country_code + '.svg'"
                                         alt="Country Flag" style="width: 26px;height: 16px;"

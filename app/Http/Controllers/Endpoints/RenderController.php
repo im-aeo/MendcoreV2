@@ -45,11 +45,31 @@ class RenderController extends Controller
 
         // Update the items image and save
         $item->hash = $itemHashName;
-        $item->preview = $itemPreview;
+        $item->avatar_preview = $itemPreview;
         $item->save();
 
         // Return the rendered image as a response
         return $this->getItemThumb($item->id);
+    }
+    public function ItemPreviewRender(Request $request, $id)
+    {
+        // Retrieve parameters for the request
+        $item = Item::findOrFail($id);
+
+        // Verify the encryption or any other required validations
+        $itemHashName = bin2hex(random_bytes(22));
+        $requestData = $this->prepareRequestData('item_preview', $item, $itemHashName);
+        $itemPreview = "{$itemHashName}_preview";
+        // Make HTTP request to the rendering server
+        $this->makeRenderRequest($requestData);
+
+        // Update the items image and save
+        $item->hash = $itemHashName;
+        $item->avatar_preview = $itemPreview;
+        $item->save();
+
+        // Return the rendered image as a response
+        return $this->getItemThumb($item->id, true);
     }
 
     public function getAvatarRenderHash($id)
@@ -58,10 +78,16 @@ class RenderController extends Controller
         return env('STORAGE_URL') . '/thumbnails/' . $user->image . '.png';
     }
 
-    public function getItemThumb($id)
+    public function getItemThumb($id, bool $isPreview = false)
     {
         $item = Item::findOrFail($id);
-        return env('STORAGE_URL') . '/uploads/' . $item->hash . '.png';
+        if ($isPreview){
+            return env('STORAGE_URL') . '/uploads/' . $item->hash . '_preview.png';
+
+        } else {
+            return env('STORAGE_URL') . '/uploads/' . $item->hash . '.png';
+
+        }
     }
 
     private function prepareRequestData($type, $db, $hash)
@@ -95,6 +121,46 @@ class RenderController extends Controller
                 $requestData['tool'] =  getItemHash($db->tool);
             };
         } elseif ($type == 'item') {
+            if ($db->type == 'hat') {
+                $requestData['item'] = getItemHash($db->id);
+            } elseif ($db == 'face') {
+                $requestData['face'] = getItemHash($db->id);
+            } else {
+                $requestData['tool'] = getItemHash($db->id);
+            }
+        }
+        elseif ($type == 'item_preview') {
+            if ($db->item_type == 'hat') {
+                $requestData['item'] = getItemHash($db->id);
+            } elseif ($db == 'face') {
+                $requestData['item'] = getItemHash($db->id);
+                $requestData['isFace'] = true;
+            }
+            elseif ($db->item_type == 'tshirt') {
+                $requestData['item'] = getItemHash($db->id);
+                $requestData['isTshirt'] = true;
+                $requestData['pathmod'] = false;
+            }
+            elseif ($db->item_type == 'tool') {
+                $requestData['item'] = getItemHash($db->id);
+                $requestData['isTool'] = true;
+            }
+            elseif ($db->item_type == 'shirt') {
+                $requestData['item'] = getItemHash($db->id);
+                $requestData['isShirt'] = true;
+                $requestData['pathmod'] = false;
+
+            }
+            elseif ($db->item_type == 'pants') {
+                $requestData['item'] = getItemHash($db->id);
+                $requestData['isPants'] = true;
+                $requestData['pathmod'] = false;
+
+            } else {
+                $requestData['item'] = getItemHash($db->id);
+            }
+        }
+        elseif ($type == 'preview_tool') {
             if ($db->type == 'hat') {
                 $requestData['hat_1'] = getItemHash($db->hat1);
             } elseif ($db == 'face') {

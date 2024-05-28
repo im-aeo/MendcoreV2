@@ -26,7 +26,7 @@ const form = useForm({
 const submit = () => {
     axios.get(`/sanctum/csrf-cookie`).then(response => {
         form.post(route(`store.create.validate`), {
-            onFinish: () => form.reset('password'),
+            onFinish: () => form.reset('description'),
         });
     });
 };
@@ -79,13 +79,13 @@ const AttemptUpload = () => {
                             class="text-xs fw-bold text-muted text-uppercase">
                             Description
                         </div>
-                        <textarea type="password" v-model="form.description" class="mb-2 form  pe-5" rows="5"
+                        <textarea type="password" v-model="form.description" class="mb-2 form pe-5" rows="5"
                         placeholder="Description...."></textarea>
                         <div v-if="form.errors.description" class="text-xs text-danger fw-semibold">
                             {{ form.errors.description }}
                         </div>
                     </div>
-                    <div class="flex-container align-center gap-3 text-sm">
+                    <div class="gap-3 text-sm flex-container align-center">
                         <div class="w-100">
                             <div class="text-xs fw-bold text-muted text-uppercase">
                                 Price Coins
@@ -105,7 +105,7 @@ const AttemptUpload = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex-container align-center gap-3 text-sm">
+                    <div class="gap-3 text-sm flex-container align-center">
                         <div class="w-100">
                             <div class="text-xs fw-bold text-muted text-uppercase">
                                 Image

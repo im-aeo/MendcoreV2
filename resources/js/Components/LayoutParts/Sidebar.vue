@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { route, current } from "momentum-trail";
 import SideLink from '../SideLink.vue';
 import FlashMessages from '@/Components/Messages/FlashMessages.vue';
-
+import VLazyImage from "v-lazy-image";
 
 defineProps<{
     image?: string
@@ -159,18 +159,17 @@ const lang = computed(() => usePage<any>().props.locale);
             </li>
         </ul>
     </nav>
-    <nav class="sitewide-alert">
+    <nav v-if="props.site_config.announcement" class="sitewide-alert">
       <div class="py-2 text-center alert alert-danger alert-wide fw-semibold">
         <div class="gap-2 text-center align-middle flex-container align-center">
           <div>
-            Vertineer is currently undergoing maintenance, you may encounter
-            connectivity issues.
+           {{props.site_config.announcement_message}}
           </div>
         </div>
       </div>
     </nav>
     <div v-if="image" class="profile-banner">
-        <img class="masoqi" :src="image" />
+        <v-lazy-image class="masoqi" :src="image" />
     </div>
     <FlashMessages />
     <main class="container">

@@ -261,14 +261,15 @@ const { props } = usePage<any>();
                         <div class="text-sm fw-semibold text-body">
                             {{ props.auth.user.display_name }}
                         </div>
-                        <div v-if="props.auth.user.settings.beta_tester"
-                            class="mb-1 badge badge-position badge-success fw-semibold">
-                            Beta Tester
-                        </div>
-                        <div v-else-if="props.auth.user.staff"
+                        <div v-if="props.auth.user.staff"
                             class="mb-1 badge badge-position badge-danger fw-semibold">
                             Administrator
                         </div>
+                        <div v-else-if="props.auth.user.settings.beta_tester"
+                            class="mb-1 badge badge-position badge-success fw-semibold">
+                            Beta Tester
+                        </div>
+                        
                         <div v-else class="text-xs text-muted fw-semibold">
                             {{ '@' + props.auth.user.username }} • {{ 'Lvl. ' + props.auth.user.level }}
                         </div>
@@ -304,16 +305,17 @@ const { props } = usePage<any>();
                                 {{ props.auth.user.bucks }} Cash
                             </a>
                         </li>
-                        <li v-if="props.auth.user.settings.beta_tester" class="dropdown-item">
-                            <div class="mt-1 mb-1 badge badge-position-mobile badge-success fw-semibold">
-                                Beta Tester
-                            </div>
-                        </li>
                         <li v-if="props.auth.user.staff" class="dropdown-item">
-                            <div class="mt-1 mb-1 badge badge-position-mobile badge-danger fw-semibold">
+                            <div class="mt-1 mb-1 badge badge-position-mobile badge-danger fw-semibold w-100">
                                 Administrator
                             </div>
                         </li>
+                        <li v-if="props.auth.user.settings.beta_tester" class="dropdown-item">
+                            <div class="mt-1 mb-1 badge badge-position-mobile badge-success fw-semibold w-100">
+                                Beta Tester
+                            </div>
+                        </li>
+                        
                     </div>
                     <div class="align-middle flex-container">
                         <div class="dropdown-title">Account</div>

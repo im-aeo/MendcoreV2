@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
 import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Navbar from '@/Components/LayoutParts/Navbar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
 import AppHead from '@/Components/AppHead.vue';
-import { usePage, router } from '@inertiajs/vue3';
-import { route, current } from 'momentum-trail'
+import { usePage } from '@inertiajs/vue3';
+import { route } from 'momentum-trail'
 import axios from 'axios';
+import { ref } from 'vue';
 
 defineProps<{
     item?: { type: Object, default: null },
@@ -14,6 +14,9 @@ defineProps<{
     itemOwnership: Boolean
 }>();
 
+let thumbnail = document.getElementById("thumbnail");
+
+let isPreview = ref(false);
 
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -28,10 +31,20 @@ const purchaseCoins = () => {
         axios.post(route(`store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'coins' }));
     });
 };
+
+const swap = () => {
+  if (isPreview.value) {
+    isPreview.value = false;
+    thumbnail.src = usePage<any>().props.item.thumbnail;
+  } else {
+    isPreview.value = true;
+    thumbnail.src =  usePage<any>().props.site.production.domains.storage + "/thumbnails/" + usePage<any>().props.item.avatar_preview + ".png";
+  }
+}
 </script>
 <template>
     <AppHead :pageTitle="usePage<any>().props.item.name" :description="usePage<any>().props.item.description"
-        :url="route(`store.item`, { id: item.id })" :item="true" :iid="usePage<any>().props.item.id"
+        :url="route(`store.item`, { id: usePage<any>().props.item.id })" :item="true" :iid="usePage<any>().props.item.id"
         :itime="usePage<any>().props.item.time_off_sale" :cover="usePage<any>().props.item.thumbnail" />
     <Navbar />
     <Sidebar>
@@ -369,7 +382,7 @@ const purchaseCoins = () => {
                         <span class="text-success">
                             <i class="fas fa-money-bill-1-wave me-1"></i>
                             {{ usePage<any>().props.item.cost_bucks }}
-                            Bucks
+                                Bucks
                         </span>?
                     </div>
 
@@ -378,7 +391,8 @@ const purchaseCoins = () => {
                     <form @submit.prevent="purchaseBucks">
                         <button type="submit" class="btn btn-success btn-sm">Buy Now</button>
                         <button type="button" class="btn btn-secondary btn-sm"
-                            @click="showModal('purchase-with-bucks-modal')" data-toggle-modal="#purchase-with-bucks-modal">
+                            @click="showModal('purchase-with-bucks-modal')"
+                            data-toggle-modal="#purchase-with-bucks-modal">
                             Cancel
                         </button>
                     </form>
@@ -412,7 +426,8 @@ const purchaseCoins = () => {
                     <form @submit.prevent="purchaseCoins">
                         <button type="submit" class="btn btn-warning btn-sm">Buy Now</button>
                         <button class="btn btn-secondary btn-sm" type="button"
-                            @click="showModal('purchase-with-coins-modal')" data-toggle-modal="#purchase-with-coins-modal">
+                            @click="showModal('purchase-with-coins-modal')"
+                            data-toggle-modal="#purchase-with-coins-modal">
                             Cancel
                         </button>
                     </form>
@@ -454,12 +469,12 @@ const purchaseCoins = () => {
                                 top: 10px;
                                 left: 10px;
                             ">
-                                <div v-if="item.rare" class="mb-1">
+                                <div v-if="usePage<any>().props.item.rare" class="mb-1">
                                     <span class="badge badge-witch fw-semibold">
                                         <i class="fas fa-star" style="width: 18px"></i>Rare
                                     </span>
                                 </div>
-                                <div v-if="isNewItem(item.created_at)" class="mb-1">
+                                <div v-if="isNewItem(usePage<any>().props.item.created_at)" class="mb-1">
                                     <span class="badge badge-info fw-semibold">
                                         <i class="fas fa-fire" style="width: 18px"></i>New
                                     </span>
@@ -471,11 +486,11 @@ const purchaseCoins = () => {
                                             ().props.item.percent_off + '%' }} off
                                     </div>
                                 </div>
-                                <div class="mb-1">
+                                <!--div class="mb-1">
                                     <span class="badge badge-danger fw-semibold">
                                         <i class="fas fa-clock" style="width: 18px"></i>Goes offsale in 10:10:12
                                     </span>
-                                </div>
+                                </div-->
                             </div>
                             <div class="gap-1 flex-container flex-dir-column" style="
                                 position: absolute;
@@ -483,8 +498,8 @@ const purchaseCoins = () => {
                                 right: 10px;
                             ">
                                 <div class="ms-auto">
-                                    <button class="btn btn-secondary btn-xs">
-                                        Preview
+                                    <button class="btn btn-secondary btn-xs" @click="swap()">
+                                        {{ isPreview ? 'View Item' : 'View Preview' }}
                                     </button>
                                 </div>
                                 <div class="ms-auto" v-if="usePage<any>().props.item.type != 'crate'">
@@ -503,7 +518,8 @@ const purchaseCoins = () => {
                             Yahoo! You own this item.
                         </div>
                     </div>
-                    <div class="gap-3 mb-3 align-middle flex-container" v-if="usePage<any>().props.item.type != 'crate'">
+                    <div class="gap-3 mb-3 align-middle flex-container"
+                        v-if="usePage<any>().props.item.type != 'crate'">
                         <button class="btn btn-info btn-xs w-100" data-toggle-modal="#crate-roll-modal"
                             @click="showModal('crate-roll-modal')">
                             Open Crate
@@ -542,9 +558,10 @@ const purchaseCoins = () => {
                                     Type
                                 </div>
                                 <div class="fw-semibold text-capitalize text-truncate">
-                                    {{ usePage<any>().props.item.item_type !== 'pants' ? capitalizeFirstLetter(usePage<any>
+                                    {{ usePage<any>().props.item.item_type !== 'pants' ? capitalizeFirstLetter(usePage
+                                        <any>
                                         ().props.item.item_type.slice(0, -1)) :
-                                        capitalizeFirstLetter(usePage<any>().props.item.item_type) }}
+                                            capitalizeFirstLetter(usePage<any>().props.item.item_type) }}
                                 </div>
                             </div>
                             <div class="cell large-6">
@@ -683,18 +700,20 @@ const purchaseCoins = () => {
                             <div class="text-xs text-muted text-uppercase fw-bold">
                                 By
                             </div>
-                            <Link :href="route('user.profile', { username: usePage<any>().props.item.creator.username})" class="gap-2 align-middle flex-container"
+                            <Link :href="route('user.profile', { username: usePage<any>().props.item.creator.username })"
+                                class="gap-2 align-middle flex-container"
                                 :class="{ 'text-danger': usePage<any>().props.item.creator.isStaff }">
-                                <img src="/assets/img/dummy_headshot.png" class="headshot" width="38">
-                                <div style="line-height: 17px">
-                                    <div>{{ usePage<any>().props.item.creator.display_name }}</div>
-                                    <div class="text-xs text-muted text-truncate" style="max-width: 140px">
-                                        {{ '@' + usePage<any>().props.item.creator.username }}
-                                    </div>
+                            <img src="/assets/img/dummy_headshot.png" class="headshot" width="38">
+                            <div style="line-height: 17px">
+                                <div>{{ usePage<any>().props.item.creator.display_name }}</div>
+                                <div class="text-xs text-muted text-truncate" style="max-width: 140px">
+                                    {{ '@' + usePage<any>().props.item.creator.username }}
                                 </div>
+                            </div>
                             </Link>
                             <i class="fas fa-shield-check text-success" data-toggle-modal="#verified-modal"
-                                data-tooltip-title="Verified" data-tooltip-placement="bottom" style="cursor: pointer"></i>
+                                data-tooltip-title="Verified" data-tooltip-placement="bottom"
+                                style="cursor: pointer"></i>
                         </div>
                         <div class="mb-1 text-xs fw-bold text-uppercase text-muted">
 
@@ -706,8 +725,10 @@ const purchaseCoins = () => {
                                 Login to Purchase
                             </span>
                         </div>
-                        <div class="gap-2 align-middle flex-container-lg" v-if="usePage<any>().props.auth.user && itemOwnership != true">
-                            <button class="mb-2 btn btn-success btn-sm w-100" data-toggle-modal="#purchase-with-bucks-modal"
+                        <div class="gap-2 align-middle flex-container-lg"
+                            v-if="usePage<any>().props.auth.user && itemOwnership != true">
+                            <button class="mb-2 btn btn-success btn-sm w-100"
+                                data-toggle-modal="#purchase-with-bucks-modal"
                                 @click="showModal('purchase-with-bucks-modal')">
                                 <i class="fas fa-money-bill-1-wave" style="width: 34px"></i>{{ usePage<any>
                                     ().props.item.cost_bucks }} Bucks
@@ -715,9 +736,11 @@ const purchaseCoins = () => {
                             <div class="mb-2 text-xs fw-bold text-uppercase text-muted">
                                 or
                             </div>
-                            <button class="mb-2 btn btn-warning btn-sm w-100" data-toggle-modal="#purchase-with-coins-modal"
+                            <button class="mb-2 btn btn-warning btn-sm w-100"
+                                data-toggle-modal="#purchase-with-coins-modal"
                                 @click="showModal('purchase-with-coins-modal')">
-                                <i class="fas fa-coins" style="width: 34px"></i>{{ usePage<any>().props.item.cost_coins }}
+                                <i class="fas fa-coins" style="width: 34px"></i>{{ usePage<any>().props.item.cost_coins
+                                    }}
                                     Coins
                             </button>
                         </div>
