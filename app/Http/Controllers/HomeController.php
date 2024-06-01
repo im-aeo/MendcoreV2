@@ -59,7 +59,7 @@ class HomeController extends Controller
                     'timecreated' => $status->created_at,
                     'message' => $status->message,
                     'DateHum' => $status->DateHum,
-                    'Thumbnail' => $status->creator->headshot(),
+                    'thumbnail' => $status->creator->headshot(),
                 ];
             });
         });

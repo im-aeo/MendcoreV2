@@ -16,6 +16,7 @@ use LevelUp\Experience\Concerns\HasAchievements;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AeoAuthenticatable;
 use Laravel\Scout\Searchable;
+use App\Models\IpLog;
 
 class User extends AeoAuthenticatable
 {

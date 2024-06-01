@@ -69,7 +69,7 @@ return [
         ],
         [
             'name' => 'Pants',
-            'internal' => 'pant',
+            'internal' => 'pants',
             'icon' => 'fa-solid fa-leaf-maple'
         ],
     ],

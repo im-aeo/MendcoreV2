@@ -59,6 +59,7 @@ class Item extends Model
     {
         return $this->belongsTo('App\Models\User', 'creator_id');
     }
+
     public function onsale() {
         return $this->onsale ? true : false;
     }    
@@ -69,16 +70,22 @@ class Item extends Model
             ['item_id', '=', $this->id]
         ])->count();
     }
+
     public function thumbnail()
     {
         $url = env('STORAGE_URL');
-        $PreviewTypes = config('Values.preview_types');
+        return "{$url}/thumbnails/{$this->hash}.png";
+    }
+
+    public function preview()
+    {
+        $url = env('STORAGE_URL');
+        $PreviewTypes = config('Values.shop.preview_types');
 
         if (in_array($this->item_type, $PreviewTypes ?? [])) {
             return "{$url}/thumbnails/{$this->avatar_preview}.png";
-
         } else {
-        return "{$url}/thumbnails/{$this->hash}.png";
+            return null;
         }
     }
 }

@@ -14,9 +14,11 @@ return new class extends Migration
             $table->bigInteger('buyer_id')->unsigned();
             $table->bigInteger('item_id')->unsigned();
             $table->ipAddress('ip');
+            $table->string('currency_used');
             $table->integer('price');
-            $table->timestamps();
 
+            $table->timestamps();
+            
             $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');

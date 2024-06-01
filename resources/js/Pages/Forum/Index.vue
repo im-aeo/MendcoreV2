@@ -9,7 +9,7 @@ import { route } from 'momentum-trail'; // If you're using the 'route' function 
 import { usePage, useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 
-const props = defineProps({
+defineProps({
     posts: { type: Object },
     section_one: { type: Object },
     section_two: { type: Object },
@@ -34,21 +34,18 @@ function showModal(modalId: string): void {
 };
 
 const submit = () => {
-    axios.get(`/sanctum/csrf-cookie`).then(response => {
-        form.post(route(`forum.create.validate`, { id: props.topic.id }), {
-            onFinish: () => form.reset('password'),
+    axios.get(`/sanctum/csrf-cookie`).then(() => {
+        form.post(route(`forum.create.validate`, { id: usePage<any>().props.topic.id }), {
+            onFinish: () => form.reset('body'),
         });
     });
-};
-const addText = (text) => {
-    form.body += text;
 };
 </script>
 
 <template>
     <AppHead pageTitle="Discuss"
         :description="'Here, You can discuss with the community surrounding several topics on ' + usePage<any>().props.site.name + '.'"
-        :url="route('forum.page', { id: topic.id })" />
+        :url="route('forum.page', { id: usePage<any>().props.topic.id })" />
     <div class="modal" id="forum-modal">
         <div class="modal-card modal-card-body modal-card-sm">
             <div class="section-borderless">
@@ -76,12 +73,13 @@ const addText = (text) => {
                 </div>
             </div>
             <div class="flex-wrap gap-2 flex-container justify-content-end section-borderless">
+                <button type="button" class="btn btn-secondary" @click="showModal('forum-modal')">
+                    Cancel
+                </button>
                 <form @submit.prevent="submit">
-                    <button type="button" class="btn btn-secondary" @click="showModal('forum-modal')">
-                        Cancel
-                    </button>
+
                     <input type="submit" class="btn btn-success" :disabled="form.processing"
-                        :value="'Post in ' + topic.name" />
+                        :value="'Post in ' + usePage<any>().props.topic.name" />
                 </form>
             </div>
         </div>
@@ -93,10 +91,10 @@ const addText = (text) => {
                 :section_three="section_three" />
         </div>
         <div class="cell large-10">
-            <div class="mb-2 text-sm fw-semibold">{{ topic.name }} &bullet; {{ topic.description }}</div>
+            <div class="mb-2 text-sm fw-semibold">{{ usePage<any>().props.topic.name }} &bullet; {{ usePage<any>().props.topic.description }}</div>
             <div class="card">
                 <div class="pb-0 card-body">
-                    <div class="gap-3 text-center flex-container flex-dir-column" v-if="!posts.data.length">
+                    <div class="gap-3 text-center flex-container flex-dir-column" v-if="!usePage<any>().props.posts.data.length">
                         <i class="text-5xl fas fa-message-xmark text-muted"></i>
                         <div style="line-height: 16px">
                             <div class="text-xs fw-bold text-muted text-uppercase">
@@ -107,13 +105,13 @@ const addText = (text) => {
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3 row thread" v-for="post in posts.data">
+                    <div class="mb-3 row thread" v-for="post in usePage<any>().props.posts.data">
                         <div class="mx-1 my-3 divider"></div>
                         <div class="gap-2 align-middle flex-container">
                             <Link :href="route('user.profile', { username: post.username })">
-                                <v-lazy-image :src="post.headshot" width="65"
-                                    class="border headshot flex-child-shrink img-fluid rounded-circle border-secondary bg-dark"
-                                    alt="Avatar" src-placeholder="assets/img/dummy_headshot.png" />
+                            <v-lazy-image :src="post.headshot" width="65"
+                                class="border headshot flex-child-shrink img-fluid rounded-circle border-secondary bg-dark"
+                                alt="Avatar" src-placeholder="assets/img/dummy_headshot.png" />
                             </Link>
                             <div class="flex-wrap col-md-4 d-flex justify-content-center align-content-start"
                                 style="flex-direction: column">
@@ -141,22 +139,3 @@ const addText = (text) => {
     </Sidebar>
     <Footer />
 </template>
-
-<script lang="ts">
-export default {
-    props: {
-        topic: Object,
-        posts: Object,
-        section_one: Object,
-        section_two: Object,
-        section_three: Object,
-    },
-    methods: {
-        getCurrentpath(id) {
-            if (route('forum.page', { id }) === window.location.href) {
-                return window.location.pathname
-            }
-        }
-    },
-};
-</script>

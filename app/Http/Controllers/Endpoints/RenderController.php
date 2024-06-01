@@ -51,20 +51,28 @@ class RenderController extends Controller
         // Return the rendered image as a response
         return $this->getItemThumb($item->id);
     }
-    public function ItemPreviewRender(Request $request, $id)
+    public function ItemPreviewRender(Request $request, $id, $noNameOverride = false, $itemName = null)
     {
         // Retrieve parameters for the request
         $item = Item::findOrFail($id);
 
         // Verify the encryption or any other required validations
         $itemHashName = bin2hex(random_bytes(22));
-        $requestData = $this->prepareRequestData('item_preview', $item, $itemHashName);
+        if ($noNameOverride) {
+            $requestData = $this->prepareRequestData('item_preview', $item, $itemName);
+        } else {
+            $requestData = $this->prepareRequestData('item_preview', $item, $itemHashName);
+        }
         $itemPreview = "{$itemHashName}_preview";
         // Make HTTP request to the rendering server
         $this->makeRenderRequest($requestData);
 
         // Update the items image and save
-        $item->hash = $itemHashName;
+        if ($noNameOverride) {
+            $item->hash = $itemName;
+        } else {
+            $item->hash = $itemHashName;
+        }
         $item->avatar_preview = $itemPreview;
         $item->save();
 
@@ -81,12 +89,10 @@ class RenderController extends Controller
     public function getItemThumb($id, bool $isPreview = false)
     {
         $item = Item::findOrFail($id);
-        if ($isPreview){
+        if ($isPreview) {
             return env('STORAGE_URL') . '/uploads/' . $item->hash . '_preview.png';
-
         } else {
             return env('STORAGE_URL') . '/uploads/' . $item->hash . '.png';
-
         }
     }
 
@@ -120,6 +126,9 @@ class RenderController extends Controller
             if ($db->tool) {
                 $requestData['tool'] =  getItemHash($db->tool);
             };
+            if ($db->tshirt) {
+                $requestData['tshirt'] =  getItemHash($db->tshirt);
+            };
         } elseif ($type == 'item') {
             if ($db->type == 'hat') {
                 $requestData['item'] = getItemHash($db->id);
@@ -128,39 +137,31 @@ class RenderController extends Controller
             } else {
                 $requestData['tool'] = getItemHash($db->id);
             }
-        }
-        elseif ($type == 'item_preview') {
+        } elseif ($type == 'item_preview') {
             if ($db->item_type == 'hat') {
                 $requestData['item'] = getItemHash($db->id);
             } elseif ($db == 'face') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isFace'] = true;
-            }
-            elseif ($db->item_type == 'tshirt') {
+            } elseif ($db->item_type == 'tshirt') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isTshirt'] = true;
                 $requestData['pathmod'] = false;
-            }
-            elseif ($db->item_type == 'tool') {
+            } elseif ($db->item_type == 'tool') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isTool'] = true;
-            }
-            elseif ($db->item_type == 'shirt') {
+            } elseif ($db->item_type == 'shirt') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isShirt'] = true;
                 $requestData['pathmod'] = false;
-
-            }
-            elseif ($db->item_type == 'pants') {
+            } elseif ($db->item_type == 'pants') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isPants'] = true;
                 $requestData['pathmod'] = false;
-
             } else {
                 $requestData['item'] = getItemHash($db->id);
             }
-        }
-        elseif ($type == 'preview_tool') {
+        } elseif ($type == 'preview_tool') {
             if ($db->type == 'hat') {
                 $requestData['hat_1'] = getItemHash($db->hat1);
             } elseif ($db == 'face') {

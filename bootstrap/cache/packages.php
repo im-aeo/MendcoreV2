@@ -6,6 +6,13 @@
       0 => 'LaravelProfane\\ProfaneServiceProvider',
     ),
   ),
+  'askedio/laravel5-profanity-filter' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Askedio\\Laravel5ProfanityFilter\\Providers\\ProfanityFilterServiceProvider',
+    ),
+  ),
   'barryvdh/laravel-debugbar' => 
   array (
     'providers' => 

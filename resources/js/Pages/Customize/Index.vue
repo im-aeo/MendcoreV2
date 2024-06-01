@@ -10,42 +10,25 @@ import VLazyImage from "v-lazy-image";
 
 defineProps({
   avatar: Object as () => Record<string, unknown>,
-    itemcat: Array,
+  categories: Array,
 });
 
-const colors = usePage().props.colors;
-const currentcat = "hat"
+const colors = usePage<any>().props.colors;
+const currentcat = ref("hat");
+const CategoryItems = ref([]);
+const wearingItems = ref([]);
+const wearingHats = ref([]);
+
 var userAvatar = reactive({
-  color_head: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_head),
-  color_torso: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_torso),
-  color_left_arm: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_left_arm),
-  color_right_arm: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_right_arm),
-  color_left_leg: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_left_leg),
-  color_right_leg: computed(() => (usePage<any>().props.avatar as Record<string, unknown>).color_right_leg),
-  image: (usePage<any>().props.avatar as Record<string, unknown>).thumbnail,
+  color_head: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_head']),
+  color_torso: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_torso']),
+  color_left_arm: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_left_arm']),
+  color_right_arm: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_right_arm']),
+  color_left_leg: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_left_leg']),
+  color_right_leg: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_right_leg']),
+  image: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['thumbnail']),
 },
 );
-
-const wearItem = (item_id) => {
-  // Define the data to send to your PHP endpoint
-  const requestData = {
-    action: "wear", // Replace with the desired action
-    id: item_id, // Replace with the item ID you want to wear
-    // Add other data as needed
-  };
-
-  // Make an Axios POST request to your PHP endpoint
-  axios
-    .post(route(`avatar.update`), requestData)
-    .then((response) => {
-      // Handle the response from the server
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // Handle any errors
-      console.error(error);
-    });
-};
 
 const selectedPart = ref<string | null>(null);
 const selectedColor = ref<string | null>(null); // Initialize with a default color, e.g., white
@@ -73,7 +56,6 @@ const partNames = {
   left_leg: "Left Leg",
   right_leg: "Right Leg",
 };
-
 // Function to submit the selected part's color to the API
 
 function VRCReset(): Promise<void> {
@@ -167,11 +149,20 @@ function handlePartSelection(part: string): void {
   showModal("PartsModal");
   selectPart(part);
 }
+const SortItemByType = async (id: number, type: string) => {
+  if (type === 'hat') {
+    showModal('SlotModal');
+  } else {
+    WearItem(id, null);
+  }
+}
+
 const getItemsbyCategory = async (category) => {
   try {
     const response = await axios.get(route(`api.avatar.items`, { category: category }));
-    const items = response.data;
-    return items;
+    CategoryItems.value = response.data;
+    currentcat.value = category;
+
   } catch (error) {
     console.error('Error fetching all items:', error);
     return [];
@@ -180,28 +171,79 @@ const getItemsbyCategory = async (category) => {
 
 const getCurrentlyWearingItems = async () => {
   try {
-    const response = await axios.get('https://your-api-url/currently-wearing-items');
-    const wearingItems = response.data;
-    return wearingItems;
+    const response = await axios.get(route(`api.avatar.wearing-items`));
+    wearingItems.value = response.data;
   } catch (error) {
     console.error('Error fetching currently wearing items:', error);
     return [];
   }
 };
 
-const combineData = (allItems, wearingItems) => {
-  const combinedData = allItems.map((item) => {
-    const isWearing = wearingItems.includes(item.id);
-    return { ...item, isWearing };
-  });
-  return combinedData;
+const getCurrentlyWearingHats = async () => {
+  try {
+    const response = await axios.get(route(`api.avatar.wearing-hats`));
+    wearingHats.value = response.data;
+  } catch (error) {
+    console.error('Error fetching currently wearing items:', error);
+    return [];
+  }
 };
-  const CategoryItems = getItemsbyCategory(currentcat);
-  const wearingItems = getCurrentlyWearingItems();
+
+const WearItem = async (id, slot) => {
+  try {
+    const response = await axios.get(route(`api.avatar.wear-item`, { id: id, slot: slot }));
+    getCurrentlyWearingItems();
+  } catch (error) {
+    console.error('Error fetching currently wearing items:', error);
+    return [];
+  }
+};
+
+onMounted(() => {
+  getCurrentlyWearingItems(),
+    getCurrentlyWearingHats()
+})
 </script>
 <template>
   <Navbar />
   <Sidebar>
+    <div class="modal" id="SlotModal">
+      <div class="modal-card modal-card-body modal-card-sm">
+        <div class="section-borderless">
+          <div class="gap-2 align-middle flex-container align-justify">
+            <div class="text-lg fw-semibold">Pick a Slot</div>
+            <button @click="showModal('SlotModal')" class="btn-circle" data-toggle-modal="#SlotModal"
+              style="margin-right: -10px">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="section-borderless">
+          <div class="mb-2">
+            <div class="grid-x grid-margin-x">
+              <div v-for="item in wearingHats.data" class="cell large-2 medium-3 small-3">
+                <div class="d-block">
+                  <div class="p-2 mb-1 card card-inner position-relative">
+                    <img :src="item.thumbnail" />
+                  </div>
+                  <Link :href="route(`store.item`, { id: item.id })" class="text-body fw-semibold text-truncate">
+                  {{ item.name }}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-wrap gap-2 flex-container justify-content-end section-borderless">
+          <button type="button" class="btn btn-secondary" @click="showModal('SlotModal')">
+            Cancel
+          </button>
+          <button v-if="!VrcRequest" type="submit" class="btn btn-success" @click="showModal('SlotModal')">
+            Wear
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="modal" id="PartsModal">
       <div class="modal-card modal-card-body modal-card-sm">
         <div class="section-borderless">
@@ -225,11 +267,11 @@ const combineData = (allItems, wearingItems) => {
                 selectedColor === color ||
                 userAvatar[`color_${selectedPart}`] === color,
             }" :style="{
-  backgroundColor: '#' + color,
-  display: 'inline-block',
-  width: '32px',
-  height: '32px',
-}"></div>
+              backgroundColor: '#' + color,
+              display: 'inline-block',
+              width: '32px',
+              height: '32px',
+            }"></div>
           </div>
           <div class="text-xs text-muted fw-semibold">
             After changing your avatar part your avatar will rerender with the
@@ -274,7 +316,7 @@ const combineData = (allItems, wearingItems) => {
               borderRadius: '15px',
               marginTop: '-1px',
             }" @click="handlePartSelection('head')">
-              <img src="https://cdn.netisu.com/uploads/default.png" width="50" height="50">
+              <img src="/assets/img/item_dummy_4.png" width="50" height="50">
             </button>
           </div>
           <div style="margin-bottom:2.5px;">
@@ -318,32 +360,31 @@ const combineData = (allItems, wearingItems) => {
       <div class="mb-1 align-middle flex-container align-justify">
         <div class="mb-1 text-xl fw-semibold">Inventory</div>
       </div>
-      <div class="mb-3 card card-body">
+      <div class="section">
         <div class="gap-3 text-center flex-container flex-dir-column">
-          <div v-if="CategoryItems" class="grid-x grid-margin-x grid-padding-y">
-            <div v-for="item in CategoryItems" class="cell large-3 medium-3 small-6"><a class="d-block"
-                href="https://netisu.test/market/item/1">
-                <div class="p-2 mb-1 card card-item position-relative">
-
-                  <div style="position: absolute; bottom: 10px; left: 10px;"></div>
-                  <div style="position: absolute; top: 10px; right: 10px;">
-                    <div class="mb-1 badge badge-success fw-semibold"><i class="fas fa-plus" style="width: 18px;"></i>Wear
-                    </div>
-                    <div class="mb-1 badge badge-danger fw-semibold"><i class="fas fa-minus"
-                        style="width: 18px;"></i>Remove</div>
-                  </div><img src="/assets/img/item_dummy_4.png">
+          <div class="grid-x grid-margin-x">
+            <div v-for="item in wearingItems.data" class="cell large-2 medium-3 small-3">
+              <div class="d-block">
+                <div class="p-2 mb-1 card card-inner position-relative">
+                  <img :src="item.thumbnail" />
                 </div>
-                <div class="text-body fw-semibold text-truncate">{{ item.hats.hat_1 }}</div>
-              </a>
+                <Link :href="route(`store.item`, { id: item.id })" class="text-body fw-semibold text-truncate">
+                {{ item.name }}
+                </Link>
+              </div>
             </div>
           </div>
-          <i v-else class="text-5xl fas fa-wand-magic-sparkles text-muted"></i>
-          <div style="line-height: 16px">
-            <div class="text-xs fw-bold text-muted text-uppercase">
-              No Items.
-            </div>
-            <div class="text-xs text-muted fw-semibold">
-              You are not wearing any items.
+        </div>
+        <div class="mb-3 card card-body">
+          <div v-if="!wearingItems.length" class="gap-3 text-center flex-container flex-dir-column">
+            <i class="text-5xl fas fa-wand-magic-sparkles text-muted"></i>
+            <div style="line-height: 16px">
+              <div class="text-xs fw-bold text-muted text-uppercase">
+                No Items.
+              </div>
+              <div class="text-xs text-muted fw-semibold">
+                You are not wearing any items.
+              </div>
             </div>
           </div>
         </div>
@@ -351,20 +392,40 @@ const combineData = (allItems, wearingItems) => {
       <div class="mb-3 card card-body">
         <div class="section">
           <ul class="tabs">
-            <li class="tab-item" v-for="category in itemcat">
-              <a>soon</a>
+            <li class="tab-item" v-for="category in categories" @click="getItemsbyCategory(category.internal)">
+              <div class="tab-link squish" :class="{ active: currentcat === category.internal }">
+                <i :class="category.icon"></i>
+                {{ category.name }}
+              </div>
             </li>
           </ul>
         </div>
         <div class="section">
           <div class="gap-3 text-center flex-container flex-dir-column">
+            <div class="grid-x grid-margin-x">
+              <div v-for="item in CategoryItems.data" class="cell large-2 medium-3 small-3"
+                @click="SortItemByType(item.id, item.type)">
+                <div class="d-block">
+                  <div class="p-2 mb-1 card card-inner position-relative">
+                    <img :src="item.thumbnail" />
+                  </div>
+                  <Link :href="route(`store.item`, { id: item.id })" class="text-body fw-semibold text-truncate">
+                  {{ item.name }}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Pagination v-bind:pagedata="CategoryItems" />
+
+          <div v-if="!CategoryItems.length" class="gap-3 text-center flex-container flex-dir-column">
             <i class="text-5xl fas fa-crate-apple text-muted"></i>
             <div style="line-height: 16px">
               <div class="text-xs fw-bold text-muted text-uppercase">
-                No insert_category_name_here
+                No Items
               </div>
               <div class="text-xs text-muted fw-semibold">
-                You have no items in the category.
+                You have no items in this category.
               </div>
             </div>
           </div>

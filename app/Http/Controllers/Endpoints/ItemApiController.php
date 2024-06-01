@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use App\Models\ItemReseller;
 use App\Models\ItemPurchase;
+use Illuminate\Http\JsonResponse;
 
 class ItemApiController extends Controller
 {
@@ -38,7 +39,13 @@ class ItemApiController extends Controller
 
         // Handle category not found
         if (!isset($categoryData)) {
-            return response()->json(['error' => 'Invalid category']);
+            return response()->json(
+                [
+                    "message" => "Invalid category",
+                    "type" => "danger",
+                ],
+                500
+            );
         }
 
         $items = [];
@@ -88,7 +95,13 @@ class ItemApiController extends Controller
         // Check user ownership and crate existence
         $crate = $this->validateCrateOwnership($request->id);
         if (!$crate) {
-            return response()->json(['error' => 'This crate does not exist or you do not own it.']);
+            return response()->json(
+                [
+                    "message" => "This crate does not exist or you do not own it.",
+                    "type" => "danger",
+                ],
+                500
+            );
         }
 
         // Get crate items and ensure they exist
@@ -175,15 +188,22 @@ class ItemApiController extends Controller
         }
         return $images;
     }
+
     public function getEventItems($eventId)
     {
         // Add return statement to get the query result
         return Item::where(['in_event' => true, 'event_id' => $eventId])->get();
     }
+
     public function purchase(int $itemId, string $currencyType, ?int $resellerId = null)
     {
         // Fetch item and validate access
         $item = $this->getItemAndValidateAccess($itemId);
+
+
+        if ($item instanceof JsonResponse) { // Check if it's an instance of JsonResp
+            return response()->json($item->original);
+        }
 
         // Handle reseller purchase logic
         if ($resellerId) {
@@ -194,7 +214,7 @@ class ItemApiController extends Controller
         return $this->handleDirectPurchase($item, $currencyType);
     }
 
-    private function getItemAndValidateAccess(int $itemId): Item
+    private function getItemAndValidateAccess(int $itemId)
     {
         $item = Item::where('id', $itemId)->firstOrFail();
 
@@ -202,19 +222,33 @@ class ItemApiController extends Controller
             abort(403);
         }
 
-        if ($item->status != 'approved') {
-            return back()->withErrors(['This item is not approved.']);
+        if ($item->status != 'approved' && !Auth::user()->isStaff()) {
+            return response()->json(
+                [
+                    "message" => "This item is not approved.",
+                    "type" => "danger",
+                ],
+                500
+            );
+        } else if (!$item->onsale) {
+            return response()->json(
+                [
+                    "message" => "This item is not for sale.",
+                    "type" => "danger",
+                ],
+                500
+            );
+        } else if (Auth::user()->ownsItem($itemId)) {
+            return response()->json(
+                [
+                    "message" => "You already own the item.",
+                    "type" => "danger",
+                ],
+                500
+            );
+        } else {
+            return $item;
         }
-
-        if (!$item->onsale) {
-            return back()->withErrors(['This item is not on sale.']);
-        }
-
-        if (Auth::user()->ownsItem($itemId)) {
-            return back()->withErrors(['You already own this item.']);
-        }
-
-        return $item;
     }
 
     private function handleResellerPurchase(Item $item, int $resellerId, string $currencyType)
@@ -222,11 +256,24 @@ class ItemApiController extends Controller
         $listing = ItemReseller::where('id', $resellerId)->first();
 
         if (Auth::user()->id == $listing->seller->id) {
+            return response()->json(
+                [
+                    "message" => "You cannot buy your own item.",
+                    "type" => "danger",
+                ],
+                500
+            );
             return back()->withErrors(['You cannot buy your own item.']);
         }
 
         if ($currencyType != 'bucks') {
-            return back()->withErrors(['You can only buy resold items for bucks.']);
+            return response()->json(
+                [
+                    "message" => "You can only buy resold items for bucks.",
+                    "type" => "danger",
+                ],
+                500
+            );
         }
 
         $price = $listing->price;
@@ -255,7 +302,13 @@ class ItemApiController extends Controller
         $this->createPurchaseRecord($item, $seller, $currencyType, $price);
         Auth::user()->addPoints(30);
 
-        return back()->with('success_message', 'You now own this item!');
+        return response()->json(
+            [
+                "message" => "You now own this item.",
+                "type" => "success",
+            ],
+            200
+        );
     }
 
     private function handleDirectPurchase(Item $item, string $currencyType)
@@ -268,9 +321,11 @@ class ItemApiController extends Controller
             $this->validateUserCurrency($currencyType, $price);
 
             // Update seller currency and deduct buyer currency
-            $this->updateCurrencies($seller, $price);
-            Auth::user()->{$currencyType} -= $price;
-
+            if ($currencyType === 'coins') {
+                Auth::user()->coins -= $price;
+            } else {
+                Auth::user()->bucks -= $price;
+            }
             // Create inventory record (if not a free item)
             if ($currencyType !== 'free') {
                 $inventory = new Inventory;
@@ -278,9 +333,19 @@ class ItemApiController extends Controller
                 $inventory->item_id = $item->id;
                 $inventory->save();
             }
+            $request = new Request;
 
             // Create purchase record
-            $this->createPurchaseRecord($item, $seller, $currencyType, $price);
+            $purchase = new ItemPurchase;
+            $purchase->seller_id = $seller->id;
+            $purchase->buyer_id = Auth::user()->id;
+            $purchase->item_id = $item->id;
+            $purchase->ip = $request->getClientIp();
+
+            $purchase->currency_used = $currencyType;
+            $purchase->price = $price;
+            $purchase->save();
+
             Auth::user()->addPoints(30);
 
             // Reduce stock if applicable
@@ -289,15 +354,33 @@ class ItemApiController extends Controller
                 $item->save();
             }
 
-            return back()->with('success_message', 'You now own this item!');
+            return response()->json(
+                [
+                    "message" => "You now own this item.",
+                    "type" => "success",
+                ],
+                200
+            );
         }
 
-        return back()->withErrors(['This item is out of stock.']);
+        return response()->json(
+            [
+                "message" => "This item is out of stock.",
+                "type" => "danger",
+            ],
+            500
+        );
     }
     private function validateUserCurrency(string $currencyType, float $price)
     {
         if ($currencyType != 'free' && Auth::user()->{$currencyType} < $price) {
-            return back()->withErrors(["You do not have enough {$currencyType} to purchase this item."]);
+            return response()->json(
+                [
+                    "message" => "You do not have enough {$currencyType} to purchase this item.",
+                    "type" => "danger",
+                ],
+                500
+            );
         }
     }
 

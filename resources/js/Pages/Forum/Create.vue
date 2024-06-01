@@ -2,9 +2,8 @@
 import Navbar from '@/Components/LayoutParts/Navbar.vue';
 import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
-import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { route, current } from "momentum-trail";
+import { useForm } from '@inertiajs/vue3';
+import { route } from "momentum-trail";
 import axios from 'axios';
 
 const props = defineProps({
@@ -20,9 +19,9 @@ const form = useForm({
 });
 
 const submit = () => {
-axios.get(`/sanctum/csrf-cookie`).then(response => {
-    form.post(route(`forum.create.validate`, {id: props.topic.id}), {
-        onFinish: () => form.reset('password'),
+axios.get(`/sanctum/csrf-cookie`).then(() => {
+    form.post(route(`forum.create.validate`, {id: props.topic?.['id']}), {
+        onFinish: () => form.reset('body'),
     });
 });
 };

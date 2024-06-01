@@ -3,7 +3,7 @@ import Navbar from '@/Components/LayoutParts/Navbar.vue';
 import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
 import AeoPagination from '@/Components/Pagination.vue';
-import { route, current } from "momentum-trail";
+import { route } from "momentum-trail";
 import { ref } from 'vue';
 import axios from 'axios';
 import { useForm, usePage } from '@inertiajs/vue3';
@@ -19,14 +19,11 @@ const form = useForm({
 });
 
 const submit = () => {
-    axios.get(`/sanctum/csrf-cookie`).then(response => {
-        form.post(route(`forum.reply.validate`, { id: usePage<any>().props.props.usePage<any>().props.post.id }), {
+    axios.get(`/sanctum/csrf-cookie`).then(() => {
+        form.post(route(`forum.reply.validate`, { id: usePage<any>().props.post.id }), {
             onFinish: () => form.reset('body'),
         });
     });
-};
-const addText = (text) => {
-    form.body += text;
 };
 
 const isHidden = ref(true);

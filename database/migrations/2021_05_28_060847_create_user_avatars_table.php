@@ -25,7 +25,7 @@ class CreateUserAvatarsTable extends Migration
             $table->integer('hat_4')->nullable();
             $table->integer('hat_5')->nullable();
             $table->integer('hat_6')->nullable();
-            $table->integer('accessory')->nullable();
+            $table->integer('addon')->nullable();
             $table->integer('head')->nullable();
             $table->integer('face')->nullable();
             $table->integer('tool')->nullable();

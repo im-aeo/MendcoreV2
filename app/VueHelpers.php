@@ -27,22 +27,22 @@ function crateRarity($data, $rarity)
 
 function pluralization($type, $plural = false)
 {
-  // Get item types configuration (consider error handling if not defined)
-  $types = config('PermittedItemTypes');
+    // Get item types configuration (consider error handling if not defined)
+    $types = config('PermittedItemTypes');
 
-  // Validate type and plural flag (optional)
-  if (!is_string($type) || !is_bool($plural)) {
-    throw new InvalidArgumentException('Invalid arguments for itemType');
-  }
+    // Validate type and plural flag (optional)
+    if (!is_string($type) || !is_bool($plural)) {
+        throw new InvalidArgumentException('Invalid arguments for itemType');
+    }
 
-  $type = array_key_exists($type, $types) ? $types[$type][$plural ? 1 : 0] : ucfirst($type);
+    $type = array_key_exists($type, $types) ? $types[$type][$plural ? 1 : 0] : ucfirst($type);
 
-  // Handle missing plural form (optional)
-  if (!$plural && !isset($types[$type][1])) {
-    $type .= 's'; // Generic pluralization
-  }
+    // Handle missing plural form (optional)
+    if (!$plural && !isset($types[$type][1])) {
+        $type .= 's'; // Generic pluralization
+    }
 
-  return $type;
+    return $type;
 }
 
 
@@ -50,9 +50,9 @@ function customRaritySort($a, $b)
 {
     $key = 'rarity';
 
-    if($a[$key] < $b[$key])
+    if ($a[$key] < $b[$key])
         return 1;
-    else if($a[$key] > $b[$key])
+    else if ($a[$key] > $b[$key])
         return -1;
 
     return 0;
@@ -72,7 +72,7 @@ function site_setting($key)
         // If not in production, retrieve settings without caching
         $settings = SiteSettings::find(1);
     }
-    
+
     // If settings are not found, return a default value or handle the error
     if (!$settings) {
         return null; // or return a default value or throw an exception
@@ -84,8 +84,23 @@ function site_setting($key)
 
 function getItemHash($id): ?string
 {
-  // Assuming your actual primary key column name is 'id'
-  $item = Item::where('id', '=', $id)->firstOrFail();
+    // Assuming your actual primary key column name is 'id'
+    $item = Item::where('id', '=', $id)->firstOrFail();
 
-  return $item->hash;
+    return $item->hash;
+}
+
+function remote_file_exists($url)
+{
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_NOBODY, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); # handles 301/2 redirects
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if ($httpCode == 200) {
+        return true;
+    } else {
+        return false;
+    }
 }

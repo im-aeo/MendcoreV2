@@ -57,14 +57,18 @@ class GrabController extends Controller
     public function customizeIndex()
     {
         $colors = config('avatar_colors'); // Assuming you've defined the colors in a config file.
-        $itemcat = config('ItemCategories'); // Assuming you've defined the colors in a config file.
+        $cacheKey = 'customization_categories';
+
+        $categories = cache()->remember($cacheKey, now()->addHours(6), function () {
+            return config('SimpleCategories');
+        });
 
 
         return inertia('Customize/Index', [
             'avatar' => Auth::user()->avatar(),
             'avatar.thumbnail' => Auth::user()->thumbnail(),
             'colors' => $colors,
-            'itemcat' => $itemcat,
+            'categories' => $categories,
         ]);
     }
 

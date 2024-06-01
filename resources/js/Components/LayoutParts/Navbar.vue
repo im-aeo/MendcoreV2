@@ -84,8 +84,62 @@ const lang = computed<any>(() => props.locale);
 const { props } = usePage<any>();
 </script>
 <template>
-    <PageLoader v-if="props.site.page_loader"/>
+    <PageLoader v-if="props.site.page_loader" />
     <LanguageModal />
+    <div v-if="props.auth.user" class="modal" id="profile-modal">
+        <div class="modal-card modal-card-body"
+        :style="props.auth.user.settings.profile_banner_enabled ? { 'background': 'url(' + props.auth.user.settings.profile_banner_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover', 'box-shadow': 'inset 0 0 0 100vw rgba(var(--section-bg-rgb), 0.5)!important' } : null">
+            <div class="section-borderless">
+                <div class="gap-2 align-middle flex-container align-justify">
+                    <button class="gap-2 align-middle flex-container squish">
+                        <v-lazy-image :src="usePage<any>().props.auth.user.headshot" width="40"
+                            class="headshot" alt="Avatar"
+                            src-placeholder="assets/img/dummy_headshot.png" 
+                            :style="props.auth.user.settings.calling_card_enabled ? { 'margin': '0', 'background-image': 'url(' + props.auth.user.settings.calling_card_url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' } : null" 
+                            />
+                        <div class="text-start">
+                            <div class="text-sm fw-semibold text-body">
+                                {{ props.auth.user.display_name }}
+                            </div>
+                                <div v-if="props.auth.user.staff" class="mt-1 mb-1 badge badge-danger fw-semibold w-100">
+                                    Administrator
+                                </div>
+
+                                <div v-else-if="props.auth.user.settings.beta_tester" class="mt-1 mb-1 badge badge-success fw-semibold w-100">
+                                    Beta Tester
+                                </div>
+                            <div v-else class="text-xs text-body fw-semibold">
+                                {{ "@" + props.auth.user.username }} &bullet; {{ 'Lvl. ' + props.auth.user.level }}
+                            </div>
+                        </div>
+                    </button>
+                    <button @click="showModal('profile-modal')" class="btn-circle text-body"
+                        data-toggle-modal="#following-modal" style="margin-right: -10px">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="section-borderless">
+                <div class="gap-2 section flex-container">
+                    <Link :href="route(`user.profile`, { username: props.auth.user.username })" class="min-w-0 btn btn-info btn-sm text-truncate">
+                        <i class="fa-solid fa-user-crown"></i>
+                    </Link>
+
+                    <Link :href="route(`avatar.page`)" class="min-w-0 btn btn-success btn-sm text-truncate">
+                        <i class="fa-solid fa-palette"></i>
+                    </Link>
+
+                    <Link :href="route(`user.settings.page`)" class="min-w-0 btn btn-warning btn-sm text-truncate">
+                        <i class="fa-solid fa-wrench"></i>
+                    </Link>
+
+                    <Link :href="route('auth.logout')" method="post" class="min-w-0 btn btn-danger btn-sm text-truncate">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </Link>
+                </div>
+            </div>
+        </div>
+    </div>
     <nav class="navbar">
         <ul class="navbar-nav grid-x">
             <li class="nav-item cell shrink show-for-small hide-for-large me-1" @click="sidebarOpen()">
@@ -107,21 +161,21 @@ const { props } = usePage<any>();
                     placeholder="Search..." @input="performSearch">
                 <ul :class="['dropdown-menu', { 'hide': search === '' }]" id="global-search-results">
                     <li class="dropdown-title">Quick Results</li>
-                    <SearchResult href="#" v-if="!SearchLoading" v-for="result in results" :link="result.url" :name="result.name"
-                        :image="result.image" />
+                    <SearchResult href="#" v-if="!SearchLoading" v-for="result in results" :link="result.url"
+                        :name="result.name" :image="result.image" />
                     <SearchResultSkeleton v-else />
                     <li class="px-2 py-2 text-center dropdown-item" v-if="!SearchLoading && !results">
                         <div class="gap-3 flex-container flex-dir-column">
-                                <i class="text-5xl fa-solid fa-folder-magnifying-glass text-muted"></i>
-                                <div style="line-height: 16px">
-                                    <div class="text-xs fw-bold text-muted text-uppercase">
-                                        No Results
-                                    </div>
-                                    <div class="text-xs text-muted fw-semibold">
-                                        My mighty search came up empty! Try a different keyword?
-                                    </div>
+                            <i class="text-5xl fa-solid fa-folder-magnifying-glass text-muted"></i>
+                            <div style="line-height: 16px">
+                                <div class="text-xs fw-bold text-muted text-uppercase">
+                                    No Results
+                                </div>
+                                <div class="text-xs text-muted fw-semibold">
+                                    My mighty search came up empty! Try a different keyword?
                                 </div>
                             </div>
+                        </div>
                     </li>
                     <li class="divider"></li>
                     <li class="dropdown-item">
@@ -165,7 +219,8 @@ const { props } = usePage<any>();
                 <div class="dropdown show-for-medium position-relative" id="notification_dropdown">
                     <div @click="addActiveClass(`notification_dropdown`)" class="btn-circle squish">
                         <button class="px-2 text-body" v-tippy content="Notifications" data-tooltip-placement="bottom">
-                            <span class="notification-circle" v-if="props.auth.user.notifications.length" ></span><i class="text-xl fas fa-bell"></i>
+                            <span class="notification-circle" v-if="props.auth.user.notifications.length"></span><i
+                                class="text-xl fas fa-bell"></i>
                         </button>
                     </div>
                     <ul class="dropdown-menu dropdown-menu-end" style="width: 340px">
@@ -190,24 +245,25 @@ const { props } = usePage<any>();
 
                         <li v-else v-for="notification in props.auth.user.notifications" class="dropdown-item">
                             <Link :href="notification.data.route" class="dropdown-link">
-                                <div class="gap-1 align-middle flex-container">
-                                    <i class="text-lg text-center fas fa-comments-alt text-info flex-child-grow"
-                                        style="width: 38px"></i>
-                                    <div class="gap-2 align-middle flex-container w-100">
-                                        <img src="/assets/img/dummy_headshot.png" class="headshot flex-child-shrink"
-                                            height="40" width="40" />
-                                        <div class="min-w-0" style="line-height: 16px">
-                                            <div class="text-sm text-truncate">
-                                                <span class="search-keyword" v-if="notification.data.object">{{ notification.data.object }} &nbsp;</span>
-                                                <span class="text-sm text-muted">{{ notification.data.message }}</span>
-                                            </div>
-                                            <div class="text-xs text-muted">{{ notification.DateHum }}</div>
+                            <div class="gap-1 align-middle flex-container">
+                                <i class="text-lg text-center fas fa-comments-alt text-info flex-child-grow"
+                                    style="width: 38px"></i>
+                                <div class="gap-2 align-middle flex-container w-100">
+                                    <img src="/assets/img/dummy_headshot.png" class="headshot flex-child-shrink"
+                                        height="40" width="40" />
+                                    <div class="min-w-0" style="line-height: 16px">
+                                        <div class="text-sm text-truncate">
+                                            <span class="search-keyword" v-if="notification.data.object">{{
+                                                notification.data.object }} &nbsp;</span>
+                                            <span class="text-sm text-muted">{{ notification.data.message }}</span>
                                         </div>
+                                        <div class="text-xs text-muted">{{ notification.DateHum }}</div>
                                     </div>
                                 </div>
+                            </div>
                             </Link>
                         </li>
-                        <li  class="divider"></li>
+                        <li class="divider"></li>
                         <li v-if="props.auth.user.notifications.length" class="dropdown-item">
                             <a href="#" class="dropdown-link">
                                 <div class="align-middle flex-container align-justify">
@@ -219,7 +275,7 @@ const { props } = usePage<any>();
                                 </div>
                             </a>
                         </li>
-                        
+
                         <li class="dropdown-item">
                             <a href="#" class="dropdown-link">
                                 <div class="align-middle flex-container align-justify">
@@ -252,97 +308,29 @@ const { props } = usePage<any>();
                     </div>
                 </a>
             </li>
-            <li v-if="props.auth.user" @click="addActiveClass(`user_dropdown`)"
+            <li v-if="props.auth.user"
                 class="dropdown position-relative nav-item cell shrink ms-1" id="user_dropdown">
-                <button class="gap-2 align-middle flex-container squish">
-                    <v-lazy-image :src="usePage<any>().props.auth.user.headshot" width="40" class="headshot" alt="Avatar"
-                        src-placeholder="assets/img/dummy_headshot.png" />
-                        <div class="text-start show-for-large">
+                <button @click="showModal('profile-modal')" class="gap-2 align-middle flex-container squish">
+                    <v-lazy-image :src="usePage<any>().props.auth.user.headshot" width="40" class="headshot"
+                        alt="Avatar" src-placeholder="assets/img/dummy_headshot.png" />
+                    <div class="text-start show-for-large">
                         <div class="text-sm fw-semibold text-body">
                             {{ props.auth.user.display_name }}
                         </div>
-                        <div v-if="props.auth.user.staff"
-                            class="mb-1 badge badge-position badge-danger fw-semibold">
+                        <div v-if="props.auth.user.staff" class="mb-1 badge badge-position badge-danger fw-semibold">
                             Administrator
                         </div>
                         <div v-else-if="props.auth.user.settings.beta_tester"
                             class="mb-1 badge badge-position badge-success fw-semibold">
                             Beta Tester
                         </div>
-                        
+
                         <div v-else class="text-xs text-muted fw-semibold">
                             {{ '@' + props.auth.user.username }} • {{ 'Lvl. ' + props.auth.user.level }}
                         </div>
                     </div>
                     <i class="text-sm fas fa-chevron-down text-muted show-for-large"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <div class="show-for-small hide-for-large">
-                        <div class="gap-2 px-2 py-1 align-middle flex-container">
-                            <v-lazy-image :src="usePage<any>().props.auth.user.headshot" width="40" class="headshot flex-child-shrink" alt="Avatar"
-                                src-placeholder="assets/img/dummy_headshot.png" />
-                            <div class="text-start" style="line-height: 12px">
-                                <div class="text-sm fw-semibold">
-                                    {{ props.auth.user.display_name }}
-                                </div>
-                                <div class="mb-1 text-xs text-muted fw-semibold">
-                                    {{ '@' + props.auth.user.username }}
-                                </div>
-                                <div class="text-xs text-muted fw-semibold">
-                                    {{ 'Lvl. ' + props.auth.user.level }}
-                                </div>
-                            </div>
-                        </div>
-                        <li class="dropdown-item">
-                            <a href="#" class="dropdown-link dropdown-link-has-icon text-warning">
-                                <i class="fas fa-coins text-warning dropdown-icon"></i>
-                                {{ props.auth.user.coins }} Coins
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="#" class="dropdown-link dropdown-link-has-icon text-success">
-                                <i class="fas fa-money-bill-1-wave text-success dropdown-icon"></i>
-                                {{ props.auth.user.bucks }} Cash
-                            </a>
-                        </li>
-                        <li v-if="props.auth.user.staff" class="dropdown-item">
-                            <div class="mt-1 mb-1 badge badge-position-mobile badge-danger fw-semibold w-100">
-                                Administrator
-                            </div>
-                        </li>
-                        <li v-if="props.auth.user.settings.beta_tester" class="dropdown-item">
-                            <div class="mt-1 mb-1 badge badge-position-mobile badge-success fw-semibold w-100">
-                                Beta Tester
-                            </div>
-                        </li>
-                        
-                    </div>
-                    <div class="align-middle flex-container">
-                        <div class="dropdown-title">Account</div>
-                        <li class="divider flex-child-grow"></li>
-                    </div>
-                    <li class="dropdown-item">
-                        <Link :href="route(`user.profile`, { username: props.auth.user.username })"
-                            class="dropdown-link dropdown-link-has-icon"><i
-                            class="fas fa-user dropdown-icon"></i>Profile
-                        </Link>
-                    </li>
-                    <li class="dropdown-item">
-                        <Link :href="route(`avatar.page`)" class="dropdown-link dropdown-link-has-icon"><i
-                            class="fas fa-edit dropdown-icon"></i>Character</Link>
-                    </li>
-                    <li class="dropdown-item">
-                        <Link :href="route(`user.settings.page`)"
-                            class="dropdown-link dropdown-link-has-icon"><i
-                            class="fas fa-cogs dropdown-icon"></i>Settings
-                        </Link>
-                    </li>
-                    <li class="divider"></li>
-                    <li class="dropdown-item">
-                        <Link :href="route('auth.logout')" method="post"  class="dropdown-link dropdown-link-has-icon text-danger"><i
-                            class="fas fa-sign-out text-danger dropdown-icon"></i>Logout</Link>
-                    </li>
-                </ul>
             </li>
         </ul>
     </nav>
@@ -361,7 +349,7 @@ export default {
     methods: {
         applyTheme(theme) {
             var lowercaseTheme = theme.toLowerCase();
-            
+
             let style = document.getElementById('theme-style');
             const themeBtn = document.getElementById(lowercaseTheme + "-theme-btn");
 

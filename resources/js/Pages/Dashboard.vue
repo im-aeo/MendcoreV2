@@ -18,10 +18,11 @@ const form = useForm({
 
 interface StatusObject {
     data: {
-        dname: string;
         name: string;
-        message: string;
+        dname: string;
         DateHum: string;
+        message: string;
+        thumbnail: string;
     }
 }
 
@@ -33,14 +34,15 @@ const props = defineProps({
     },
 });
 
-const initialData = ref<StatusObject[]>(props.statuses.length ? props.statuses : []);
+const initialData = ref<StatusObject[]>(props.statuses.data);
 const addStatus = (status: string): void => {
     const StatusUpdate: StatusObject = {
         data: {
-            dname: usePage<any>().props.auth.user.display_name,
             name: usePage<any>().props.auth.user.username,
-            message: status,
+            dname: usePage<any>().props.auth.user.display_name,
             DateHum: "Just Now",
+            message: status,
+            thumbnail: usePage<any>().props.auth.user.headshot,
         }
     };
     initialData.value.push(StatusUpdate); // Push the single StatusObject
@@ -153,7 +155,7 @@ const getXPProgressWidth = (currentxp, nextxp) => {
                         </div>
                     </div>
                 </div>
-                <StatusCard v-else v-for="status in statuses.data" :DisplayName="status.dname" :Thumbnail="status.Thumbnail" :name="status.name"
+                <StatusCard v-else v-for="(status, index) in initialData" :key="index" :DisplayName="status.dname" :Thumbnail="status.thumbnail" :name="status.name"
                     :message="status.message" :date="status.DateHum" />
             </div>
             <AeoPagination v-bind:pagedata="statuses" />

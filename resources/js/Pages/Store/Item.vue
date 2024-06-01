@@ -23,12 +23,12 @@ function capitalizeFirstLetter(str) {
 }
 const purchaseBucks = () => {
     axios.get(`/sanctum/csrf-cookie`).then(response => {
-        axios.post(route(`store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'bucks' }));
+        axios.post(route(`api.store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'bucks' }));
     });
 };
 const purchaseCoins = () => {
     axios.get(`/sanctum/csrf-cookie`).then(response => {
-        axios.post(route(`store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'coins' }));
+        axios.post(route(`api.store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'coins' }));
     });
 };
 
@@ -38,7 +38,7 @@ const swap = () => {
     thumbnail.src = usePage<any>().props.item.thumbnail;
   } else {
     isPreview.value = true;
-    thumbnail.src =  usePage<any>().props.site.production.domains.storage + "/thumbnails/" + usePage<any>().props.item.avatar_preview + ".png";
+    thumbnail.src = usePage<any>().props.item.preview;
   }
 }
 </script>
@@ -498,11 +498,11 @@ const swap = () => {
                                 right: 10px;
                             ">
                                 <div class="ms-auto">
-                                    <button class="btn btn-secondary btn-xs" @click="swap()">
+                                    <button v-if="usePage<any>().props.item.preview" class="btn btn-secondary btn-xs" @click="swap()">
                                         {{ isPreview ? 'View Item' : 'View Preview' }}
                                     </button>
                                 </div>
-                                <div class="ms-auto" v-if="usePage<any>().props.item.type != 'crate'">
+                                <div class="ms-auto" v-if="usePage<any>().props.item.type == 'crate'">
                                     <button class="btn btn-success btn-xs" data-toggle-modal="#view-crate-content-modal"
                                         @click="showModal('view-crate-content-modal')">
                                         View Contents
@@ -519,7 +519,7 @@ const swap = () => {
                         </div>
                     </div>
                     <div class="gap-3 mb-3 align-middle flex-container"
-                        v-if="usePage<any>().props.item.type != 'crate'">
+                        v-if="usePage<any>().props.item.type == 'crate'">
                         <button class="btn btn-info btn-xs w-100" data-toggle-modal="#crate-roll-modal"
                             @click="showModal('crate-roll-modal')">
                             Open Crate
@@ -558,10 +558,7 @@ const swap = () => {
                                     Type
                                 </div>
                                 <div class="fw-semibold text-capitalize text-truncate">
-                                    {{ usePage<any>().props.item.item_type !== 'pants' ? capitalizeFirstLetter(usePage
-                                        <any>
-                                        ().props.item.item_type.slice(0, -1)) :
-                                            capitalizeFirstLetter(usePage<any>().props.item.item_type) }}
+                                    {{ capitalizeFirstLetter(usePage<any>().props.item.item_type) }}
                                 </div>
                             </div>
                             <div class="cell large-6">

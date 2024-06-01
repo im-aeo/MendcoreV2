@@ -46,7 +46,7 @@ class MarketController extends Controller
             return Item::where('id', $id)->first();
         });
 
-        if (!$item || !$item->public_view || Auth::check() && Auth::user()->isStaff() ) {
+        if (!$item || !$item->public_view && Auth::check() && !Auth::user()->isStaff() ) {
             abort(404);
         }
 
@@ -64,6 +64,7 @@ class MarketController extends Controller
         return inertia('Store/Item', [
             'item' => $item,
             'item.thumbnail' => $item->thumbnail(),
+            'item.preview' => $item->preview(),
             'creator' => $item->creator,
             'itemOwnership' => Auth::check() ? Auth::user()->ownsItem($item->id) : false,
             'item.owners' => $item->owners(),
@@ -108,7 +109,7 @@ class MarketController extends Controller
 
         $newVrcInstance = new RenderController();
         $vrs = $newVrcInstance;
-        $vrs->ItemPreviewRender($request, $item->id);
+        $vrs->ItemPreviewRender($request, $item->id, true, $itemHashName);
 
         return redirect()->route('store.item', $item->id)->with([
             'flash' => [
