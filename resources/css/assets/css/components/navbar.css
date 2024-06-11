@@ -8,6 +8,17 @@
     padding: 10px 15px;
     box-shadow: 1px 1px 5px rgb(var(--section-shadow), 0.1);
 }
+.navbar-landing {
+    background: #99D6FF !important;
+    color:white;
+    box-shadow: none;
+    border-bottom: none;
+    position: sticky;
+
+
+
+}
+
 .navbar .navbar-nav {
     list-style: none;
     margin: 0;

@@ -27,7 +27,8 @@ class GiveDailyRewards
             return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
         } elseif (Auth::check() && !empty(Auth::user()->next_reward_payout) && strtotime(Auth::user()->next_reward_payout) < time()) {
             // Continue with the regular logic if no adblock detected 
-            $user = Auth::user(); // Use find with eager loading
+            /** @var \App\Models\User $user **/
+            $user = Auth::user();
 
             
             $coinAmount = $user->settings->beta_tester ? 50 : 10;

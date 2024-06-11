@@ -146,7 +146,7 @@ watch(() => form.birthdate.month, updateDays);
 </script>
 
 <template>
-    <AppHead pageTitle="Register" description="Register to {{ usePage<any>().props.site.name }}"
+    <AppHead pageTitle="Register" :description="'Register to ' + usePage<any>().props.site.name + ''"
         :url="route('auth.register.page')" />
     <Navbar />
     <Sidebar>

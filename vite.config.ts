@@ -9,6 +9,9 @@ import { obfuscator } from "rollup-obfuscator";
 //import basicSsl from '@vitejs/plugin-basic-ssl'
 import { viteObfuscateFile } from "vite-plugin-obfuscator";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { VitePWA } from "vite-plugin-pwa";
+
+const __dirname = "C:/laragon/www/netisu-backup";
 
 export default defineConfig({
   root: "", // Specify the root directory for development
@@ -19,6 +22,12 @@ export default defineConfig({
     },
   },
   plugins: [
+    VitePWA({
+      registerType: "autoUpdate",
+      devOptions: {
+        enabled: true,
+      },
+    }),
     splitVendorChunkPlugin(),
     obfuscator({
       compact: true,
@@ -80,7 +89,7 @@ export default defineConfig({
     laravel({
       input: ["resources/js/app.ts"],
       ssr: "resources/js/ssr.ts",
-      refresh: [
+      /*refresh: [
         "resources/routes/**",
         "app/Http/**",
         "public/assets/js/**",
@@ -88,7 +97,7 @@ export default defineConfig({
         "routes/**",
         "resources/js/**",
         "resources/views/**",
-      ],
+      ], */
     }),
     vueJsx({}),
     vue({
@@ -115,7 +124,7 @@ export default defineConfig({
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
     alias: {
-      "@": path.resolve(__dirname, "./resources/js"),
+      "@": path.resolve(__dirname, "resources/js"),
       ziggy: path.resolve("vendor/tightenco/ziggy/dist/vue.m.js"),
       zrouting: path.resolve("vendor/tightenco/ziggy/dist/vue.es.js"),
     },

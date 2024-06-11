@@ -45,6 +45,12 @@ Route::group(['prefix' => 'api', 'middleware' => 'throttle:30,1'], function () {
         Route::get('/follow/{user}', [UserController::class, 'follow'])->name('follow');
         Route::post('/unfollow/{user}', [UserController::class, 'unfollow'])->name('unfollow');
     });
+    Route::group(['as' => 'dashboard.', 'prefix' => 'dash'], function () {
+        Route::get('/', function () {
+            return redirect()->to(config('Values.production.domains.main'));
+        });
+        Route::get('/status-list', [UserController::class, 'getDashboardStatus'])->name('statuses');
+    });
 
     Route::group(['as' => 'store.', 'prefix' => 'market'], function () {
         Route::get('/', function () {

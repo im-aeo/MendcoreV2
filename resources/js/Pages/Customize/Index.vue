@@ -27,6 +27,8 @@ var userAvatar = reactive({
   color_left_leg: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_left_leg']),
   color_right_leg: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_right_leg']),
   image: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['thumbnail']),
+  current_face: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['current_face']),
+
 },
 );
 
@@ -201,7 +203,7 @@ const WearItem = async (id, slot) => {
 
 onMounted(() => {
   getCurrentlyWearingItems(),
-    getCurrentlyWearingHats()
+  getCurrentlyWearingHats()
 })
 </script>
 <template>
@@ -221,14 +223,41 @@ onMounted(() => {
         <div class="section-borderless">
           <div class="mb-2">
             <div class="grid-x grid-margin-x">
-              <div v-for="item in wearingHats.data" class="cell large-2 medium-3 small-3">
+              <div class="min-w-0 gap-4 mt-3 flex-container align-center">
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 1
+                </button>
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 2
+                </button>
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 3
+                </button>
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 4
+                </button>
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 5
+                </button>
+                <button class="btn btn-info">
+                  <i class="mr-1 fa-solid fa-hat-beach"></i>
+                  Slot 6
+                </button>
+              </div>
+              <div v-for="item in wearingHats.data" class="cell large-2 medium-3 small-3"
+                @click="WearItem(item.id, null);">
                 <div class="d-block">
                   <div class="p-2 mb-1 card card-inner position-relative">
                     <img :src="item.thumbnail" />
                   </div>
-                  <Link :href="route(`store.item`, { id: item.id })" class="text-body fw-semibold text-truncate">
-                  {{ item.name }}
-                  </Link>
+                  <div class="text-body fw-semibold text-truncate">
+                    {{ item.name }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -316,7 +345,7 @@ onMounted(() => {
               borderRadius: '15px',
               marginTop: '-1px',
             }" @click="handlePartSelection('head')">
-              <img src="/assets/img/item_dummy_4.png" width="50" height="50">
+              <VLazyImage :src="userAvatar.current_face"  :src-placeholder="usePage<any>().props.site.production.domains.storage + '/assets/default.png'" width="50" height="50" />
             </button>
           </div>
           <div style="margin-bottom:2.5px;">
@@ -416,7 +445,7 @@ onMounted(() => {
               </div>
             </div>
           </div>
-          <Pagination v-bind:pagedata="CategoryItems" />
+          <Pagination v-if="CategoryItems.length" v-bind:pagedata="CategoryItems.data" />
 
           <div v-if="!CategoryItems.length" class="gap-3 text-center flex-container flex-dir-column">
             <i class="text-5xl fas fa-crate-apple text-muted"></i>

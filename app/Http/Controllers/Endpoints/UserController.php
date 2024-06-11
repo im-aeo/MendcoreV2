@@ -41,9 +41,34 @@ class UserController extends Controller
             ];
         });
 
-        return response()->json($statuses)->toArray(); // Convert the paginator to an array
+        return response()->json($statuses); // Convert the paginator to an array
     }
+    public function getDashboardStatus(Request $request)
+    {
+        // Define a cache key for this query
+        $cacheKey = 'dashboard_statuses';
+        $statuses = cache()->remember($cacheKey, now()->addMinutes(5), function () {
+            $s = Status::where([
+                ['message', '!=', null]
+            ])->orderBy('created_at', 'desc')->paginate(4);
 
+            // Transform each status object into a desired structure
+            $statuses = $s->transform(function ($status) {
+                return [
+                    'name' => $status->creator->username,
+                    'dname' => $status->creator->display_name,
+                    'timecreated' => $status->created_at, // assuming this is the desired format
+                    'message' => $status->message,
+                    'DateHum' => $status->DateHum,
+                    'thumbnail' => $status->creator->headshot(),
+                ];
+            });
+
+            // Return the transformed data as JSON
+            return response()->json($statuses);
+        });
+        return $statuses;
+    }
 
 
     public function getAvatar($userID)
@@ -78,7 +103,6 @@ class UserController extends Controller
 
         if ($loggedInUser->isFollowing($user)) {
             return response()->json(['message' => 'You are already following this user.'], 400);
-
         };
 
         if ($loggedInUser !== null) {

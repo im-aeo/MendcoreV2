@@ -36,7 +36,7 @@ class GrabController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+
 
     public function SpacesIndex(Request $request)
     {
@@ -63,10 +63,15 @@ class GrabController extends Controller
             return config('SimpleCategories');
         });
 
+        /** @var \App\Models\User $user **/
+        $user = Auth::user();
 
         return inertia('Customize/Index', [
-            'avatar' => Auth::user()->avatar(),
-            'avatar.thumbnail' => Auth::user()->thumbnail(),
+            'avatar' => $user->avatar(),
+            'avatar.current_face' => env('STORAGE_URL') . (
+                $user->avatar()->face ? '/uploads/' . getItemHash($user->avatar()->face) . ".png" : '/assets/default.png'
+            ),            
+            'avatar.thumbnail' => $user->thumbnail(),
             'colors' => $colors,
             'categories' => $categories,
         ]);
@@ -320,9 +325,9 @@ class GrabController extends Controller
         $post->title = $title;
         $post->body = $parsedBody;
         $post->save();
-        
+
         Auth::user()->addPoints(10);
-        
+
         return Redirect::route('forum.post', $post->id, $post->slug())->with('message', 'Your post has been created.');
     }
 
@@ -346,7 +351,7 @@ class GrabController extends Controller
         $post->body = $parsedBody;
         $post->save();
         Auth::user()->addPoints(10);
-        
+
         return redirect()->back()->with('message', 'Your post has been created.');
     }
     public function IndexingIndex()

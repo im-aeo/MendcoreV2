@@ -2,8 +2,8 @@
 
 return [
     'name' => 'Netisu',
-    'logo' => 'assets/img/logo.png',
-    'icon' => 'assets/img/icon.png',
+    'logo' => '/assets/img/logo.png',
+    'icon' => '/assets/img/icon.png',
     'in_event' => true,
     'system_account_id' => 1,
     'in_testing_phase' => true,

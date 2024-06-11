@@ -11,14 +11,12 @@ class SiteConfigMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        // Fetch the site configuration settings from the database
-        $siteConfig = SiteSettings::first(); // Adjust the query to retrieve the data as needed
 
         // Share the site configuration settings with Inertia
         Inertia::share('site_config', [
-            'announcement_message' => $siteConfig ? $siteConfig->announcement_message : null,
-            'announcement' => $siteConfig ? $siteConfig->announcement_enabled : false,
-            'in_maintenance' => $siteConfig ? $siteConfig->site_maintenance : false,
+            'announcement_message' => site_setting('announcement_message') ?? null,
+            'announcement' => site_setting('announcement_enabled') ?? false,
+            'in_maintenance' => site_setting('site_maintenance') ?? false,
         ]);
 
         return $next($request);

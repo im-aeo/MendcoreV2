@@ -27,7 +27,6 @@ defineProps<{
                 <div class="mt-1 text-xs fw-semibold text-muted">
                     {{ creator }}<span class="mx-1">&bullet;</span>{{ date }}
                 </div>
-                <div class="divider"></div>
             </div>
         </a>
     </div>

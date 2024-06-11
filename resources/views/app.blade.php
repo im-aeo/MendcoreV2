@@ -3,18 +3,6 @@
    dir="{{ App::isLocale('ar') ? 'rtl' : 'ltr' }}">
    <head>
       @inertiaHead
-      <!-- Scripts -->
-      <meta charset="utf-8" />
-      <meta name="msapplication-TileColor" content="#03a9f4">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0">
-      <meta http-equiv="Content-Type" content="application/x-html+html; charset=UTF-8">
-      <meta name="robots" content="index,follow">
-      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-      <meta name="msapplication-config" content="{{ asset('browserconfig.ae3u4gn3.xml') }}">
-      <link rel="manifest" href="{{ asset('Aeow2mf3.webmanifest') }}" crossorigin="use-credentials" />
-      <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v6.1.2/css/pro.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-      <!-- Fonts -->
       @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
    </head>
    <body style="margin:0;padding:0">

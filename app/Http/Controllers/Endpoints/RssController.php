@@ -10,8 +10,9 @@ class RssController extends Controller
 {
     public function index()
     {
-        $url = config('app.ghost_blog_url') . '/rss/';
+        $url = env('GHOST_BLOG_URL') . '/rss/';
         $response = Http::get($url);
+        $i = 0;
 
         if ($response->successful()) {
             $xml = $response->body();
@@ -42,6 +43,8 @@ class RssController extends Controller
 
                 // Append the $node to the $feed array
                 $feed[] = $node;
+                if(++$i > 2) break;
+
             }
 
             return response()->json($feed);

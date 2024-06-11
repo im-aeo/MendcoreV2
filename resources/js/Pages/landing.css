@@ -1,14 +1,14 @@
 header.masthead-landing {
-    background-image: url('https://www.transparenttextures.com/patterns/inspiration-geometry.png'), linear-gradient(to top, var(--info-600), var(--black));
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
-    height: auto;    
+    background-image: url('/assets/img/site-banners/landing-melody.png'), linear-gradient(to bottom, var(--section-bg), var(--section-bg));
+    padding-top: 6rem !important;
+    padding-bottom: 6rem !important;
     background-attachment: fixed;
     position: relative;
-    background-repeat: repeat-x;
-    background-size: contain;
-    position: relative;
-    max-width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    box-sizing: border-box;
 }
 header img {
     width: auto;

@@ -2,11 +2,11 @@
 import Navbar from '@/Components/LayoutParts/Navbar.vue';
 import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
-import { defineProps, ref, reactive, computed, watch } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { ref,computed } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import AppHead from '@/Components/AppHead.vue';
 import axios from 'axios';
-import { route, current } from "momentum-trail";
+import { route, } from "momentum-trail";
 
 const form = useForm({
    email: '',
@@ -58,7 +58,7 @@ const submit = () => {
       formError.value = 'Please fill in all the fields.';
       return;
    }
-   axios.get(`/sanctum/csrf-cookie`).then(response => {
+   axios.get(`/sanctum/csrf-cookie`).then(() => {
       form.post(route(`auth.register.validate`), {
          onFinish: () => form.reset('email'),
       });
@@ -68,6 +68,8 @@ const submit = () => {
 </script>
 
 <template>
+   <AppHead pageTitle="Reset Password" :description="'Reset your ' + usePage<any>().props.site.name + ' account password'"
+      :url="route('auth.register.page')" />
    <Navbar />
    <Sidebar>
       <div class="cell large-8 medium-10">
@@ -109,7 +111,7 @@ const submit = () => {
                         </div>
                      </div>
 
-                     <div class="divider mx-1 my-3"></div>
+                     <div class="mx-1 my-3 divider"></div>
                      <div class="flex-container align-justify">
                         <button v-if="currentStep > 1" @click="previousStep" class="px-4 btn btn-danger"
                            :class="{ disabled: isPreviousButtonDisabled }">

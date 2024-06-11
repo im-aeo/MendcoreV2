@@ -35,7 +35,7 @@ class MaintenanceController extends Controller
 
         Session::put('maintenance_password', $password);
 
-        return redirect()->route('Welcome')->with('success', 'Authenticated successfully.');
+        return to_route('Welcome');
     }
     public function Exit()
     {

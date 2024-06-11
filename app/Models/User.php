@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AeoAuthenticatable;
 use Laravel\Scout\Searchable;
 use App\Models\IpLog;
+use Illuminate\Support\Facades\Cache;
 
 class User extends AeoAuthenticatable
 {
@@ -62,20 +63,35 @@ class User extends AeoAuthenticatable
 
     protected $appends = ['DateHum'];
 
-    // Classes
+    /**
+     * Meilisearch search array.
+     *
+     * @var array<string, string>
+     */
     public function toSearchableArray(): array
     {
-        return [
-            'id'   => $this->getKey(), // this *must* be defined
-            'name' => $this->username,
-            'image' => $this->headshot(),
-            'thumb' => $this->thumbnail(),
-        ];
+	      // All model attributes are made searchable
+        $array = $this->toArray();
+
+		    // Then we add some additional fields
+        $array['id'] = $this->getKey();
+        $array['username'] = $this->username;
+        $array['display_name'] = $this->display_name;
+        $array['headshot'] = $this->headshot();
+        $array['thumbnail'] = $this->thumbnail();
+
+        return $array;
     }
+
+    // Classes
     public function avatar()
     {
-        return Avatar::where('user_id', '=', $this->id)->first();
+        $avatar = Cache::remember('AvatarCache', now()->addMinutes(3), function () {
+            return Avatar::where('user_id', '=', $this->id)->first(); // Change to use the find() method instead of where() + first()
+        });
+        return $avatar;
     }
+    
     public function getNextLevelExp()
     {
         $currentLevel = min($this->getLevel() + 1, 100);

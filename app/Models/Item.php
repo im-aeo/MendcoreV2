@@ -45,6 +45,27 @@ class Item extends Model
 
     protected $appends = ['DateHum', 'UpdateHum'];
 
+    /**
+     * Meilisearch search array.
+     *
+     * @var array<string, string>
+     */
+    public function toSearchableArray(): array
+    {
+        // All model attributes are made searchable
+        $array = $this->toArray();
+
+        // Then we add some additional fields
+        $array['id'] = $this->getKey();
+        $array['name'] = $this->name;
+        $array['description'] = $this->description;
+        $array['thumbnail'] = $this->thumbnail();
+        $array['owners'] = $this->owners();
+        $array['creator'] = $this->creator();
+
+        return $array;
+    }
+
     public function getDateHumAttribute()
     {
         return $this->created_at->diffForHumans();
@@ -60,9 +81,10 @@ class Item extends Model
         return $this->belongsTo('App\Models\User', 'creator_id');
     }
 
-    public function onsale() {
+    public function onsale()
+    {
         return $this->onsale ? true : false;
-    }    
+    }
 
     public function owners()
     {

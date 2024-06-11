@@ -1,6 +1,6 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.10
 
-LABEL maintainer="Taylor Otwell"
+LABEL maintainer="Aeo Zatoichi Bax"
 
 ARG WWWGROUP
 ARG NODE_VERSION=20
@@ -15,7 +15,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
     && mkdir -p /etc/apt/keyrings \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 dnsutils librsvg2-bin fswatch ffmpeg \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python3 dnsutils librsvg2-bin fswatch ffmpeg \
     && curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec0831756756d7f66c4f4ea0aae5267a6c' | gpg --dearmor | tee /etc/apt/keyrings/ppa_ondrej_php.gpg > /dev/null \
     && echo "deb [signed-by=/etc/apt/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
     && apt-get update \
@@ -65,6 +65,8 @@ RUN cp -a .env.example .env
 # RUN sed -i'' -e 's/^APP_ENV=.*/APP_ENV=production/' -e 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
 
 RUN php artisan key:generate
+
+RUN bun i
 
 RUN chmod +x /usr/local/bin/start-container
 

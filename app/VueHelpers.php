@@ -82,10 +82,10 @@ function site_setting($key)
     return optional($settings)->$key;
 }
 
-function getItemHash($id): ?string
+function getItemHash($itemID): ?string
 {
     // Assuming your actual primary key column name is 'id'
-    $item = Item::where('id', '=', $id)->firstOrFail();
+    $item = Item::where('id', '=', $itemID)->firstOrFail();
 
     return $item->hash;
 }

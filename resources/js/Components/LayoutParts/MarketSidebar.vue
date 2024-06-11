@@ -2,7 +2,7 @@
 import { usePage } from '@inertiajs/vue3';
 import { defineProps, ref, onMounted, defineEmits, computed } from 'vue';
 import type { Ref } from 'vue';
-
+import { route } from 'momentum-trail';
 interface Category {
   name: string;
   icon: string;
@@ -47,20 +47,20 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex-container align-justify align-middle gap-2 mb-2">
+  <div class="gap-2 mb-2 align-middle flex-container align-justify">
     <div class="text-2xl fw-semibold">Market</div>
-    <a v-if="user" href="#" class="btn btn-success btn-circle" content="Create"
- style="margin-right: -14px" v-tippy="{ placement : 'bottom' }"><i class="fas fa-plus"></i></a>
+    <Link v-if="user" :href="route(`store.create.page`)" class="btn btn-success btn-circle" content="Create"
+ style="margin-right: -14px" v-tippy="{ placement : 'bottom' }"><i class="fas fa-plus"></i></Link>
   </div>
   <div class="collapsible" v-for="(category, categoryName) in categories" @click="setActiveTopCat(categoryName)" :id="categoryName">
     <button  class="d-block w-100 market-section-item">
-      <div class="flex-container align-justify align-middle">
+      <div class="align-middle flex-container align-justify">
         <div class="text-sm"><i :class="category.icon" class="text-md icon-fixed-width">&nbsp</i>{{ categoryName }}</div>
-        <i class="fas fa-chevron-down text-xs text-muted"></i>
+        <i class="text-xs fas fa-chevron-down text-muted"></i>
       </div>
     </button>
-    <div v-if="selectedSubCategory === categoryName" :id="categoryName + '_List'" class="collapsible-menu mt-1 mb-1">
-      <button v-for="(item, index) in category" @click="() => selectCategory(item)" :class="{ active: selectedCategory === item.name }" :key="index" class="market-section-item text-xs">
+    <div v-if="selectedSubCategory === categoryName" :id="categoryName + '_List'" class="mt-1 mb-1 collapsible-menu">
+      <button v-for="(item, index) in category" @click="() => selectCategory(item)" :class="{ active: selectedCategory === item.name }" :key="index" class="text-xs market-section-item">
         {{ item.name }}
       </button>
     </div>

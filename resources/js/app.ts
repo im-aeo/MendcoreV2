@@ -1,5 +1,5 @@
 // フレームワーク
-// './bootstrap';
+import './bootstrap';
 import '../css/style.css';
 import '../css/NProgress.css';
 import 'vue-skeletor/dist/vue-skeletor.css';
@@ -9,7 +9,7 @@ import { Skeletor } from 'vue-skeletor';
 import { createSSRApp, h } from 'vue';
 import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
 import type { DefineComponent } from 'vue';
-import AeoPagination from './Components/Pagination.vue';
+import Pagination from './Components/Pagination.vue';
 import AppHead from './Components/AppHead.vue';
 import { trail } from "momentum-trail"
 import routes from "../routes/js/routing.json";
@@ -25,7 +25,7 @@ import 'tippy.js/dist/tippy-bundle.umd.min.js';
 import '@popperjs/core/dist/umd/popper.min.js';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Vextoria';
+const appName = import.meta.env?.['VITE_APP_NAME'] || "Laravel";
 
 createInertiaApp({
     progress: { includeCSS: true, showSpinner: false },
@@ -34,19 +34,16 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createSSRApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(trail, {
-                routes,
-                url: props.initialPage.url
-            })
+            .use(trail, { routes })
             .use(VueTippy)
             .component('Skeletor', Skeletor)
-            .component('AeoPagination', AeoPagination)
+            .component('Pagination', Pagination)
             .component('AppHead', AppHead)
             .component('Head', Head)
             .component('Link', Link);
 
         // Set productionTip to true in production environment
-        if (process.env.NODE_ENV === 'production') {
+        if (import.meta.env?.['NODE_ENV'] === 'production') {
             app.config.productionTip = true;
         }
 

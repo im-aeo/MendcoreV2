@@ -64,10 +64,12 @@ class USController extends Controller
     {
         $this->validate($request, [
             'description' => ['max:1024'],
+            'country' => ['max:2'],
             'forum_signature' => ['max:100']
         ]);
 
         $user->description = $request->description;
+        $user->description = $request->country;
         $user->forum_signature = $request->forum_signature;
         $user->save();
 
@@ -82,17 +84,25 @@ class USController extends Controller
     {
         // Validate and update privacy settings
         $this->validate($request, [
-            'accepts_messages' => ['boolean'],
-            'accepts_friends' => ['boolean'],
-            'accepts_trades' => ['boolean'],
-            'public_inventory' => ['boolean'],
+            'private_profile' => ['boolean'],
+            'followers_enabled' => ['boolean'],
+            'trading_enabled' => ['boolean'],
+            'posting_enabled' => ['boolean'],
+            'chat_enabled' => ['boolean'],
+            'notifications_enabled' => ['boolean'],
+            'profile_picture_enabled' => ['boolean'],
         ]);
-
+        
         $settings = $user->settings;
-        $settings->accepts_messages = $request->has('accepts_messages');
-        $settings->accepts_friends = $request->has('accepts_friends');
-        $settings->accepts_trades = $request->has('accepts_trades');
-        $settings->public_inventory = $request->has('public_inventory');
+        
+        $settings->private_profile = $request->has('private_profile');
+        $settings->followers_enabled = $request->has('followers_enabled');
+        $settings->trading_enabled = $request->has('trading_enabled');
+        $settings->posting_enabled = $request->has('posting_enabled');
+        $settings->chat_enabled = $request->has('chat_enabled');
+        $settings->notifications_enabled = $request->has('notifications_enabled');
+        $settings->profile_picture_enabled = $request->has('profile_picture_enabled');
+
         $settings->save();
 
         // Validate and update password if requested

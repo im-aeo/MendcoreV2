@@ -29,18 +29,21 @@ onMounted(() => {
 const sidebarsections = [
     {
         en: { name: "NAVIGATION" },
+        es: { name: "NAVEGACIÓN" },
         ru: { name: "НАВИГАЦИЯ" },
-        jp: { name: "ナビゲーション" }
+        ja: { name: "ナビゲーション" }
     },
     {
         en: { name: "SOCIAL" },
+        es: { name: "Sociable" },
         ru: { name: "СОЦИАЛЬНОЕ" },
-        jp: { name: "ソーシャル" }
+        ja: { name: "ソーシャル" }
     },
     {
         en: { name: "BOOST YOUR ACCOUNT" },
+        es: { name: "IMPULSA TU CUENTA" },
         ru: { name: "ПОДДЕРЖИТЕ СВОЙ АККАУНТ" },
-        jp: { name: "アカウントを強化する" } 
+        ja: { name: "アカウントを強化する" }
     }
 ]
 const sidebar = [
@@ -50,9 +53,10 @@ const sidebar = [
         section: "NAVIGATION",
         icon: "fas fa-gamepad-modern",
         en: { title: "Games" },
+        es: { title: "Juegos" },
         ru: { title: "Игры" },
-        jp: { title: "ゲーム" }
-        
+        ja: { title: "ゲーム" }
+
     },
     {
         url: route(`store.page`),
@@ -60,8 +64,9 @@ const sidebar = [
         active_link: "store.*",
         icon: "fas fa-store",
         en: { title: "Market" },
+        es: { title: "Mercado" },
         ru: { title: "Рынок" },
-        jp: { title: "市場" },
+        ja: { title: "市場" },
     },
     {
         url: route(`forum.page`, { id: 1 }),
@@ -69,8 +74,9 @@ const sidebar = [
         icon: "fas fa-messages",
         section: "NAVIGATION",
         en: { title: "Discuss" },
+        es: { title: "Conversar" },
         ru: { title: "Обсуждать" },
-        jp: { title: "議論" },
+        ja: { title: "議論" },
     },
     {
         url: "#",
@@ -78,8 +84,9 @@ const sidebar = [
         active_link: "develop.*",
         icon: "fas fa-code",
         en: { title: "Develop" },
+        es: { title: "Desarrollar" },
         ru: { title: "Развивать" },
-        jp: { title: "発展" }
+        ja: { title: "発展" }
     },
     {
         url: route(`user.page`),
@@ -87,8 +94,9 @@ const sidebar = [
         section: "SOCIAL",
         icon: "fas fa-users",
         en: { title: "Players" },
+        es: { title: "Jugadoras" },
         ru: { title: "Игроки" },
-        jp: { title: "発展" }
+        ja: { title: "発展" }
     },
     {
         url: "#",
@@ -96,17 +104,19 @@ const sidebar = [
         active_link: "spaces.*",
         icon: "fas fa-planet-ringed",
         en: { title: "Spaces" },
+        es: { title: "Espacios" },
         ru: { title: "Пространства" },
-        jp: { title: "スペース" }
+        ja: { title: "スペース" }
     },
     {
         url: route(`leaderboard.page`),
         section: "SOCIAL",
-        active_link:  route(`leaderboard.page`),
-	icon: "fas fa-list-ol",
+        active_link: route(`leaderboard.page`),
+        icon: "fas fa-list-ol",
         en: { title: "Leaderboard" },
+        es: { title: "Tabla de clasificación" },
         ru: { title: "Таблица лидеров" },
-        jp: { title: "リーダーボード" }
+        ja: { title: "リーダーボード" }
     },
     {
         url: "#",
@@ -114,11 +124,12 @@ const sidebar = [
         active_link: "upgade.*",
         section: "BOOST YOUR ACCOUNT",
         en: { title: "Upgrade" },
+        es: { title: "Mejora" },
         ru: { title: "модернизировать" },
-        jp: { title: "アップグレード" }
+        ja: { title: "アップグレード" }
     },
 
-];    
+];
 const lang = computed(() => usePage<any>().props.locale);
 </script>
 <template>
@@ -126,25 +137,25 @@ const lang = computed(() => usePage<any>().props.locale);
         <ul class="sidebar-nav">
             <div class="hide-for-large" v-if="!props.auth.user">
                 <li class="side-item side-title">Account</li>
-		<SideLink :link="route('auth.register.page')" :ActiveLink="route('auth.register.page')">
-		    <i class="fas fa-user-plus side-icon"></i>
-		    <span>Get Started</span>
-		</SideLink>
-		<SideLink :link="route('auth.login.page')" :ActiveLink="route('auth.login.page')">
-		    <i class="fas fa-sign-in side-icon"></i>
-		    <span>Log In</span>
-		</SideLink>
+                <SideLink :link="route('auth.register.page')" :ActiveLink="route('auth.register.page')">
+                    <i class="fas fa-user-plus side-icon"></i>
+                    <span>Get Started</span>
+                </SideLink>
+                <SideLink :link="route('auth.login.page')" :ActiveLink="route('auth.login.page')">
+                    <i class="fas fa-sign-in side-icon"></i>
+                    <span>Log In</span>
+                </SideLink>
             </div>
-                <SideLink :link="route('Welcome')" :ActiveLink="route('Welcome')">
-		    <i class="fas fa-home side-icon"></i>
-		    <span>Home</span>
-		</SideLink>
+            <SideLink :link="route('Welcome')" :ActiveLink="route('Welcome')">
+                <i class="fas fa-home side-icon"></i>
+                <span>Home</span>
+            </SideLink>
             <template v-for="sidesections in sidebarsections" class="hide-for-large">
                 <li class="side-item side-title">{{ sidesections[lang].name }}</li>
                 <!-- Iterate over links within the current section -->
                 <SideLink class="side-item"
-                    v-for="sidelink in sidebar.filter(link => link.section === sidesections.en.name)" :link="sidelink.url"
-                    :ActiveLink="sidelink.active_link">
+                    v-for="sidelink in sidebar.filter(link => link.section === sidesections.en.name)"
+                    :link="sidelink.url" :ActiveLink="sidelink.active_link">
                     <i class="side-icon" :class="sidelink.icon"></i><span>{{ sidelink[lang].title }}</span>
                 </SideLink>
             </template>
@@ -160,13 +171,13 @@ const lang = computed(() => usePage<any>().props.locale);
         </ul>
     </nav>
     <nav v-if="props.site_config.announcement" class="sitewide-alert">
-      <div class="py-2 text-center alert alert-danger alert-wide fw-semibold">
-        <div class="gap-2 text-center align-middle flex-container align-center">
-          <div>
-           {{props.site_config.announcement_message}}
-          </div>
+        <div class="py-2 text-center alert alert-danger alert-wide fw-semibold">
+            <div class="gap-2 text-center align-middle flex-container align-center">
+                <div>
+                    {{ props.site_config.announcement_message }}
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
     <div v-if="image" class="profile-banner">
         <v-lazy-image class="masoqi" :src="image" />
@@ -176,12 +187,12 @@ const lang = computed(() => usePage<any>().props.locale);
         <div v-if="adblock" class="py-2 mb-4 text-center alert alert-danger fw-semibold">
             <div class="gap-2 align-middle flex-container align-justify">
                 <i class="text-lg far fa-triangle-exclamation pe-2"></i>
-                <div> Looks like you're using an adblocker! Please consider disabling your adblocker to support {{ props.site.name }}.</div>
+                <div> Looks like you're using an adblocker! Please consider disabling your adblocker to support {{
+                    props.site.name }}.</div>
                 <i class="text-lg far fa-triangle-exclamation pe-2"></i>
             </div>
         </div>
-        <div v-if="props.site_config.in_maintenance"
-            class="py-2 mb-4 text-center text-white alert alert-danger">
+        <div v-if="props.site_config.in_maintenance" class="py-2 mb-4 text-center text-white alert alert-danger">
             <div class="gap-2 align-middle flex-container align-justify">
                 <i class="text-lg far fa-hammer pe-2"></i>
                 <div>You are currently in maintenance mode.
@@ -223,7 +234,7 @@ export default {
             if (element) {
                 element.classList.toggle('active');
             }
-	},
+        },
         addActiveClassSSInput(elementId: string): void {
             const element = document.getElementById(elementId) as HTMLInputElement;
             const isEmpty = (str: string): boolean => !str.trim().length;

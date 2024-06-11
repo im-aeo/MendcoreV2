@@ -16,48 +16,44 @@ const form = useForm({
     message: '',
 });
 
-interface StatusObject {
-    data: {
-        name: string;
-        dname: string;
-        DateHum: string;
-        message: string;
-        thumbnail: string;
+const statuses = ref([]);
+
+const getStatuses = async () => {
+    try {
+        const response = await axios.get(route(`api.dashboard.statuses`));
+        statuses.value = response.data;
+    } catch (error) {
+        console.error('Error fetching statuses:', error);
     }
+};
+const initialData = statuses;
+function createStatusUpdate(status: string): StatusObject {
+  return {
+    name: usePage<any>().props.auth.user.username,
+    dname: usePage<any>().props.auth.user.display_name,
+    DateHum: "Just Now",
+    message: status,
+    thumbnail: usePage<any>().props.auth.user.headshot,
+  };
 }
-
-
-const props = defineProps({
-    statuses: {
-        type: Array as () => StatusObject[],
-        default: () => ([] as StatusObject[]),
-    },
-});
-
-const initialData = ref<StatusObject[]>(props.statuses.data);
 const addStatus = (status: string): void => {
-    const StatusUpdate: StatusObject = {
-        data: {
-            name: usePage<any>().props.auth.user.username,
-            dname: usePage<any>().props.auth.user.display_name,
-            DateHum: "Just Now",
-            message: status,
-            thumbnail: usePage<any>().props.auth.user.headshot,
-        }
-    };
-    initialData.value.push(StatusUpdate); // Push the single StatusObject
-    axios.post(route(`my.dashboard.validate`), {
-        message: status,
-    }).then((status) => {
-        console.log("Your status " + status + "has been posted successfully.");
-    }).catch((error) => {
-        console.error("Error:", error);
-    });
+const newStatus = createStatusUpdate(status);
+initialData.value.unshift(newStatus); // Push the single StatusObject
+axios.post(route(`my.dashboard.validate`), {
+    message: status,
+}).then((status) => {
+    console.log("Your status " + status + "has been posted successfully.");
+}).catch((error) => {
+    console.error("Error:", error);
+});
 };
 const getXPProgressWidth = (currentxp, nextxp) => {
     const progress = (currentxp / nextxp) * 100;
     return `${progress}%`;
 };
+onMounted(() => {
+    getStatuses();
+});
 </script>
 
 <template>
@@ -155,10 +151,10 @@ const getXPProgressWidth = (currentxp, nextxp) => {
                         </div>
                     </div>
                 </div>
-                <StatusCard v-else v-for="(status, index) in initialData" :key="index" :DisplayName="status.dname" :Thumbnail="status.thumbnail" :name="status.name"
-                    :message="status.message" :date="status.DateHum" />
+                <StatusCard v-else v-for="(status, index) in initialData" :key="index" :DisplayName="status.dname"
+                    :Thumbnail="status.thumbnail" :name="status.name" :message="status.message"
+                    :date="status.DateHum" />
             </div>
-            <AeoPagination v-bind:pagedata="statuses" />
         </div>
     </Sidebar>
     <Footer />
