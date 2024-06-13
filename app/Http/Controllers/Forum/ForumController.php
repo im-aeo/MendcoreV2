@@ -119,6 +119,7 @@ class ForumController extends Controller
             'post' => $post,
             'post.creator' => $post->creator,
             'post.creator.thumbnail' => $post->creator->thumbnail(),
+            'post.creator.headshot' => $post->creator->headshot(),
             'replies' => $replies,
         ]);
     }

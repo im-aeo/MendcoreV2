@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Avatar;
+use Mockery\Matcher\Any;
 
 class AvatarController extends Controller
 {
@@ -36,7 +37,7 @@ class AvatarController extends Controller
         return response()->json($items);
     }
 
-    public function WearItem(Request $request, int $itemId, int $slot = null)
+    public function WearItem(Request $request, int $itemId, $slot = null)
     {
         // Fetch the user's avatar record
         $user = Auth::user();
@@ -52,7 +53,9 @@ class AvatarController extends Controller
         }
 
         // Validate slot number (1-6)
-        $hatSlot = "hat_" . $slot;
+        if ($slot != 'none' || $slot != null) {
+            $hatSlot = "hat_" . $slot;
+        }
         if ($item->item_type = "hat" && !in_array($slot, range(1, 6))) {
             return response()->json([
                 "message" => "Invalid hat slot. Please choose between 1 and 6.",

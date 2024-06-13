@@ -19,7 +19,7 @@ interface SearchResult {
   // Add other properties if needed
 }
 defineProps<{
-  landing: { type: Boolean, default: false, required: false },
+  landing: { type: boolean; default: false; required: false };
 }>();
 const SearchLoading = ref(false);
 
@@ -74,13 +74,13 @@ const topbar = [
     ja: { title: "議論" },
   },
   {
-    url: "#",
+    url: route(`spaces.page`),
     active_link: "spaces.*",
     icon: "fas fa-planet-ringed",
     en: { title: "Spaces" },
     es: { title: "Espacios" },
     ru: { title: "Развивать" },
-    ja: { title: "発展" },
+    ja: { title: "スペース" },
   },
 ];
 const lang = computed<any>(() => props.locale);
@@ -219,6 +219,7 @@ const { props } = usePage<any>();
 
       <li class="mx-1 align-middle nav-item cell auto nav-search mx-md-3">
         <input
+          v-if="props.site.frontend.search_bar"
           v-model="search"
           type="text"
           class="form"
@@ -275,7 +276,11 @@ const { props } = usePage<any>();
             </Link>
           </li>
         </ul>
-        <button content="Search" data-tooltip-placement="bottom">
+        <button
+          v-if="props.site.frontend.search_bar"
+          content="Search"
+          data-tooltip-placement="bottom"
+        >
           <i class="fas fa-search"></i>
         </button>
       </li>
@@ -391,6 +396,7 @@ const { props } = usePage<any>();
                 <div class="align-middle flex-container align-justify">
                   <div class="gap-2 align-middle flex-container">
                     <i
+                      v-if="props.site.frontend.sidebar_menu"
                       class="text-lg align-middle fas fa-check headshot text-muted flex-container align-center flex-child-grow"
                       style="height: 38px; width: 38px"
                     ></i>
@@ -405,6 +411,7 @@ const { props } = usePage<any>();
                 <div class="align-middle flex-container align-justify">
                   <div class="gap-2 align-middle flex-container">
                     <i
+                      v-if="props.site.frontend.sidebar_menu"
                       class="text-lg align-middle fas fa-bell headshot text-muted flex-container align-center flex-child-grow"
                       style="height: 38px; width: 38px"
                     ></i>

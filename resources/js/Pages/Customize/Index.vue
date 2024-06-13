@@ -155,7 +155,7 @@ const SortItemByType = async (id: number, type: string) => {
   if (type === 'hat') {
     showModal('SlotModal');
   } else {
-    WearItem(id, null);
+    WearItem(id, 'none');
   }
 }
 
@@ -222,29 +222,28 @@ onMounted(() => {
         </div>
         <div class="section-borderless">
           <div class="mb-2">
-            <div class="grid-x grid-margin-x">
-              <div class="min-w-0 gap-4 mt-3 flex-container align-center">
-                <button class="btn btn-info">
+              <div class="flex-wrap gap-1 flex-container align-center">
+                <button class="btn btn-info" value="1">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 1
                 </button>
-                <button class="btn btn-info">
+                <button class="btn btn-info" value="2">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 2
                 </button>
-                <button class="btn btn-info">
+                <button class="btn btn-info" value="3">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 3
                 </button>
-                <button class="btn btn-info">
+                <button class="btn btn-info" value="4">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 4
                 </button>
-                <button class="btn btn-info">
+                <button class="btn btn-info" value="5">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 5
                 </button>
-                <button class="btn btn-info">
+                <button class="btn btn-info" value="6">
                   <i class="mr-1 fa-solid fa-hat-beach"></i>
                   Slot 6
                 </button>
@@ -260,14 +259,13 @@ onMounted(() => {
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
         <div class="flex-wrap gap-2 flex-container justify-content-end section-borderless">
           <button type="button" class="btn btn-secondary" @click="showModal('SlotModal')">
             Cancel
           </button>
-          <button v-if="!VrcRequest" type="submit" class="btn btn-success" @click="showModal('SlotModal')">
+          <button v-if="!VrcRequest" type="submit" class="btn btn-success" @click="WearItem(id, slot)">
             Wear
           </button>
         </div>

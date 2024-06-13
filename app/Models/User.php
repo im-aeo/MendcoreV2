@@ -70,10 +70,10 @@ class User extends AeoAuthenticatable
      */
     public function toSearchableArray(): array
     {
-	      // All model attributes are made searchable
+        // All model attributes are made searchable
         $array = $this->toArray();
 
-		    // Then we add some additional fields
+        // Then we add some additional fields
         $array['id'] = $this->getKey();
         $array['username'] = $this->username;
         $array['display_name'] = $this->display_name;
@@ -86,12 +86,9 @@ class User extends AeoAuthenticatable
     // Classes
     public function avatar()
     {
-        $avatar = Cache::remember('AvatarCache', now()->addMinutes(3), function () {
-            return Avatar::where('user_id', '=', $this->id)->first(); // Change to use the find() method instead of where() + first()
-        });
-        return $avatar;
+            return Avatar::where('user_id', '=', $this->id)->first();
     }
-    
+
     public function getNextLevelExp()
     {
         $currentLevel = min($this->getLevel() + 1, 100);
@@ -268,6 +265,7 @@ class User extends AeoAuthenticatable
         $image = ($this->avatar()?->image === 'default') ? config('Values.render.default_avatar') : $this->avatar()?->image;
         return "{$url}/thumbnails/{$image}.png";
     }
+
     public function headshot()
     {
         $url = env('STORAGE_URL');

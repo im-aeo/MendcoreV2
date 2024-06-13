@@ -42,15 +42,26 @@ class GrabController extends Controller
     {
         $search = $request->input('search', '');
 
-        $spaces = Space::where('locked', false)
-            ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'LIKE', "%{$search}%");
-            })
-            ->paginate(12);
+        $spaces = Space::where([
+            ['thumbnail_pending', '!=', false]
+        ])->orderBy('created_at', 'desc')->paginate(12)->through(function ($space) {
+            return [                'name' => $space->name,
+                'id' => $space->id,
+                'slug' => $space->slug(),
+                'name' => $space->name,
+                'creator' => $space->owner->display_name,
+                'timecreated' => $space->created_at,
+                'description' => $space->description,
+                'DateHum' => $space->DateHum,
+                'member_count' => $space->member_count,
+                'thumbnail' => $space->thumbnail(),
+            ];
+        });
+
 
         return inertia('Spaces/Index', [
-            'spaces' => compact('spaces'),
-            'search' => compact('search')
+            'spaces' => $spaces,
+            'search' => $search,
         ]);
     }
 

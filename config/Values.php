@@ -8,8 +8,12 @@ return [
     'system_account_id' => 1,
     'in_testing_phase' => true,
     'loading_messages' => false,
-    'page_loader' => false,
 
+    'frontend' => [
+        'page_loader' => false,
+        'sidebar_menu' => true,
+        'search_bar' => true,
+    ],
     
     'price' => [
         'username' => '250',

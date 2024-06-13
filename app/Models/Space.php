@@ -22,6 +22,9 @@ class Space extends Model
         'thumbnail'
     ];
 
+    protected $appends = ['DateHum'];
+
+
     public function toSearchableArray(): array
     {
         // All model attributes are made searchable
@@ -43,11 +46,16 @@ class Space extends Model
     {
         return $this->belongsTo('App\Models\User', 'owner_id');
     }
+    
+    public function getDateHumAttribute()
+    {
+        return $this->updated_at->diffForHumans();
+    }
 
     public function thumbnail()
     {
         if ($this->thumbnail_pending)
-            return asset('img/pending.png');
+            return asset('assets/img/pending.png');
         else if ($this->thumbnail == 'denied')
             return asset('img/denied.png');
 

@@ -2,13 +2,21 @@
 import AppHead from "@/Components/AppHead.vue";
 import Navbar from "@/Components/LayoutParts/Navbar.vue";
 import Footer from "@/Components/LayoutParts/Footer.vue";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import VLazyImage from "v-lazy-image";
 import { usePage } from "@inertiajs/vue3";
 import { route } from "momentum-trail";
+import PageLoader from "@/Components/Loaders/PageLoader.vue";
 
 const site = computed<any>(() => usePage<any>().props.site);
+const loading = ref(true);
 
+const showLoading = () => {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+  }, 5000); // Change 5000 to 5 seconds (1000 milliseconds per second)
+};
 defineProps({
   LandingItems: { type: Object },
 });
@@ -16,33 +24,46 @@ const Welcome = [
   {
     en: {
       message: `Welcome to ${usePage<any>().props.site.name}`,
-      desc: `${usePage<any>().props.site.name} is a collaborative 3D sandbox community. Work together to build amazing things and have fun along the way!`,
-
+      desc: `${
+        usePage<any>().props.site.name
+      } is a collaborative 3D sandbox community. Work together to build amazing things and have fun along the way!`,
     },
     es: {
       message: `Bienvenido a ${usePage<any>().props.site.name}`,
-      desc: `${usePage<any>().props.site.name} es una comunidad colaborativa de sandbox 3D. ¡Trabajad juntos para construir cosas increíbles y divertíos en el camino!`,
-
+      desc: `${
+        usePage<any>().props.site.name
+      } es una comunidad colaborativa de sandbox 3D. ¡Trabajad juntos para construir cosas increíbles y divertíos en el camino!`,
     },
     ru: {
       message: `Добро пожаловать в ${usePage<any>().props.site.name}`,
-      desc: `${usePage<any>().props.site.name}— это совместное сообщество 3D-песочниц. Работайте вместе, чтобы создавать удивительные вещи, и получайте от этого удовольствие!`,
+      desc: `${
+        usePage<any>().props.site.name
+      }— это совместное сообщество 3D-песочниц. Работайте вместе, чтобы создавать удивительные вещи, и получайте от этого удовольствие!`,
     },
     ja: {
       message: `${usePage<any>().props.site.name}へようこそ`,
-      desc: `${usePage<any>().props.site.name} は、協力的な 3D サンドボックス コミュニティです。協力して素晴らしいものを作り、その過程を楽しみましょう!`
+      desc: `${
+        usePage<any>().props.site.name
+      } は、協力的な 3D サンドボックス コミュニティです。協力して素晴らしいものを作り、その過程を楽しみましょう!`,
     },
   },
 ];
 const lang = computed<any>(() => usePage<any>().props.locale);
 
+onMounted(() => {
+  showLoading();
+});
 </script>
 <style scoped src="@/Pages/landing.css"></style>
 <template>
-  <AppHead pageTitle="Welcome"
+  <PageLoader :isLoading="loading" />
+
+  <AppHead
+    pageTitle="Welcome"
     description="Join in on the action today. Buy &amp; sell items, participate in spaces, make friends, and more."
-    :url="route(`Welcome`)" />
-  <Navbar landing="true">
+    :url="route(`Welcome`)"
+  />
+  <Navbar :landing="true">
     <header class="masthead-landing bg-info row-landing">
       <div class="cell large-4">
         <div class="justify-center row-landing align-center">
@@ -61,9 +82,12 @@ const lang = computed<any>(() => usePage<any>().props.locale);
                 {{ desc[lang].desc }}
               </h3>
               <div class="min-w-0 gap-4 mt-3 flex-container align-center">
-                <Link :href="route('auth.register.page')" class="btn btn-landing btn-success">
-                <i class="mr-1 fa-solid fa-person-to-portal"></i>
-                Get Started
+                <Link
+                  :href="route('auth.register.page')"
+                  class="btn btn-landing btn-success"
+                >
+                  <i class="mr-1 fa-solid fa-person-to-portal"></i>
+                  Get Started
                 </Link>
               </div>
             </div>
@@ -84,19 +108,24 @@ const lang = computed<any>(() => usePage<any>().props.locale);
             </div>
             <div class="cell large-8">
               <div class="grid-x grid-margin-x grid-padding-y">
-                <div class="cell large-2 medium-4 small-6" v-for="item in LandingItems?.['data']">
+                <div
+                  class="cell large-2 medium-4 small-6"
+                  v-for="item in LandingItems?.['data']"
+                >
                   <Link :href="route(`store.item`, { id: item.id })" class="d-block">
-                  <div class="p-2 mb-1 card card-item position-relative">
-                    <img :src="item.thumbnail" />
-                  </div>
-                  <div class="text-body fw-semibold text-truncate">
-                    {{ item.name }}
-                  </div>
+                    <div class="p-2 mb-1 card card-item position-relative">
+                      <img :src="item.thumbnail" />
+                    </div>
+                    <div class="text-body fw-semibold text-truncate">
+                      {{ item.name }}
+                    </div>
                   </Link>
                   <div class="text-xs fw-semibold">
                     <span class="text-muted">By</span>
-                    <a href="#" class="text-danger">{{ "@" + item.creator_username }}
-                      <i class="fas fa-shield-check text-success ms-1"></i></a>
+                    <a href="#" class="text-danger"
+                      >{{ "@" + item.creator_username }}
+                      <i class="fas fa-shield-check text-success ms-1"></i
+                    ></a>
                   </div>
                 </div>
               </div>
@@ -118,7 +147,11 @@ const lang = computed<any>(() => usePage<any>().props.locale);
                             <div class="text-sm fw-semibold text-muted">Nabrious</div>
                           </div>
                         </div>
-                        <a href="#" class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only">View Post</a>
+                        <a
+                          href="#"
+                          class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only"
+                          >View Post</a
+                        >
                       </div>
                     </div>
                   </div>
@@ -134,7 +167,11 @@ const lang = computed<any>(() => usePage<any>().props.locale);
                             <div class="text-sm fw-semibold text-muted">Nabrious</div>
                           </div>
                         </div>
-                        <a href="#" class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only">View Post</a>
+                        <a
+                          href="#"
+                          class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only"
+                          >View Post</a
+                        >
                       </div>
                     </div>
                   </div>
@@ -153,7 +190,11 @@ const lang = computed<any>(() => usePage<any>().props.locale);
                             <div class="text-sm fw-semibold text-muted">Nabrious</div>
                           </div>
                         </div>
-                        <a href="#" class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only">View Post</a>
+                        <a
+                          href="#"
+                          class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only"
+                          >View Post</a
+                        >
                       </div>
                     </div>
                   </div>
@@ -170,7 +211,11 @@ const lang = computed<any>(() => usePage<any>().props.locale);
                             <div class="text-sm fw-semibold text-muted">Nabrious</div>
                           </div>
                         </div>
-                        <a href="#" class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only">View Post</a>
+                        <a
+                          href="#"
+                          class="min-w-0 btn btn-info btn-sm text-truncate show-for-large-only"
+                          >View Post</a
+                        >
                       </div>
                     </div>
                   </div>

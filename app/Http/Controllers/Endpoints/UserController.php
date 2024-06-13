@@ -43,6 +43,7 @@ class UserController extends Controller
 
         return response()->json($statuses); // Convert the paginator to an array
     }
+
     public function getDashboardStatus(Request $request)
     {
         // Define a cache key for this query

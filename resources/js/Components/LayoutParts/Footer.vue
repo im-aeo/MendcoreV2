@@ -7,9 +7,14 @@ const props = usePage<any>().props;
 <template>
     <!-- ======= Footer ======= -->
     <footer class="footer footer-fixed">
-        <main class="container mb-5  py-3">
+        <main 
+        :class="{
+            'container-navbar': !props.site.frontend.sidebar_menu,
+            'container': props.site.frontend.sidebar_menu
+        }"
+        class="py-3 mb-5">
             <div class="align-middle grid-x grid-margin-x">
-                <div class="cell small-1 mx-auto">
+                <div class="mx-auto cell small-1">
                     <div class="gap-3 flex-container align-right align-center-sm">
                         <img :src="props.site.icon" width="50" height="50" />
                     </div>

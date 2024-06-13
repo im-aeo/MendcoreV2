@@ -105,8 +105,8 @@ const submit = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3 row thread" v-for="post in usePage<any>().props.posts.data">
-                        <div class="mx-1 my-3 divider"></div>
+                    <div class="mb-3 row thread" v-for="(post, index) in usePage<any>().props.posts.data">
+                        <div class="mx-1 my-3" :class="{ 'divider': index !== 0 }"></div>
                         <div class="gap-2 align-middle flex-container">
                             <Link :href="route('user.profile', { username: post.username })">
                             <v-lazy-image :src="post.headshot" width="65"
@@ -117,7 +117,7 @@ const submit = () => {
                                 style="flex-direction: column">
                                 <div class="text-start">
                                     <Link :href="route('forum.post', { id: post.id, slug: post.seo })" class="text-md">
-                                    {{ post.name }}
+                                    {{ post.name }} <span v-if="post.pinned"><i class="text-success fas fa-thumbtack"></i></span> <span v-if="post.locked"><i class="text-warning fas fa-lock"></i></span>
                                     </Link>
                                     <div></div>
                                     <Link :href="route('user.profile', { username: post.username })"
@@ -131,7 +131,7 @@ const submit = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="mx-1 my-3 divider"></div>
+                    <div :class="{ divider: usePage<any>().props.posts.data.length > 0 }" class="mx-1 my-3"></div>
                 </div>
 
             </div>

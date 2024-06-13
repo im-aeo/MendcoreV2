@@ -6,6 +6,14 @@
     margin: 0 auto;
 }
 
+.container-navbar {
+    padding-top: 75px;
+    padding-left: 65px;
+    padding-right: 65px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 #app {
     height: 100vh;
 }
@@ -33,6 +41,18 @@
     border-radius: var(--rounded-md);
     box-shadow: 0 1px 1px rgb(0, 0, 0, 0.2);
 }
+
+
+.space-thumbnail {
+    background: var(--section-bg);
+    border: 1px solid var(--section-border-color);
+    box-shadow: 0 1px 1px rgb(0, 0, 0, 0.2);
+    border-radius: var(--rounded-md);
+    width: auto;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 
 .game-thumbnail {
     border-radius: var(--rounded-md);
