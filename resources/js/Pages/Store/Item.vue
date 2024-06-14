@@ -41,6 +41,13 @@ const swap = () => {
     thumbnail.src = usePage<any>().props.item.preview;
   }
 }
+function onImgErrorSmall(id) {
+  let source = document.getElementById(id);
+  source.src = "/assets/img/dummy-error.png";
+  source.onerror = "";
+
+  return true;
+}
 </script>
 <template>
     <AppHead :pageTitle="usePage<any>().props.item.name" :description="usePage<any>().props.item.description"
@@ -509,7 +516,7 @@ const swap = () => {
                                     </button>
                                 </div>
                             </div>
-                            <img :src="usePage<any>().props.item.thumbnail" class="mx-auto d-block" id="thumbnail"
+                            <img :src="usePage<any>().props.item.thumbnail" @error="onImgErrorSmall('thumbnail')" class="mx-auto d-block" id="thumbnail"
                                 ref="thumbnail" width="512" height="512">
                         </div>
                         <div v-if="itemOwnership"

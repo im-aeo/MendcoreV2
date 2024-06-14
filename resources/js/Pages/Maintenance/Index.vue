@@ -59,7 +59,7 @@ const { props } = usePage<any>();
   </div>
   <main class="container px-4 text-center flex-dir-column loading-page">
     <i
-      class="fas fa-hammer text-7xl text-info"
+      class="fas fa-screwdriver-wrench text-7xl text-info"
       focusable="false"
       id="icon"
       :class="{ ...toggleClassArray }"

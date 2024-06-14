@@ -48,9 +48,9 @@ Route::group(['as' => 'my.', 'prefix' => 'my', 'middleware' => 'auth'], function
     });
 });
 
-Route::group(['as' => 'user.', 'prefix' => 'users'], function () {
+Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
     Route::get('/discover', [UserController::class, 'UserIndex'])->name('page');
-    Route::get('/profile/{username}', [UserController::class, 'ProfileIndex'])->name('profile');
+    Route::get('/@{username}', [UserController::class, 'ProfileIndex'])->name('profile');
     Route::group(['middleware' => 'auth'], function () {
         Route::group(['as' => 'settings.', 'prefix' => 'settings'], function () {
             Route::get('/', [USController::class, 'edit'])->name('page');
@@ -138,7 +138,7 @@ Route::group(['as' => 'store.', 'prefix' => 'market'], function () {
 });
 Route::group(['as' => 'spaces.', 'prefix' => 'spaces'], function () {
     Route::get('/', [GrabController::class, 'SpacesIndex'])->name('page');
-    Route::get('/{id}/{slug}', [GrabController::class, 'spacesView'])->name('view');
+    Route::get('/{id}/{slug}', [GrabController::class, 'SpacesView'])->name('view');
 });
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {

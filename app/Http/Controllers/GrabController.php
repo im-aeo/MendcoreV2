@@ -64,6 +64,15 @@ class GrabController extends Controller
             'search' => $search,
         ]);
     }
+    
+    public function SpacesView(Request $request, $id)
+    {
+        $space = Space::where('id', $id)->first();
+
+        return inertia('Spaces/View', [
+            'space' => $space,
+        ]);
+    }
 
     public function customizeIndex()
     {

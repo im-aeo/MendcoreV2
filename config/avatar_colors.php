@@ -57,4 +57,6 @@ return [
     'd3d3d3', // Comment: Grey
     // 'White' => 'f2f3f3',
     'f2f3f3', // Comment: White
+    // 'Netisu Black' => '232323',
+    '232323', // Comment: Netisu Black
 ];

@@ -27,24 +27,20 @@ class GoogleSocialiteController extends Controller
     public function handleCallback()
     {
         try {
+            $googleUser = Socialite::driver('google')->user();
+            $user = User::where('email', $googleUser->email)->first();
+            if (!$user) {
 
-            $user = Socialite::driver('google')->user();
-
-            $finduser = User::where('social_id', $user->id)->first();
-
-            if($finduser){
-
-                Auth::login($finduser);
+                Auth::login($user);
 
                 return redirect('/dashboard');
-
-            }else{
+            } else {
                 $newUser = User::create([
                     'display_name' => $user->username,
                     'username' => $user->username,
                     'email' => $user->email,
-                    'social_id'=> $user->id,
-                    'social_type'=> 'google',
+                    'social_id' => $user->id,
+                    'social_type' => 'google',
                     'password' => encrypt('my-google')
                 ]);
 
@@ -53,6 +49,9 @@ class GoogleSocialiteController extends Controller
                 return redirect('/dashboard');
             }
 
+            Auth::login($user);
+
+            return redirect('/dashboard');
         } catch (Exception $e) {
             dd($e->getMessage());
         }

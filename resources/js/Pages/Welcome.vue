@@ -15,7 +15,7 @@ const showLoading = () => {
   loading.value = true;
   setTimeout(() => {
     loading.value = false;
-  }, 5000); // Change 5000 to 5 seconds (1000 milliseconds per second)
+  }, 5500); // Change 5000 to 5 seconds (1000 milliseconds per second)
 };
 defineProps({
   LandingItems: { type: Object },
@@ -53,6 +53,14 @@ const lang = computed<any>(() => usePage<any>().props.locale);
 onMounted(() => {
   showLoading();
 });
+
+function onImgErrorSmall(id) {
+  let source = document.getElementById(id);
+  source.src = "/assets/img/dummy-error.png";
+  source.onerror = "";
+
+  return true;
+}
 </script>
 <style scoped src="@/Pages/landing.css"></style>
 <template>
@@ -114,18 +122,25 @@ onMounted(() => {
                 >
                   <Link :href="route(`store.item`, { id: item.id })" class="d-block">
                     <div class="p-2 mb-1 card card-item position-relative">
-                      <img :src="item.thumbnail" />
+                      <img
+                        :src="item.thumbnail"
+                        :id="item.name"
+                        :alt="item.name"
+                        class="img-fluid"
+                        @error="onImgErrorSmall(item.name)"
+                      />
                     </div>
                     <div class="text-body fw-semibold text-truncate">
                       {{ item.name }}
                     </div>
                   </Link>
                   <div class="text-xs fw-semibold">
-                    <span class="text-muted">By</span>
-                    <a href="#" class="text-danger"
+                    <span class="text-muted">By </span>
+                    <Link
+                      :href="route(`user.profile`, { username: item.creator_username })"
+                      class="text-info"
                       >{{ "@" + item.creator_username }}
-                      <i class="fas fa-shield-check text-success ms-1"></i
-                    ></a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -207,8 +222,10 @@ onMounted(() => {
                         <div class="gap-2 align-middle flex-container">
                           <i class="text-2xl fa-solid fa-messages text-warning"></i>
                           <div class="w-100">
-                            <div class="fw-semibold">Nabrious</div>
-                            <div class="text-sm fw-semibold text-muted">Nabrious</div>
+                            <div class="fw-semibold text-truncate">Nabrious</div>
+                            <div class="text-sm fw-semibold text-truncate text-muted">
+                              Nabrious
+                            </div>
                           </div>
                         </div>
                         <a

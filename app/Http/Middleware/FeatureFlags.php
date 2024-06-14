@@ -66,7 +66,7 @@ class FeatureFlags
             'creator_area.' => 'item_creation_enabled',
             'avatar.' => 'customization_enabled',
             'account.trades.' => 'trading_enabled',
-            'groups.' => 'spaces_enabled',
+            'spaces.' => 'spaces_enabled',
             'user.settings.' => 'user_settings_enabled',
             'account.upgrade.' => 'real_life_purchases_enabled',
             'auth.register.' => 'registration_enabled',

@@ -29,7 +29,7 @@
         "laravel/reverb": "@beta",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.9",
-        "laravel/socialite": "^5.8",
+        "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "league/flysystem-aws-s3-v3": "^3.0",

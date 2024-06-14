@@ -61,7 +61,7 @@ class HandleInertiaRequests extends Middleware
                         'level' => $request->user()->getLevel(),
                         'xp' => $request->user()->getPoints(),
                         'nextlevelxp' =>  $request->user()->nextLevelAt(),
-                        'notifications' => $request->user()->notifications()->limit(5)->get()
+                        'notifications' => $request->user()->unreadNotifications()->limit(5)->get()
                         ->each(function ($notification) {
                             $notification->DateHum = $notification->created_at->diffForHumans();
                         }),

@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { usePage, router } from "@inertiajs/vue3";
-import { ref, onUnmounted } from "vue";
-const page = usePage();
+import { usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
+
 const isPageLoading = ref(false);
 
 const emit = defineEmits<{
   (event: "sidebarToggle"): void;
 }>();
+
 defineProps<{
   isLoading: { value: boolean };
 }>();
-
-// Show the loading indicator when a new visit starts
-
-router.on("start", () => {
-  isPageLoading.value = true;
-});
 
 const loadingMessages = [
   "Loading...",
@@ -41,36 +36,6 @@ const loadingMessages = [
 ];
 
 const randomMessage = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-// Check if it's the first visit or user is not connected to the internet
-const isOnline = navigator.onLine;
-
-router.on("start", () => {
-  isPageLoading.value = true;
-});
-
-router.on("progress", (event) => {
-  if (event.detail.progress.percentage) {
-    const progressBar = (event.detail.progress.percentage / 100) * 0.9;
-  }
-});
-
-const handleRouteChange = (event) => {
-  if (event.detail.visit.completed) {
-    isPageLoading.value = false;
-  } else if (event.detail.visit.interrupted) {
-    isPageLoading.value = true;
-  } else if (event.detail.visit.cancelled) {
-    isPageLoading.value = false;
-  }
-};
-
-// Attach the route change handler
-const unregister = router.on("finish", handleRouteChange);
-
-// Cleanup the handler when the component is unmounted
-onUnmounted(() => {
-  unregister();
-});
 </script>
 <template>
   <Transition>
@@ -79,7 +44,7 @@ onUnmounted(() => {
         <div class="mb-1">
           <img :src="usePage<any>().props.site.icon" width="150" height="150" />
           <div
-            v-if="usePage<any>().props.site.loading_messages"
+            v-if="usePage<any>().props.site.frontend.loading_messages"
             class="text-md text-muted fw-semibold"
           >
             {{ randomMessage }}
@@ -120,7 +85,7 @@ body {
   max-width: 85vw;
   height: 4px;
   position: absolute;
-  bottom: 39vh;
+  bottom: auto;
   left: 50%;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.15);

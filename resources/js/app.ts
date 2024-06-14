@@ -6,7 +6,7 @@ import 'vue-skeletor/dist/vue-skeletor.css';
 
 // アプリの作成
 import { Skeletor } from 'vue-skeletor';
-import { createSSRApp, h } from 'vue';
+import { createApp, h } from 'vue';
 import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
 import type { DefineComponent } from 'vue';
 import Pagination from './Components/Pagination.vue';
@@ -32,7 +32,7 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>("./Pages/**/*.vue")),
     setup({ el, App, props, plugin }) {
-        const app = createSSRApp({ render: () => h(App, props) })
+        createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(trail, { routes })
             .use(VueTippy)
@@ -40,15 +40,8 @@ createInertiaApp({
             .component('Pagination', Pagination)
             .component('AppHead', AppHead)
             .component('Head', Head)
-            .component('Link', Link);
-
-        // Set productionTip to true in production environment
-        if (import.meta.env?.['NODE_ENV'] === 'production') {
-            app.config.productionTip = true;
-        }
-
-        // Mount the app to the element
-        app.mount(el);
+            .component('Link', Link)
+            .mount(el);
     },
 });
 

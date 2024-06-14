@@ -392,7 +392,7 @@ const { props } = usePage<any>();
             </li>
             <li class="divider"></li>
             <li v-if="props.auth.user.notifications.length" class="dropdown-item">
-              <a href="#" class="dropdown-link">
+              <Link :href="route(`api.notif.read-all`)" class="dropdown-link">
                 <div class="align-middle flex-container align-justify">
                   <div class="gap-2 align-middle flex-container">
                     <i
@@ -403,7 +403,7 @@ const { props } = usePage<any>();
                     <div class="text-sm">Mark All As Read</div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </li>
 
             <li class="dropdown-item">

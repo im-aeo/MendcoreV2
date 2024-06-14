@@ -9,6 +9,7 @@ use App\Http\Controllers\Endpoints\RenderController;
 use App\Http\Controllers\Endpoints\ItemApiController;
 use App\Http\Controllers\Endpoints\ThumbnailController;
 use App\Http\Controllers\Endpoints\SearchSiteController;
+use App\Http\Controllers\Endpoints\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,13 @@ Route::group(['prefix' => 'api', 'middleware' => 'throttle:30,1'], function () {
             return redirect()->to(config('Values.production.domains.main'));
         });
         Route::get('/status-list', [UserController::class, 'getDashboardStatus'])->name('statuses');
+    });
+
+    Route::group(['as' => 'notif.', 'prefix' => 'notifications'], function () {
+        Route::get('/', function () {
+            return redirect()->to(config('Values.production.domains.main'));
+        });
+        Route::get('/read-all', [NotificationController::class, 'ReadAll'])->name('read-all');
     });
 
     Route::group(['as' => 'store.', 'prefix' => 'market'], function () {

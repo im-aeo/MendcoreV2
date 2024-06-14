@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Endpoints;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,15 +22,15 @@ class NotificationController extends Controller
 
     public function ReadAll()
     {
-        $user = App\Models\User::find(1);
- 
-foreach ($user->unreadNotifications as $notification) {
-    $notification->markAsRead();
-}
+        $user = Auth::user();
+
+        foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
 
         return response()->json([
             'type' => 'success',
             'message' => 'All Notifications Read.',
         ]);
-}
+    }
 }
