@@ -18,6 +18,7 @@ const currentcat = ref("hat");
 const CategoryItems = ref([]);
 const wearingItems = ref([]);
 const wearingHats = ref([]);
+const SelectedItemID = ref<Number>();
 
 var userAvatar = reactive({
   color_head: computed<any>(() => (usePage<any>().props.avatar as Record<string, unknown>)?.['color_head']),
@@ -42,7 +43,7 @@ let thumbnail = "";
 
 
 // Function to show a modal by toggling its "active" class
-function showModal(modalId: string): void {
+function showModal(modalId: string, id: null | number = null): void {
   const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.toggle("active");
@@ -153,7 +154,8 @@ function handlePartSelection(part: string): void {
 }
 const SortItemByType = async (id: number, type: string) => {
   if (type === 'hat') {
-    showModal('SlotModal');
+    SelectedItemID.value = id;
+    showModal('SlotModal', id);
   } else {
     WearItem(id, 'none');
   }

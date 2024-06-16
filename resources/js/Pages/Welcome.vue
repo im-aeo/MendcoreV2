@@ -65,7 +65,6 @@ function onImgErrorSmall(id) {
 <style scoped src="@/Pages/landing.css"></style>
 <template>
   <PageLoader :isLoading="loading" />
-
   <AppHead
     pageTitle="Welcome"
     description="Join in on the action today. Buy &amp; sell items, participate in spaces, make friends, and more."
@@ -250,6 +249,6 @@ function onImgErrorSmall(id) {
         </div>
       </div>
     </main>
-    <Footer />
+    <Footer :isLanding="true" />
   </Navbar>
 </template>

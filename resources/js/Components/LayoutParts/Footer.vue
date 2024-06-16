@@ -2,6 +2,14 @@
 import { usePage } from "@inertiajs/vue3";
 
 const props = usePage<any>().props;
+
+defineProps({
+    isLanding: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+});
 </script>
 
 <template>
@@ -9,7 +17,7 @@ const props = usePage<any>().props;
     <footer class="footer footer-fixed">
         <main 
         :class="{
-            'container-navbar': !props.site.frontend.sidebar_menu,
+            'container-navbar': !props.site.frontend.sidebar_menu || isLanding,
             'container': props.site.frontend.sidebar_menu
         }"
         class="py-3 mb-5">

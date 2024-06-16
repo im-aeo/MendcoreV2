@@ -77,6 +77,13 @@ Route::group(['as' => 'forum.', 'prefix' => 'discuss'], function () {
     });
 });
 
+Route::group(['as' => 'chat.', 'prefix' => 'messages'], function () {
+    Route::get('/messages', [MessageController::class, 'messages'])
+        ->name('messages');
+    Route::post('/message/validate', [MessageController::class, 'validateMessage'])
+        ->name('validate');
+});
+
 Route::get('/achievements', [AchievementController::class, 'AchievementList'])->name('acheivements');
 
 
