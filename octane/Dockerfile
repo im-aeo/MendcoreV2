@@ -62,7 +62,7 @@ RUN composer install --ignore-platform-req=ext-gmp --no-scripts
 RUN cp -a .env.example .env
 
 # Run only when in production
-# RUN sed -i'' -e 's/^APP_ENV=.*/APP_ENV=production/' -e 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
+RUN sed -i'' -e 's/^APP_ENV=.*/APP_ENV=production/' -e 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
 
 RUN php artisan key:generate
 
