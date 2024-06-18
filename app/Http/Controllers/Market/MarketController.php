@@ -65,7 +65,11 @@ class MarketController extends Controller
             'item' => $item,
             'item.thumbnail' => $item->thumbnail(),
             'item.preview' => $item->preview(),
-            'creator' => $item->creator,
+            'creator' => [
+                'username' => $item->creator->username,
+                'displayname' => $item->creator->displayname,
+                'headshot' => $item->creator->headshot(),
+            ],
             'itemOwnership' => Auth::check() ? Auth::user()->ownsItem($item->id) : false,
             'item.owners' => $item->owners(),
             'recommendations' => $recommendations,

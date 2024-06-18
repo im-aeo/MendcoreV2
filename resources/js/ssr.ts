@@ -13,7 +13,7 @@ import AppHead from "./Components/AppHead.vue";
 import routes from "../routes/js/routing.json";
 import createServer from "@inertiajs/vue3/server";
 import { renderToString } from "@vue/server-renderer";
-import AeoPagination from "./Components/Pagination.vue";
+import Pagination from "./Components/Pagination.vue";
 import { createInertiaApp, Head, Link } from "@inertiajs/vue3";
 
 if (import.meta.hot) {
@@ -46,11 +46,11 @@ createServer((page) =>
           url: props.initialPage.url,
         })
         .use(VueTippy)
-        .component("Skeletor", Skeletor)
-        .component("AeoPagination", AeoPagination) // Pagination コンポーネントを登録する
-        .component("AppHead", AppHead)
-        .component("Head", Head)
-        .component("Link", Link);
+        .component('Skeletor', Skeletor)
+        .component('Pagination', Pagination)
+        .component('AppHead', AppHead)
+        .component('Head', Head)
+        .component('Link', Link);
     },
   })
 );

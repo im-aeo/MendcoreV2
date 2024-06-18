@@ -113,7 +113,7 @@ class UserController extends Controller
         $response = inertia('Users/Profile', [
             'user' => $user,
             'statuses' => $statuses,
-            'user.posts' => $user->posts_count,
+            'user.posts' => $user->posts()->count(),
             'user.avatar' => $user->thumbnail(),
             'user.level' => $user->getLevel(),
             'user.settings' =>  $user->settings,

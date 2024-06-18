@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import axios from "axios"; // Import Axios
-import { route, current } from "momentum-trail";
-import { ref } from "vue";
+import { route } from "momentum-trail";
 import "../../../../public/assets/css/themes/variables-light.css";
 import AppHead from "@/Components/AppHead.vue";
 import { usePage } from "@inertiajs/vue3";
@@ -62,7 +61,6 @@ const { props } = usePage<any>();
       class="fas fa-screwdriver-wrench text-7xl text-info"
       focusable="false"
       id="icon"
-      :class="{ ...toggleClassArray }"
       @click="countClicks"
     ></i>
     <h1 class="mt-3 mb-0">We'll be back soon!</h1>
@@ -178,9 +176,11 @@ export default {
     },
     changeClassByNumber(element, val, classes) {
       for (const className of classes) {
+        const iconwheel = document.getElementById(element);
+        if (!iconwheel) {
+          return; // Exit the loop if iconwheel is not found
+        }
         if (classes.length) {
-          const iconwheel = document.getElementById(element);
-
           iconwheel.classList.add(classes[val]); // Add 'text-muted' class for val = 1
           return; // Exit the loop after adding the desired class
         } else if (val !== 1) {

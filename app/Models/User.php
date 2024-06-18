@@ -86,7 +86,7 @@ class User extends AeoAuthenticatable
     // Classes
     public function avatar()
     {
-            return Avatar::where('user_id', '=', $this->id)->first();
+        return Avatar::where('user_id', '=', $this->id)->first();
     }
 
     public function getNextLevelExp()
@@ -145,18 +145,18 @@ class User extends AeoAuthenticatable
 
     public function messages()
     {
-        return $this->hasMany(UserMessages::class);
+        return $this->hasMany(Message::class);
     }
 
 
     public function sentMessages()
     {
-        return $this->hasMany(UserMessages::class, 'sending_id');
+        return $this->hasMany(Message::class, 'sending_id');
     }
 
     public function receivedMessages()
     {
-        return $this->hasMany(UserMessages::class, 'receiving_id');
+        return $this->hasMany(Message::class, 'receiving_id');
     }
 
     public function ownsItem($id)

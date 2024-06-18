@@ -322,9 +322,9 @@ class ItemApiController extends Controller
 
             // Update seller currency and deduct buyer currency
             if ($currencyType === 'coins') {
-                Auth::user()->coins -= $price;
+                Auth::user()->coins - $price;
             } else {
-                Auth::user()->bucks -= $price;
+                Auth::user()->bucks - $price;
             }
             // Create inventory record (if not a free item)
             if ($currencyType !== 'free') {

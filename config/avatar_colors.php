@@ -59,4 +59,6 @@ return [
     'f2f3f3', // Comment: White
     // 'Netisu Black' => '232323',
     '232323', // Comment: Netisu Black
+    // 'Melody Blue' => '99D6FF',
+    '99D6FF', // Comment: Melody Blue
 ];

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class RenderController extends Controller
 {
-    public function UserRender(Request $request, $id)
+    public function UserRender($id)
     {
         // Retrieve parameters for the request
         $user = Avatar::findOrFail($id);
@@ -118,6 +118,12 @@ class RenderController extends Controller
                     $requestData[$key] = getItemHash($value);
                 }
             }
+            if ($db->addon) {
+                $requestData['addon'] =  getItemHash($db->addon);
+            };
+            if ($db->head) {
+                $requestData['head'] =  getItemHash($db->head);
+            };
             if ($db->face) {
                 $requestData['face'] = getItemHash($db->face);
             } else {
@@ -128,6 +134,12 @@ class RenderController extends Controller
             };
             if ($db->tshirt) {
                 $requestData['tshirt'] =  getItemHash($db->tshirt);
+            };
+            if ($db->shirt) {
+                $requestData['shirt'] =  getItemHash($db->shirt);
+            };
+            if ($db->pants) {
+                $requestData['pants'] =  getItemHash($db->pants);
             };
         } elseif ($type == 'item') {
             if ($db->type == 'hat') {

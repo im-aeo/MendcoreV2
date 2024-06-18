@@ -15,6 +15,7 @@ use App\Models\DiffUsername;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Endpoints\RenderController;
 use App\Http\Middleware\SiteSettingChecker;
+use App\Jobs\UserRenderer;
 use App\Models\Item;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
@@ -97,19 +98,16 @@ class GrabController extends Controller
         ]);
     }
 
-    public function regeneratewithID($request, $id)
+    public function regeneratewithID($id)
     {
-        $newVrcInstance = new RenderController();
-        $vrs = $newVrcInstance;
-        $vrs->UserRender($request, $id);
+        UserRenderer::dispatch($id);
     }
 
-    public function regenerate($request)
+    public function regenerate()
     {
-        $newVrcInstance = new RenderController();
-        $vrs = $newVrcInstance;
-        $vrs->UserRender($request, Auth::user()->id);
+        UserRenderer::dispatch(Auth::user()->id);
     }
+
     public function UpdateAvatar(Request $request)
     {
         $avatar = Auth::user()->avatar();

@@ -9,6 +9,7 @@ import { Head, usePage } from '@inertiajs/vue3';
 import { route, current } from 'momentum-trail'
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
+import axios from "axios";
 
 defineProps<{
     mustVerifyEmail?: Boolean,
@@ -30,6 +31,20 @@ const ActiveCategory: Ref<string> = ref("general");
 function setActiveCategory(category): void {
   ActiveCategory.value = category;
 };
+function changeCountry(country): void {
+    axios.post(route(`api.settings.changeCountry`, { country: country }))
+        .then(response => {
+            // Handle the success response here
+            console.error('Success:', response);
+
+        })
+        .catch(error => {
+            // Handle the error response here
+            console.error('Error setting your country:', error);
+        });
+  console.log(country);
+};
+
 const currentTheme = localStorage.getItem('theme');
   
 
@@ -167,7 +182,29 @@ const isVerifiedEmail = computed(() => {
         </div>
         <div class="cell medium-8">
                 <div v-if="ActiveCategory === 'general'">
-                    <div class="mb-1 text-xl fw-semibold">General</div>
+                    <div class="cell large-7">
+                        <div class="mb-2 text-xl fw-semibold">General</div>
+                    </div>
+                    <div class="cell large-5">
+                    <div class="gap-2 align-middle flex-container-lg">
+                        <select
+                @change="changeCountry($event.target.value)"
+                class="mb-2 form form-xs form-select form-has-section-color"
+              >
+                <option
+                  v-for="country in usePage<any>().props.countries"
+                  :key="country.code"
+                  :value="country.code"
+                >
+                  <span
+                    class="tab-link squish"
+                  >
+                    {{ country.name }}
+                  </span>
+                </option>
+              </select>
+              </div>
+                    </div>
                     <div class="section-borderless">
                         <div class="card card-body">
                             <div class="mb-2 text-xl fw-semibold">

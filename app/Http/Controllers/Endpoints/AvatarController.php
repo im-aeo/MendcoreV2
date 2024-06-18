@@ -9,6 +9,7 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Avatar;
 use Mockery\Matcher\Any;
+use App\Models\User;
 
 class AvatarController extends Controller
 {
@@ -37,13 +38,13 @@ class AvatarController extends Controller
         return response()->json($items);
     }
 
-    public function WearItem(Request $request, int $itemId, $slot = null)
+    public function WearItem(Request $request, int $itemId, int | string $slot)
     {
-        // Fetch the user's avatar record
+        // Fetch the avatar and item record
         $user = Auth::user();
-
         $avatar = $user->avatar();
         $item = Item::where('id', '=', $itemId)->first();
+
         // Check if avatar record exists
         if (!$avatar) {
             return response()->json([
@@ -53,10 +54,11 @@ class AvatarController extends Controller
         }
 
         // Validate slot number (1-6)
-        if ($slot != 'none' || $slot != null) {
-            $hatSlot = "hat_" . $slot;
+        if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
+            $hatSlot = "hat_" . $slot; // Define $hatSlot here within the if block
         }
-        if ($item->item_type = "hat" && !in_array($slot, range(1, 6))) {
+
+        if ($item->item_type = "hat" && !in_array($slot, range(1, 6)) && $slot != 'none') {
             return response()->json([
                 "message" => "Invalid hat slot. Please choose between 1 and 6.",
                 "type" => "error",
@@ -64,17 +66,19 @@ class AvatarController extends Controller
         }
 
         // Check the specific hat slot for null (emptys)
-        if ($item->item_type = "hat" && is_null($avatar->$hatSlot)) {
-            $avatar->$hatSlot = $itemId;
-        } else {
-            return response()->json([
-                "message" => "This hat slot is already occupied",
-                "type" => "error",
-            ], 409); // Conflict status code
+        if ($item->item_type == "hat" && $slot != 'none') {
+            if (is_null($avatar->{"hat_" . $slot})) {
+                $avatar->{"hat_" . $slot} = $itemId; // Set the specific hat slot
+            } else {
+                return response()->json([
+                    "message" => "This hat slot is already occupied",
+                    "type" => "error",
+                ], 409); //             }
+            }
         }
 
         // Update the specific item based on type and id
-        if ($item->item_type = "hat") {
+        if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
             $avatar->setAttribute($item->$hatSlot, $itemId);
         } else {
             $avatar->setAttribute($item->item_type, $itemId);

@@ -37,7 +37,7 @@ class USController extends Controller
         return inertia('Settings/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'country' => $countries,
+            'countries' => $countries,
             'categories' => $categories,
             'themes' => config('themes.roster'),
         ]);

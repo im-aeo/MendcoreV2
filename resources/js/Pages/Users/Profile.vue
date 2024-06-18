@@ -169,9 +169,9 @@ watch(following, (newValue, oldValue) => {
                                     <i v-if="usePage<any>().props.user.staff" class="fas fa-gavel text-danger">&nbsp;</i>
                                     <i v-else-if="usePage<any>().props.user.settings.beta_tester" class="fas fa-hard-hat text-success">&nbsp;</i>
                                     <v-lazy-image
-                                        :src="'assets/img/flags/' + usePage<any>().props.user.settings.country_code + '.svg'"
-                                        alt="Country Flag" style="width: 26px;height: 16px;"
-                                        src-placeholder="assets/img/flags/pirate.svg" />
+                                        :src="'/assets/img/flags/' + usePage<any>().props.user.settings.country_code + '.svg'"
+                                        alt="Country Flag" style="width: auto;height: 20px;"
+                                        src-placeholder="/assets/img/flags/other/pirate.svg" />
                             </div>
                             <div class="text-sm text-muted fw-semibold">
                                 {{ "@" + usePage<any>().props.user.username }}

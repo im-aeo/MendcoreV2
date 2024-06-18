@@ -10,6 +10,7 @@ use App\Http\Controllers\Endpoints\ItemApiController;
 use App\Http\Controllers\Endpoints\ThumbnailController;
 use App\Http\Controllers\Endpoints\SearchSiteController;
 use App\Http\Controllers\Endpoints\NotificationController;
+use App\Http\Controllers\Endpoints\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,13 @@ Route::group(['prefix' => 'api', 'middleware' => 'throttle:30,1'], function () {
         Route::get('/wearing-hats', [AvatarController::class, 'getWearingHats'])->name('wearing-hats');
 
         Route::get('/wear/{id}/{slot}', [AvatarController::class, 'WearItem'])->name('wear-item');
+    });
+
+    Route::group(['as' => 'settings.', 'prefix' => 'settings'], function () {
+        Route::get('/', function () {
+            return redirect()->to(config('Values.production.domains.main'));
+        });
+        Route::post('/change-country/{country}', [SettingsController::class, 'changeCountry'])->name('changeCountry');
     });
 
     Route::get('/rss-feed', [RssController::class, 'index'])->name('rss');

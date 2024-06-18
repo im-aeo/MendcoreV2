@@ -11,7 +11,6 @@ import { viteObfuscateFile } from "vite-plugin-obfuscator";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { VitePWA } from "vite-plugin-pwa";
 
-const __dirname = "C:/laragon/www/netisu-backup";
 
 export default defineConfig({
   root: "", // Specify the root directory for development
@@ -20,6 +19,9 @@ export default defineConfig({
     modules: {
       generateScopedName: "[hash:base64:5]",
     },
+  },
+  build:{
+    sourcemap: true,
   },
   plugins: [
     VitePWA({

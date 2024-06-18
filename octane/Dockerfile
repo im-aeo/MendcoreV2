@@ -68,6 +68,8 @@ RUN php artisan key:generate
 
 RUN bun i
 
+RUN bun run build
+
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 8000
