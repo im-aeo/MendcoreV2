@@ -24,15 +24,14 @@ class SettingsController extends Controller
      * Display the user's profile form.
      */
     public function changeCountry($country)
-    {
-        // Get the user
+    {        // Get the user
         $user = Auth::user();
 
         // Get the user's settings record (assuming a relationship exists)
         $settings = $user->settings;
 
         // Get the country code from the request
-        $newCountryCode = strtoupper($country); // Ensure uppercase for case-insensitive comparison
+        $newCountryCode = strtoupper($country);
 
         // Check if country exists in the database
         $existingCountry = Country::where('code', $newCountryCode)->first();
@@ -76,12 +75,10 @@ class SettingsController extends Controller
     {
         $this->validate($request, [
             'description' => ['max:1024'],
-            'country' => ['max:2'],
             'forum_signature' => ['max:100']
         ]);
 
         $user->description = $request->description;
-        $user->description = $request->country;
         $user->forum_signature = $request->forum_signature;
         $user->save();
 

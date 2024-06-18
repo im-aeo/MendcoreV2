@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Avatar;
 use Mockery\Matcher\Any;
 use App\Models\User;
+use App\Jobs\UserRenderer;
 
 class AvatarController extends Controller
 {
@@ -38,13 +39,16 @@ class AvatarController extends Controller
         return response()->json($items);
     }
 
-    public function WearItem(Request $request, int $itemId, int | string $slot)
+    public function WearItem(int $itemId, int | string $slot)
     {
         // Fetch the avatar and item record
+        /** @var \App\Models\User $user **/
         $user = Auth::user();
         $avatar = $user->avatar();
+        $newVrcInstance = new RenderController();
+        $vrs = $newVrcInstance;
         $item = Item::where('id', '=', $itemId)->first();
-
+        
         // Check if avatar record exists
         if (!$avatar) {
             return response()->json([
@@ -57,29 +61,29 @@ class AvatarController extends Controller
         if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
             $hatSlot = "hat_" . $slot; // Define $hatSlot here within the if block
         }
+        
 
-        if ($item->item_type = "hat" && !in_array($slot, range(1, 6)) && $slot != 'none') {
+        if ($item->item_type == "hat" && !in_array($slot, range(1, 6)) && $slot != 'none') {
             return response()->json([
                 "message" => "Invalid hat slot. Please choose between 1 and 6.",
                 "type" => "error",
             ], 400); // Bad request status code
         }
-
         // Check the specific hat slot for null (emptys)
-        if ($item->item_type == "hat" && $slot != 'none') {
+        if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
             if (is_null($avatar->{"hat_" . $slot})) {
                 $avatar->{"hat_" . $slot} = $itemId; // Set the specific hat slot
             } else {
                 return response()->json([
                     "message" => "This hat slot is already occupied",
                     "type" => "error",
-                ], 409); //             }
+                ], 409);
             }
         }
 
         // Update the specific item based on type and id
         if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
-            $avatar->setAttribute($item->$hatSlot, $itemId);
+            $avatar->setAttribute($hatSlot, $itemId);
         } else {
             $avatar->setAttribute($item->item_type, $itemId);
         }
@@ -87,6 +91,10 @@ class AvatarController extends Controller
 
         // Save the updated avatar record
         $avatar->save();
+
+        UserRenderer::dispatch(Auth::user()->id);
+        return $vrs->getRenderHash($avatar->id);
+
 
         return response()->json([
             "message" => "You have worn this item",

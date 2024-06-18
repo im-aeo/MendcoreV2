@@ -110,6 +110,7 @@ class GrabController extends Controller
 
     public function UpdateAvatar(Request $request)
     {
+        /** @var \App\Models\User $user **/
         $avatar = Auth::user()->avatar();
 
         $newVrcInstance = new RenderController();
@@ -155,7 +156,7 @@ class GrabController extends Controller
                 return $vrs->getRenderHash($avatar->id);
 
             case 'remove':
-                $validTypes = ['hat_1', 'hat_2', 'hat_3', 'head', 'face', 'gadget', 'tshirt', 'shirt', 'pants'];
+                $validTypes = ['hat_1', 'hat_2', 'hat_3', 'head', 'face', 'tool', 'addon', 'torso', 'left_arm', 'right_arm', 'left_leg', 'right_leg', 'tshirt', 'shirt', 'pants'];
 
                 if (!in_array($request->type, $validTypes)) {
                     return response()->json(['error' => 'Invalid type.']);

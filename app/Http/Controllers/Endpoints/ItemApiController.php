@@ -318,14 +318,13 @@ class ItemApiController extends Controller
             $seller = $item->creator;
 
             // Validate user currency
+
             $this->validateUserCurrency($currencyType, $price);
 
             // Update seller currency and deduct buyer currency
-            if ($currencyType === 'coins') {
-                Auth::user()->coins - $price;
-            } else {
-                Auth::user()->bucks - $price;
-            }
+            $myu = Auth::user();
+            $myu->{$currencyType} -= $price;
+            $myu->save();
             // Create inventory record (if not a free item)
             if ($currencyType !== 'free') {
                 $inventory = new Inventory;
@@ -373,7 +372,8 @@ class ItemApiController extends Controller
     }
     private function validateUserCurrency(string $currencyType, float $price)
     {
-        if ($currencyType != 'free' && Auth::user()->{$currencyType} < $price) {
+        $myu = Auth::user();
+        if ($currencyType != 'free' && $myu->{$currencyType} < $price) {
             return response()->json(
                 [
                     "message" => "You do not have enough {$currencyType} to purchase this item.",

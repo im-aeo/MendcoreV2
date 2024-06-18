@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
-import { route, current } from "momentum-trail";
+import { route } from "momentum-trail";
 import SideLink from "../SideLink.vue";
 import FlashMessages from "@/Components/Messages/FlashMessages.vue";
 import VLazyImage from "v-lazy-image";
@@ -69,7 +69,7 @@ const sidebar = [
   },
   {
     url: route(`forum.page`, { id: 1 }),
-    active_link: "forum.page.*",
+    active_link: "forum.*",
     icon: "fas fa-messages",
     section: "NAVIGATION",
     en: { title: "Discuss" },
@@ -151,9 +151,12 @@ const lang = computed(() => usePage<any>().props.locale);
           <span>Log In</span>
         </SideLink>
       </div>
-      <SideLink :link="route('Welcome')" :ActiveLink="route('Welcome')">
+      <SideLink
+        :link="route('Welcome')"
+        :ActiveLink="props.auth.user ? 'my.dashboard.page' : 'Welcome'"
+      >
         <i class="fas fa-home side-icon"></i>
-        <span>Home</span>
+        <span> {{ props.auth.user ? "Dashboard" : "Welcome" }} </span>
       </SideLink>
       <template v-for="sidesections in sidebarsections" class="hide-for-large">
         <li class="side-item side-title">{{ sidesections[lang].name }}</li>
