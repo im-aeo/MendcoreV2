@@ -9,11 +9,19 @@ import VLazyImage from "v-lazy-image";
 defineProps<{
   image?: string;
 }>();
-
+const chatToggle = ref(true);
 const { props } = usePage<any>();
 const googleAdUrl = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
 const adblock = ref(false);
-
+const messages = ref([
+  {
+    username: "aeo",
+    displayname: "ae-no",
+    message: "test array",
+    type: "type",
+    DateHum: "Just Now",
+  },
+]);
 async function detectAdBlock() {
   try {
     await fetch(new Request(googleAdUrl)).catch(() => (adblock.value = true));
@@ -64,7 +72,7 @@ const sidebar = [
     icon: "fas fa-store",
     en: { title: "Market" },
     es: { title: "Mercado" },
-    ru: { title: "Рынок" },
+    ru: { title: "Маркет" },
     ja: { title: "市場" },
   },
   {
@@ -74,7 +82,7 @@ const sidebar = [
     section: "NAVIGATION",
     en: { title: "Discuss" },
     es: { title: "Conversar" },
-    ru: { title: "Обсуждать" },
+    ru: { title: "Обсуждение" },
     ja: { title: "議論" },
   },
   {
@@ -84,7 +92,7 @@ const sidebar = [
     icon: "fas fa-code",
     en: { title: "Develop" },
     es: { title: "Desarrollar" },
-    ru: { title: "Развивать" },
+    ru: { title: "Мои создания" },
     ja: { title: "発展" },
   },
   {
@@ -124,7 +132,7 @@ const sidebar = [
     section: "BOOST YOUR ACCOUNT",
     en: { title: "Upgrade" },
     es: { title: "Mejora" },
-    ru: { title: "модернизировать" },
+    ru: { title: "Подписки" },
     ja: { title: "アップグレード" },
   },
 ];
@@ -230,6 +238,44 @@ const lang = computed(() => usePage<any>().props.locale);
     </div>
     <div class="grid-x grid-margin-x align-center">
       <slot />
+      <div
+        id="chat-container"
+        class="chat-container chat-vis focused"
+        style="right: 66px; z-index: 1060"
+      >
+        <div
+          class="chat-windows-header chat-header bg-info hover"
+          @click="chatToggle = !chatToggle"
+        >
+          <div class="chat-header-action">
+            <i class="chat-icon fas fa-message-xmark chat-link-icon"></i>
+            <i class="chat-icon fas fa-cog chat-link-icon"></i>
+            <i class="chat-icon fas fa-gamepad-modern chat-link-icon"></i>
+          </div>
+          <div class="chat-header-label">
+            <span class="chat-caption-header text-overflow chat-header-title"> Aeo </span>
+          </div>
+        </div>
+        <div class="chat-main">
+          <div class="chat-body card-chat card-chat-body no-corners">
+            <div
+              v-for="message in messages"
+              class="gap-2 squish p-2 mb-2 align-middle flex-container align-justify"
+            >
+              <div class="gap-2 align-middle flex-container">
+                <img src="/assets/img/dummy_headshot.png" class="headshot" width="50" />
+                <div class="w-100">
+                  <div class="fw-semibold">{{ message.displayname }}</div>
+                  <div class="text-sm fw-semibold text-muted">
+                    @{{ message.username }}
+                  </div>
+                  <div class="text-xs fw-semibold text-muted">{{ message.DateHum }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <!-- End #main -->

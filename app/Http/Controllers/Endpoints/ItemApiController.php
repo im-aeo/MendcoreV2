@@ -12,6 +12,7 @@ use Exception;
 use App\Models\ItemReseller;
 use App\Models\ItemPurchase;
 use Illuminate\Http\JsonResponse;
+use Stevebauman\Location\Facades\Location;
 
 class ItemApiController extends Controller
 {
@@ -332,14 +333,14 @@ class ItemApiController extends Controller
                 $inventory->item_id = $item->id;
                 $inventory->save();
             }
-            $request = new Request;
 
             // Create purchase record
+            $AgentInfo = Location::get();
             $purchase = new ItemPurchase;
             $purchase->seller_id = $seller->id;
             $purchase->buyer_id = Auth::user()->id;
             $purchase->item_id = $item->id;
-            $purchase->ip = $request->getClientIp();
+            $purchase->ip = $AgentInfo->ip;
 
             $purchase->currency_used = $currencyType;
             $purchase->price = $price;

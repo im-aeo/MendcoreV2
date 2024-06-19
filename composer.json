@@ -30,6 +30,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.9",
         "laravel/socialite": "^5.14",
+        "laravel/telescope": "^5.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "league/flysystem-aws-s3-v3": "^3.0",
@@ -43,6 +44,7 @@
         "pusher/pusher-php-server": "^7.2",
         "simplito/elliptic-php": "^1.0",
         "spatie/laravel-responsecache": "^7.4",
+        "stevebauman/location": "^7.3",
         "symfony/http-client": "^6.3",
         "symfony/mailgun-mailer": "^6.3",
         "symfony/process": "^7.0"

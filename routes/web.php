@@ -148,6 +148,6 @@ Route::group(['as' => 'spaces.', 'prefix' => 'spaces'], function () {
     Route::get('/{id}/{slug}', [GrabController::class, 'SpacesView'])->name('view');
 });
 
-Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'AdminIndex'])->name('page');
 });

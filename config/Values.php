@@ -2,7 +2,7 @@
 
 return [
     'name' => 'Netisu',
-    'logo' => '/assets/img/logo.png',
+    'logo' => '/assets/img/logo-theta.svg',
     'icon' => '/assets/img/icon.png',
     'in_event' => true,
     'system_account_id' => 1,

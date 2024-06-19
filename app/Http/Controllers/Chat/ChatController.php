@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ChatSent;
-use App\Events\SendMessageEvent;
-use App\Http\Requests\SendMessageRequest;
-use App\Models\UserMessages;
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Events\MessageSent;
 class ChatsController extends Controller
 {
     //Add the below functions
@@ -27,7 +21,7 @@ class ChatsController extends Controller
 
     public function fetchMessages()
     {
-        return UserMessages::with('user')->get();
+        return Message::with('user')->get();
     }
 
     public function sendMessage(Request $request)
@@ -36,6 +30,8 @@ class ChatsController extends Controller
         $message = $user->messages()->create([
             'message' => $request->input('message')
         ]);
+        broadcast(new MessageSent($user, $message))->toOthers();
+
         return [
             'type' => 'success',
             'message' => 'Message Sent!',

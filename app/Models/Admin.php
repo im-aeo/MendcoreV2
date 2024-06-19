@@ -15,5 +15,6 @@ class Admin extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
+    protected $fillable = ['adminPoints']; // Allow mass assignment of points
 }

@@ -11,7 +11,7 @@ class Message extends Model
     use HasFactory;
 
     public $table = 'messages';
-    protected $fillable = ['id', 'user_id', 'text'];
+    protected $fillable = ['id', 'sent_from', 'message'];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id');

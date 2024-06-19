@@ -49,6 +49,6 @@ window.Echo = new Echo({
 /** 
  * Testing Channels & Events & Connections
  */
-window.Echo.channel("delivery").listen("PackageSent", (event) => {
+window.Echo.channel("delivery").listen("MessageSent", (event) => {
   console.log(event);
 });

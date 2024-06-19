@@ -147,8 +147,7 @@ class User extends AeoAuthenticatable
     {
         return $this->hasMany(Message::class);
     }
-
-
+    
     public function sentMessages()
     {
         return $this->hasMany(Message::class, 'sending_id');
@@ -169,7 +168,7 @@ class User extends AeoAuthenticatable
 
     public function ipLogs()
     {
-        return $this->hasMany(IpLog::class);
+        return $this->hasMany(IpLog::class, 'user_id');
     }
 
     public function lastIP()

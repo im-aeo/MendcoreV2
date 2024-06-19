@@ -10,7 +10,8 @@ import Button from "../Button.vue";
 import SearchResultSkeleton from "../SearchResultSkeleton.vue";
 import VLazyImage from "v-lazy-image";
 import PageLoader from "../Loaders/PageLoader.vue";
-
+import "../../../css/style.css";
+import "../../../css/NProgress.css";
 // Define the SearchResult interface
 interface SearchResult {
   url: string;
@@ -61,7 +62,7 @@ const topbar = [
     icon: "fas fa-store",
     en: { title: "Market" },
     es: { title: "Mercado" },
-    ru: { title: "Рынок" },
+    ru: { title: "Маркет" },
     ja: { title: "市場" },
   },
   {
@@ -70,7 +71,7 @@ const topbar = [
     icon: "fas fa-message-code",
     en: { title: "Discuss" },
     es: { title: "Conversar" },
-    ru: { title: "Обсуждать" },
+    ru: { title: "Обсуждение" },
     ja: { title: "議論" },
   },
   {

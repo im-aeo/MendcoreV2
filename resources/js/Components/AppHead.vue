@@ -2,7 +2,6 @@
 import { defineProps } from "vue";
 import dayjs from "dayjs";
 import { usePage, Head } from "@inertiajs/vue3";
-
 // Props
 defineProps({
   pageTitle: { type: String },
