@@ -1,5 +1,8 @@
 <?php
+
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleInertiaCrossDomainVisits;
+use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +18,6 @@ use App\Http\Middleware\HandleInertiaRequests;
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
@@ -43,8 +45,17 @@ $app->singleton(
 );
 
 $app->singleton(
+    HandleInertiaCrossDomainVisits::class, 
+);
+
+$app->singleton(
     HandleInertiaRequests::class,
 );
+$app->singleton(
+    AddLinkHeadersForPreloadedAssets::class,
+);
+
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

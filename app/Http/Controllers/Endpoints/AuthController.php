@@ -14,8 +14,8 @@ class UserController extends Controller
 
         // Validate name length (3-20 characters)
         $this->validate($request, [
-            'username' => 'required|alpha_num|min:3|max:25|profane|unique:' . User::class,
-            'displayname' => 'required|alpha_num|min:3|max:25|profane',
+            'username' => 'required|alpha_num|min:3|max:25|profane:es,en|unique:' . User::class,
+            'displayname' => 'required|alpha_num|min:3|max:25|profane:es,en',
         ]);
 
         

@@ -1,7 +1,51 @@
 
 <script setup lang="ts">
 import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
 import "../../../../css/Admin/melody.css";
+import { route } from "momentum-trail";
+import AdminNavLink from "@/Components/AdminNavLink.vue";
+const topbar = [
+  {
+    url: route(`admin.page`),
+    active_link: "admin.page",
+    icon: "far fa-user",
+    en: { title: "Dashboard" },
+    es: { title: "Juegos" },
+    ru: { title: "Игры" },
+    ja: { title: "ゲーム" },
+  },
+  {
+    url: route(`admin.users.page`),
+    active_link: "admin.users.page",
+    icon: "fad fa-tshirt",
+    en: { title: "User Search" },
+    es: { title: "Mercado" },
+    ru: { title: "Маркет" },
+    ja: { title: "市場" },
+  },
+  {
+    url: route(`forum.page`, { id: 1 }),
+    active_link: "forum.*",
+    icon: "fas fa-message-code",
+    en: { title: "Item Search" },
+    es: { title: "Conversar" },
+    ru: { title: "Обсуждение" },
+    ja: { title: "議論" },
+  },
+  {
+    url: route(`spaces.page`),
+    active_link: "spaces.*",
+    icon: "fas fa-planet-ringed",
+    en: { title: "Space Search" },
+    es: { title: "Espacios" },
+    ru: { title: "Развивать" },
+    ja: { title: "スペース" },
+  },
+];
+const lang = computed<any>(() => props.locale);
+
+const { props } = usePage<any>();
 </script>
 <template>
 <nav class="navbar is-white " role="navigation" aria-label="main navigation">
@@ -19,15 +63,14 @@ import "../../../../css/Admin/melody.css";
   
     <div id="navbar " class="navbar-menu">
       <div class="navbar-start ">
-  
-        <a href="dashboard.html" class="navbar-item has-text-link">
-          <i class="far fa-user"></i>&nbsp;Dashboard</a>
-        <a href="user.html" class="navbar-item has-text-white">
-          <i class="fad fa-user"></i>&nbsp;User Search</a>
-        <a href="item.html" class="navbar-item has-text-white">
-          <i class="fad fa-tshirt"></i>&nbsp;Item Search</a>
-        <a href="group.html" class="navbar-item has-text-white">
-          <i class="fad fa-chess"></i>&nbsp;Space Search</a>
+        <AdminNavLink
+        v-for="topbarlinks in topbar"
+        :link="topbarlinks.url"
+        :active_link="topbarlinks.active_link"
+      >
+        <i :class="topbarlinks.icon"></i> &nbsp;
+        {{ topbarlinks[lang].title }}
+      </AdminNavLink>
         <div class="navbar-dropdown">
   
         </div>

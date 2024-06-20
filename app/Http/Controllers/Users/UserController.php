@@ -94,7 +94,7 @@ class UserController extends Controller
                 ];
             });
         });
-        
+
         if ($user->settings->private_profile) {
             if (Auth::check()) {
                 $loggedInUser = Auth::user();
@@ -109,23 +109,30 @@ class UserController extends Controller
                 ]);
             }
         }
-        
+
         $response = inertia('Users/Profile', [
-            'user' => $user,
-            'statuses' => $statuses,
-            'user.posts' => $user->posts()->count(),
-            'user.avatar' => $user->thumbnail(),
-            'user.level' => $user->getLevel(),
-            'user.settings' =>  $user->settings,
-            'user.following' => $user->following()->get(),
-            'user.followers' => $user->followers()->get(),
-            'user.staff' => $user->isStaff(),
-            'user.followsYou' => $thisFollowing,
-            'user.followers_count' => $FollowerCount,
-            'user.following_count' => $FollowingCount,
-            'user.joindate' => $joindate,
+            'user' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'display_name' => $user->display_name,
+                'about_me' => $user->about_me,
+                'posts' => $user->posts()->count(),
+                'avatar' => $user->thumbnail(),
+                'level' => $user->getLevel(),
+                'settings' =>  $user->settings,
+                'following' => $user->following()->get(),
+                'followers' => $user->followers()->get(),
+                'staff' => $user->isStaff(),
+                'followsYou' => $thisFollowing,
+                'followers_count' => $FollowerCount,
+                'following_count' => $FollowingCount,
+                'joindate' => $joindate,
+                'DateHum' => $user->DateHum,
+                'status' => $user->status,
+                'online' => $user->online(),
+            ],
             'is_following' => $isFollowing,
-            'user.online' => $user->online(),
+            'statuses' => $statuses,
         ]);
 
         return $response;
