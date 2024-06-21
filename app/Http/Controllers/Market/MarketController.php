@@ -17,6 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
+use App\Jobs\ItemPreviewRenderer;
 
 class MarketController extends Controller
 {
@@ -111,9 +112,8 @@ class MarketController extends Controller
         $item->onsale = true;
         $item->save();
 
-        $newVrcInstance = new RenderController();
-        $vrs = $newVrcInstance;
-        $vrs->ItemPreviewRender($request, $item->id, true, $itemHashName);
+        ItemPreviewRenderer::dispatch($item->id, true, $itemHashName);
+
 
         return redirect()->route('store.item', $item->id)->with([
             'flash' => [

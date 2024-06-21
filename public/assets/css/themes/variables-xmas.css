@@ -1,24 +1,14 @@
-html {
-    min-height: 100%;
-}
-
-body {
-    background-image: url('https://vextoria.com/img/events/thanksgiving/decorations.png'), url('https://vextoria.com/img/events/thanksgiving/corner.png'), url('https://vextoria.com/img/events/thanksgiving/decorations.png');
-    background-repeat: no-repeat;
-    background-size: 230px, 300px, 230px;
-    background-position: right 0px top 40px, right 0px bottom 0px, left 30px top 40px;
-    min-height: 100%;
-}
+@import url("https://raw.githubusercontent.com/Buom01/snowflakes.css/master/style.min.css");
 :root {
     --white: #ffffff;
     --white-rgb: 0, 0, 0;
     --black: #ffffff;
     --black-rgb: 255, 255, 255;
 
-    --success-500: #43a047;
+    --success-500: #497174;
     --success-500-rgb: 67, 160, 71;
-    --success-400: #4caf50;
-    --success-300: #66bb6a;
+    --success-400: #73b1b6;
+    --success-300: #7ebfc4;
 
     --danger-300: #ef5350;
     --danger-400: #f44336;
@@ -39,10 +29,10 @@ body {
     --warning-700-rgb: 254, 165, 56;
     --warning-800: #fe9c25;
 
-    --info-400: #ffaa43;
-    --info-500: #fea538;
-    --info-600: #FCAF3C;
-    --info-600-rgb: 2, 119, 189;
+    --info-400: #ff9843;
+    --info-500: #fe7038;
+    --info-600: #eb6440;
+    --info-600-rgb: 235,     100, 64;
 
     --secondary-400: #737373;
     --secondary-500: #6d6d6d;
@@ -58,15 +48,15 @@ body {
 
     --btn-gray-color: #bdbdbd;
 
-    --body-bg: #633f21;
-    --body-color: #ffffff;
+    --body-bg: #EFF5F5;
+    --body-color: #497174;
 
-    --section-bg: #511f16;
-    --section-border-color: #633f21;
+    --section-bg: #D6E4E5;
+    --section-border-color: #c9e4e6;
     --section-shadow: 0, 0, 0;
 
-    --input-bg: #633f21;
-    --input-border-color: #633f21;
+    --input-bg: #497174;
+    --input-border-color: #497174;
 
     --sidebar-active-bg: 3, 155, 229, 0.2;
     --sidebar-active-color: #039be5;

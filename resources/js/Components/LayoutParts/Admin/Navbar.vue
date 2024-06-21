@@ -11,35 +11,35 @@ const topbar = [
     active_link: "admin.page",
     icon: "far fa-user",
     en: { title: "Dashboard" },
-    es: { title: "Juegos" },
-    ru: { title: "Игры" },
-    ja: { title: "ゲーム" },
+    es: { title: "Dashboard" },
+    ru: { title: "Панель приборов" },
+    ja: { title: "ダッシュボード" },
   },
   {
     url: route(`admin.users.page`),
     active_link: "admin.users.page",
-    icon: "fad fa-tshirt",
+    icon: "fad fa-user",
     en: { title: "User Search" },
-    es: { title: "Mercado" },
-    ru: { title: "Маркет" },
-    ja: { title: "市場" },
+    es: { title: "búsqueda de usuarios" },
+    ru: { title: "Поиск пользователей" },
+    ja: { title: "ユーザー検索" },
   },
   {
-    url: route(`forum.page`, { id: 1 }),
-    active_link: "forum.*",
-    icon: "fas fa-message-code",
+    url: route(`admin.items.page`),
+    active_link: "admin.items.*",
+    icon: "fad fa-tshirt",
     en: { title: "Item Search" },
-    es: { title: "Conversar" },
-    ru: { title: "Обсуждение" },
-    ja: { title: "議論" },
+    es: { title: "Búsqueda de artículos" },
+    ru: { title: "Поиск предметов" },
+    ja: { title: "アイテム検索" },
   },
   {
     url: route(`spaces.page`),
     active_link: "spaces.*",
-    icon: "fas fa-planet-ringed",
+    icon: "fad fa-planet-ringed",
     en: { title: "Space Search" },
     es: { title: "Espacios" },
-    ru: { title: "Развивать" },
+    ru: { title: "Поиск групп" },
     ja: { title: "スペース" },
   },
 ];
@@ -50,7 +50,7 @@ const { props } = usePage<any>();
 <template>
 <nav class="navbar is-white " role="navigation" aria-label="main navigation">
     <div class="navbar-brand" style="background-color: #1b1b1b;">
-      <div class="navbar-item has-text-white" href="dashboard.html" style="background-color: #1b1b1b;">
+      <div class="navbar-item has-text-white" style="background-color: #1b1b1b;">
         {{ usePage<any>().props.site.name }} Administration
       </div>
   
@@ -63,6 +63,10 @@ const { props } = usePage<any>();
   
     <div id="navbar " class="navbar-menu">
       <div class="navbar-start ">
+        <a class="navbar-item has-text-white" :href="usePage<any>().props.site.production.domains.main" style="background-color: #1b1b1b;">
+        <i class="fas fa-arrow-left"></i> &nbsp;
+      Return To {{ usePage<any>().props.site.name }}
+    </a>
         <AdminNavLink
         v-for="topbarlinks in topbar"
         :link="topbarlinks.url"
@@ -71,7 +75,7 @@ const { props } = usePage<any>();
         <i :class="topbarlinks.icon"></i> &nbsp;
         {{ topbarlinks[lang].title }}
       </AdminNavLink>
-        <div class="navbar-dropdown">
+      <div class="navbar-dropdown">
   
         </div>
       </div>

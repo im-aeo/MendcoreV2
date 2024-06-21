@@ -10,11 +10,18 @@ button {
   font-family: "Lexend Deca", sans-serif;
 }
 
+::-webkit-file-upload-button {
+  display: none;
+}
+::file-selector-button {
+  display: none;
+}
+
 #app {
     height: 100vh;
 }
 
-body {
+html, body {
   background: #ededed !important;
 }
 

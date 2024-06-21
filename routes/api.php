@@ -23,7 +23,7 @@ use App\Http\Controllers\Endpoints\SettingsController;
 |
 */
 
-Route::group(['prefix' => 'api', 'middleware' => 'throttle:30,1'], function () {
+Route::group(['middleware' => 'throttle:30,1'], function () {
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
@@ -58,7 +58,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'throttle:30,1'], function () {
         Route::get('/', function () {
             return redirect()->to(config('Values.production.domains.main'));
         });
-        Route::get('/read-all', [NotificationController::class, 'ReadAll'])->name('read-all');
+        Route::post('/read-all', [NotificationController::class, 'ReadAll'])->name('read-all');
     });
 
     Route::group(['as' => 'store.', 'prefix' => 'market'], function () {

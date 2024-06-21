@@ -64,7 +64,7 @@ provide("selectedCategory", selectedCategory);
     description="Level up your style."
     :url="route(`store.page`)"
   />
-  <Navbar />
+  <Navbar :landing="false" />
   <Sidebar>
     <div class="cell large-2">
       <MarketSidebar
@@ -139,7 +139,7 @@ provide("selectedCategory", selectedCategory);
           </div>
         </div>
       </div>
-      <div v-else-if="items.error" class="">
+      <div v-else-if="items.message" class="">
         <div class="pb-0 card-body">
           <div class="gap-3 mb-2 text-center flex-container flex-dir-column">
             <i class="text-5xl fas fa-store-slash text-muted"></i>
@@ -149,7 +149,7 @@ provide("selectedCategory", selectedCategory);
                 programmers with bug spray to fix the issue
               </div>
               <div class="text-muted fw-semibold">
-                <p class="text-xs">{{ items.error }}</p>
+                <p class="text-xs">{{ items.message }}</p>
               </div>
             </div>
           </div>

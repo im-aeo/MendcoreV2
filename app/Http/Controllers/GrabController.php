@@ -118,7 +118,7 @@ class GrabController extends Controller
 
         switch ($request->action) {
             case 'reset':
-                $avatar->reset();
+                $avatar->resetAvatar();
                 return $this->regenerate($request);
             case 'wear':
                 $item = Item::find($request->id);

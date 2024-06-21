@@ -14,6 +14,7 @@ const CategoryItems = ref([]);
 const wearingItems = ref([]);
 const wearingHats = ref([]);
 const SelectedItemID = ref<Number>();
+const slotValue = ref<Number>();
 
 var userAvatar = reactive({
   color_head: computed<any>(
@@ -51,7 +52,7 @@ const imageRefreshKey = ref(0); // Initialize with 0
 let thumbnail = "";
 
 // Function to show a modal by toggling its "active" class
-function showModal(modalId: string, id: null | number = null): void {
+function showModal(modalId: string): void {
   const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.toggle("active");
@@ -157,7 +158,7 @@ function handlePartSelection(part: string): void {
 const SortItemByType = async (id: number, type: string) => {
   if (type === "hat") {
     SelectedItemID.value = id;
-    showModal("SlotModal", id);
+    showModal("SlotModal");
   } else {
     WearItem(id, "none");
   }
@@ -205,6 +206,9 @@ const WearItem = async (id, slot) => {
     return [];
   }
 };
+function setSlotValue(e) {
+  slotValue.value = e.target.value;
+}
 
 onMounted(() => {
   getCurrentlyWearingItems(), getCurrentlyWearingHats();
@@ -231,44 +235,16 @@ onMounted(() => {
         <div class="section-borderless">
           <div class="mb-2">
             <div class="flex-wrap gap-1 flex-container align-center">
-              <button class="btn btn-info" value="1">
+              <button
+                class="btn btn-info"
+                v-for="n in 6"
+                :key="n"
+                :value="n"
+                @click="setSlotValue($event)"
+              >
                 <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 1
+                Slot {{ n }}
               </button>
-              <button class="btn btn-info" value="2">
-                <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 2
-              </button>
-              <button class="btn btn-info" value="3">
-                <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 3
-              </button>
-              <button class="btn btn-info" value="4">
-                <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 4
-              </button>
-              <button class="btn btn-info" value="5">
-                <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 5
-              </button>
-              <button class="btn btn-info" value="6">
-                <i class="mr-1 fa-solid fa-hat-beach"></i>
-                Slot 6
-              </button>
-            </div>
-            <div
-              v-for="item in wearingHats.data"
-              class="cell large-2 medium-3 small-3"
-              @click="WearItem(item.id, null)"
-            >
-              <div class="d-block">
-                <div class="p-2 mb-1 card card-inner position-relative">
-                  <img :src="item.thumbnail" />
-                </div>
-                <div class="text-body fw-semibold text-truncate">
-                  {{ item.name }}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -282,7 +258,7 @@ onMounted(() => {
             v-if="!VrcRequest"
             type="submit"
             class="btn btn-success"
-            @click="WearItem(id, slot)"
+            @click="WearItem(SelectedItemID, slotValue)"
           >
             Wear
           </button>

@@ -14,6 +14,7 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\Leaderboard\LeaderboardController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Develop\DevelopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +143,15 @@ Route::domain(config('Values.production.domains.main'))->group(function () {
         Route::get('/item/{id}', [MarketController::class, 'StoreItem'])->name('item');
         Route::post('/item/purchase/{id}/{currencyType}', [MarketController::class, 'purchase'])->name('purchase');
     });
+    Route::group(['as' => 'develop.', 'prefix' => 'develop'], function () {
+        Route::get('/', [DevelopController::class, 'DevelopIndex'])->name('page');
+        Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
+            Route::get('/', [MarketController::class, 'CreateIndex'])->name('page');
+            Route::post('/validate', [MarketController::class, 'uploadItem'])->name('validate');
+        });
+        Route::get('/item/{id}', [MarketController::class, 'StoreItem'])->name('item');
+        Route::post('/item/purchase/{id}/{currencyType}', [MarketController::class, 'purchase'])->name('purchase');
+    });
     Route::group(['as' => 'spaces.', 'prefix' => 'spaces'], function () {
         Route::get('/', [GrabController::class, 'SpacesIndex'])->name('page');
         Route::get('/{id}/{slug}', [GrabController::class, 'SpacesView'])->name('view');
@@ -153,6 +163,14 @@ Route::domain(env('ADMIN_DOMAIN', 'admin.netisu.com'))->group(function () {
         Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
             Route::get('/', [AdminController::class, 'UserIndex'])->name('page');
             Route::get('/manage/{id}', [AdminController::class, 'ManageUser'])->name('manage-user');
+        });
+        Route::group(['as' => 'items.', 'prefix' => 'items'], function () {
+            Route::get('/', [AdminController::class, 'ItemIndex'])->name('page');
+            Route::get('/manage/{id}', [AdminController::class, 'ManageItem'])->name('manage-item');
+            Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
+                Route::get('/', [AdminController::class, 'CreateIndex'])->name('create-item');
+                Route::post('/validate', [AdminController::class, 'uploadItem'])->name('validate');
+            });
         });
     });
 });

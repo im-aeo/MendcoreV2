@@ -49,7 +49,7 @@ class Avatar extends Model
     {
         return Item::where('id', '=', $this->pants)->first();
     }
-    public function reset()
+    public function resetAvatar()
     {
         // Set the paths for thumbnail and headshot
         $thumbnail = "thumbnails/{$this->image}.png";
@@ -64,9 +64,10 @@ class Avatar extends Model
             'hat_4' => null,
             'hat_5' => null,
             'hat_6' => null,
+            'addon' => null,
             'head' => null,
             'face' => null,
-            'gadget' => null,
+            'tool' => null,
             'tshirt' => null,
             'shirt' => null,
             'pants' => null,

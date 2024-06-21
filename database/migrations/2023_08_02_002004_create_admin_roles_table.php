@@ -35,8 +35,6 @@ return new class extends Migration
             $table->boolean('can_enable_registration')->default(false);
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

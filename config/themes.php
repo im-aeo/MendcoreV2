@@ -24,7 +24,7 @@ return [
         ],
 
         'discord' => [
-            'name' => 'Discord',
+            'name' => 'Familiar Purple',
             'lowercase' => 'discord',
             'file' => '/css/themes/variables-discord.css',
             'available' => true
@@ -34,18 +34,18 @@ return [
             'name' => 'Halloween',
             'lowercase' => 'halloween',
             'file' => '/css/themes/variables-halloween.css',
-            'available' => false
+            'available' => true
         ],
 
         'holiday' => [
             'name' => 'Christmas',
             'lowercase' => 'xmas',
             'file' => '/css/themes/variables-xmas.css',
-            'available' => false
+            'available' => true
         ],
 
         'classic' => [
-            'name' => 'Dark Classic',
+            'name' => 'THE "DEEP"',
             'lowercase' => 'classic',
             'file' => '/css/themes/variables-classic.css',
             'available' => true

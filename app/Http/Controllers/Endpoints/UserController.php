@@ -51,7 +51,7 @@ class UserController extends Controller
         $statuses = cache()->remember($cacheKey, now()->addMinutes(5), function () {
             $s = Status::where([
                 ['message', '!=', null]
-            ])->orderBy('created_at', 'desc')->paginate(4);
+            ])->orderBy('created_at', 'desc')->paginate(6);
 
             // Transform each status object into a desired structure
             $statuses = $s->transform(function ($status) {

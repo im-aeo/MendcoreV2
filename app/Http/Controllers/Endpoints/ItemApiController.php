@@ -319,9 +319,14 @@ class ItemApiController extends Controller
             $seller = $item->creator;
 
             // Validate user currency
-
-            $this->validateUserCurrency($currencyType, $price);
-
+            $verifyBank = $this->validateUserCurrency($currencyType, $price);
+            if ($verifyBank !== true) {
+                // Handle validation error (e.g., throw exception or return error response)
+                return response()->json([
+                  "message" => "You do not have enough " . $currencyType . " to purchase this item.", // Replace with actual error message
+                  "type" => "danger"
+                ], 422);
+              }
             // Update seller currency and deduct buyer currency
             $myu = Auth::user();
             $myu->{$currencyType} -= $price;
@@ -371,18 +376,13 @@ class ItemApiController extends Controller
             500
         );
     }
-    private function validateUserCurrency(string $currencyType, float $price)
+    private function validateUserCurrency(string $currencyType, float $price): bool
     {
         $myu = Auth::user();
-        if ($currencyType != 'free' && $myu->{$currencyType} < $price) {
-            return response()->json(
-                [
-                    "message" => "You do not have enough {$currencyType} to purchase this item.",
-                    "type" => "danger",
-                ],
-                500
-            );
+        if ($myu->{$currencyType} < $price) {
+            return false;
         }
+        return true;
     }
 
 

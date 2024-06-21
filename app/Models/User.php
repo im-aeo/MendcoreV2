@@ -86,7 +86,10 @@ class User extends AeoAuthenticatable
     // Classes
     public function avatar()
     {
-        return Avatar::where('user_id', '=', $this->id)->first();
+        $cacheKey = "user_{$this->id}_avatar";
+        return cache()->remember($cacheKey, now()->addMinutes(5), function () {
+            return $this->hasOne(Avatar::class)->first();
+        });
     }
 
     public function getNextLevelExp()
@@ -147,7 +150,7 @@ class User extends AeoAuthenticatable
     {
         return $this->hasMany(Message::class);
     }
-    
+
     public function sentMessages()
     {
         return $this->hasMany(Message::class, 'sending_id');

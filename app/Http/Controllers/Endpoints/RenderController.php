@@ -31,7 +31,7 @@ class RenderController extends Controller
         return $this->getAvatarRenderHash($user->id);
     }
 
-    public function ItemRender(Request $request, $id)
+    public function ItemRender($id)
     {
         // Retrieve parameters for the request
         $item = Item::findOrFail($id);
@@ -51,7 +51,8 @@ class RenderController extends Controller
         // Return the rendered image as a response
         return $this->getItemThumb($item->id);
     }
-    public function ItemPreviewRender(Request $request, $id, $noNameOverride = false, $itemName = null)
+
+    public function ItemPreviewRender($id, $noNameOverride = false, $itemName = null)
     {
         // Retrieve parameters for the request
         $item = Item::findOrFail($id);
@@ -142,15 +143,15 @@ class RenderController extends Controller
                 $requestData['pants'] =  getItemHash($db->pants);
             };
         } elseif ($type == 'item') {
-            if ($db->type == 'hat') {
+            if ($db->type == 'hat' || $db->type == 'addon') {
                 $requestData['item'] = getItemHash($db->id);
-            } elseif ($db == 'face') {
-                $requestData['face'] = getItemHash($db->id);
             } else {
                 $requestData['tool'] = getItemHash($db->id);
             }
         } elseif ($type == 'item_preview') {
             if ($db->item_type == 'hat') {
+                $requestData['item'] = getItemHash($db->id);
+            } elseif ($db->item_type == 'addon') {
                 $requestData['item'] = getItemHash($db->id);
             } elseif ($db == 'face') {
                 $requestData['item'] = getItemHash($db->id);
@@ -176,8 +177,6 @@ class RenderController extends Controller
         } elseif ($type == 'preview_tool') {
             if ($db->type == 'hat') {
                 $requestData['hat_1'] = getItemHash($db->hat1);
-            } elseif ($db == 'face') {
-                $requestData['face'] = getItemHash($db->face);
             } else {
                 $requestData['tool'] = getItemHash($db->tool);
             }

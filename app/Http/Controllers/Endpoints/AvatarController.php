@@ -48,7 +48,7 @@ class AvatarController extends Controller
         $newVrcInstance = new RenderController();
         $vrs = $newVrcInstance;
         $item = Item::where('id', '=', $itemId)->first();
-        
+
         // Check if avatar record exists
         if (!$avatar) {
             return response()->json([
@@ -61,7 +61,7 @@ class AvatarController extends Controller
         if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
             $hatSlot = "hat_" . $slot; // Define $hatSlot here within the if block
         }
-        
+
 
         if ($item->item_type == "hat" && !in_array($slot, range(1, 6)) && $slot != 'none') {
             return response()->json([
@@ -102,7 +102,7 @@ class AvatarController extends Controller
         ], 200);
     }
 
-    public function getWearingItems(Request $request)
+    public function getWearingItems($id, $test)
     {
         // Return Wearing Items
         $cacheKey = 'wearing_items';
@@ -116,8 +116,8 @@ class AvatarController extends Controller
                 ];
             });
         });
-
-        return response()->json($items);
+        return dd($items);
+        //return response()->json($items); // Add this line to return the data
     }
 
     public function getWearingHats(Request $request)
