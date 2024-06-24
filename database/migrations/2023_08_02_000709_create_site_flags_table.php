@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('site_configuration', function (Blueprint $table) {
+        $sitename = config("Values.name");
+        Schema::create('site_configuration', function (Blueprint $table) use ($sitename) {
             $table->id();
-            $table->boolean('site_maintenance')->default(false);
-            $table->boolean('site_roadmap_maintenance')->default(true);
-            $table->boolean('announcement_enabled')->default(false);
-            $table->text('announcement_message')->nullable();
+            $table->boolean('site_maintenance')->default(true);
+            $table->boolean('site_roadmap_maintenance')->default(false);
+            $table->boolean('announcement_enabled')->default(true);
+            $table->string('announcement_message')->default("Welcome to {$sitename} ! We guarantee it's more fun than watching paint dry (unless you're into that)")->nullable();
             $table->boolean('market_purchases_enabled')->default(true);
             $table->boolean('market_enabled')->default(true);
             $table->boolean('discussion_enabled')->default(true);
