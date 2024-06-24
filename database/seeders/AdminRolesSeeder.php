@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\AdminRoles;
 
-class CountrySeeder extends Seeder
+class AdminRolesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
