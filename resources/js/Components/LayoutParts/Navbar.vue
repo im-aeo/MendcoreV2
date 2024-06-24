@@ -1,92 +1,98 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, Suspense } from "vue";
-import { router, Link, usePage } from "@inertiajs/vue3";
-import axios from "axios";
-import { route, current } from "momentum-trail";
-import LanguageModal from "../Modal/LanguageModal.vue";
-import SearchResult from "../SearchResult.vue";
-import NavLink from "../NavLink.vue";
-import Button from "../Button.vue";
-import SearchResultSkeleton from "../SearchResultSkeleton.vue";
-import VLazyImage from "v-lazy-image";
-import PageLoader from "../Loaders/PageLoader.vue";
-import "../../../css/style.css";
-import "../../../css/NProgress.css";
-// Define the SearchResult interface
-interface SearchResult {
-  url: string;
-  image: string;
-  name: string;
-  // Add other properties if needed
-}
-defineProps<{
-  landing: { type: boolean; default: false; required: false };
-}>();
-const SearchLoading = ref(false);
-
-const search = ref("");
-// Update the type of results to be an array of SearchResult
-const results = ref<SearchResult[]>([]);
-
-const performSearch = async () => {
-  if (search.value !== "") {
-    SearchLoading.value = true;
-    await axios
-      .get(route("api.search", { search: search.value }))
-      .then((response) => {
-        // Assuming the response.data is an array of SearchResult
-        results.value = response.data.results;
-        SearchLoading.value = false;
-      })
-      .catch((err) => console.log(err));
-  } else {
-    SearchLoading.value = true;
-    results.value = [];
+  import { ref, onMounted, watch, computed, Suspense } from "vue";
+  import { router, Link, usePage } from "@inertiajs/vue3";
+  import axios from "axios";
+  import { route, current } from "momentum-trail";
+  import LanguageModal from "../Modal/LanguageModal.vue";
+  import SearchResult from "../SearchResult.vue";
+  import NavLink from "../NavLink.vue";
+  import Button from "../Button.vue";
+  import SearchResultSkeleton from "../SearchResultSkeleton.vue";
+  import VLazyImage from "v-lazy-image";
+  import PageLoader from "../Loaders/PageLoader.vue";
+  import "../../../css/style.css";
+  import "../../../css/NProgress.css";
+  // Define the SearchResult interface
+  interface SearchResult {
+    url: string;
+    image: string;
+    name: string;
+    // Add other properties if needed
   }
-};
+  defineProps<{
+    landing: { type: boolean; default: false; required: false };
+  }>();
+  const SearchLoading = ref(false);
 
-// Language stuff
-const topbar = [
-  {
-    url: route(`games.page`),
-    active_link: "games.*",
-    icon: "fas fa-gamepad-modern",
-    en: { title: "Games" },
-    es: { title: "Juegos" },
-    ru: { title: "Игры" },
-    ja: { title: "ゲーム" },
-  },
-  {
-    url: route(`store.page`),
-    active_link: "store.*",
-    icon: "fas fa-store",
-    en: { title: "Market" },
-    es: { title: "Mercado" },
-    ru: { title: "Маркет" },
-    ja: { title: "市場" },
-  },
-  {
-    url: route(`forum.page`, { id: 1 }),
-    active_link: "forum.*",
-    icon: "fas fa-message-code",
-    en: { title: "Discuss" },
-    es: { title: "Conversar" },
-    ru: { title: "Обсуждение" },
-    ja: { title: "議論" },
-  },
-  {
-    url: route(`spaces.page`),
-    active_link: "spaces.*",
-    icon: "fas fa-planet-ringed",
-    en: { title: "Spaces" },
-    es: { title: "Espacios" },
-    ru: { title: "Развивать" },
-    ja: { title: "スペース" },
-  },
-];
-const lang = computed<any>(() => props.locale);
+  const search = ref("");
+  // Update the type of results to be an array of SearchResult
+  const results = ref<SearchResult[]>([]);
 
-const { props } = usePage<any>();
+  const performSearch = async () => {
+    if (search.value !== "") {
+      SearchLoading.value = true;
+      await axios
+        .get(route("api.search", { search: search.value }))
+        .then((response) => {
+          // Assuming the response.data is an array of SearchResult
+          results.value = response.data.results;
+          SearchLoading.value = false;
+        })
+        .catch((err) => console.log(err));
+    } else {
+      SearchLoading.value = true;
+      results.value = [];
+    }
+  };
+
+  const readAll = async () => {
+    await axios
+      .post(route(`api.notif.read-all`))
+      .then()
+      .catch((err) => console.log(err));
+  };
+  // Language stuff
+  const topbar = [
+    {
+      url: route(`games.page`),
+      active_link: "games.*",
+      icon: "fas fa-gamepad-modern",
+      en: { title: "Games" },
+      es: { title: "Juegos" },
+      ru: { title: "Игры" },
+      ja: { title: "ゲーム" },
+    },
+    {
+      url: route(`store.page`),
+      active_link: "store.*",
+      icon: "fas fa-store",
+      en: { title: "Market" },
+      es: { title: "Mercado" },
+      ru: { title: "Маркет" },
+      ja: { title: "市場" },
+    },
+    {
+      url: route(`forum.page`, { id: 1 }),
+      active_link: "forum.*",
+      icon: "fas fa-message-code",
+      en: { title: "Discuss" },
+      es: { title: "Conversar" },
+      ru: { title: "Обсуждение" },
+      ja: { title: "議論" },
+    },
+    {
+      url: route(`spaces.page`),
+      active_link: "spaces.*",
+      icon: "fas fa-planet-ringed",
+      en: { title: "Spaces" },
+      es: { title: "Espacios" },
+      ru: { title: "Развивать" },
+      ja: { title: "スペース" },
+    },
+  ];
+  const lang = computed<any>(() => props.locale);
+
+  const { props } = usePage<any>();
 </script>
 <template>
   <PageLoader v-if="props.site.page_loader" />
@@ -97,7 +103,8 @@ const { props } = usePage<any>();
       :style="
         props.auth.user.settings.profile_banner_enabled
           ? {
-              background: 'url(' + props.auth.user.settings.profile_banner_url + ')',
+              background:
+                'url(' + props.auth.user.settings.profile_banner_url + ')',
               'background-repeat': 'no-repeat',
               'background-size': 'cover',
               'box-shadow':
@@ -120,7 +127,9 @@ const { props } = usePage<any>();
                   ? {
                       margin: '0',
                       'background-image':
-                        'url(' + props.auth.user.settings.calling_card_url + ')',
+                        'url(' +
+                        props.auth.user.settings.calling_card_url +
+                        ')',
                       'background-repeat': 'no-repeat',
                       'background-size': 'cover',
                     }
@@ -163,7 +172,9 @@ const { props } = usePage<any>();
       <div class="section-borderless">
         <div class="gap-2 section flex-container">
           <Link
-            :href="route(`user.profile`, { username: props.auth.user.username })"
+            :href="
+              route(`user.profile`, { username: props.auth.user.username })
+            "
             class="min-w-0 btn btn-info btn-sm text-truncate"
           >
             <i class="fa-solid fa-user-crown"></i>
@@ -206,8 +217,16 @@ const { props } = usePage<any>();
         </button>
       </li>
       <NavLink :link="route(`Welcome`)">
-        <v-lazy-image :src="props.site.logo" class="show-for-medium" width="180" />
-        <v-lazy-image :src="props.site.icon" class="show-for-small-only" width="43" />
+        <v-lazy-image
+          :src="props.site.logo"
+          class="show-for-medium"
+          width="180"
+        />
+        <v-lazy-image
+          :src="props.site.icon"
+          class="show-for-small-only"
+          width="43"
+        />
       </NavLink>
       <NavLink
         v-for="topbarlinks in topbar"
@@ -249,9 +268,13 @@ const { props } = usePage<any>();
             v-if="!SearchLoading && !results"
           >
             <div class="gap-3 flex-container flex-dir-column">
-              <i class="text-5xl fa-solid fa-folder-magnifying-glass text-muted"></i>
+              <i
+                class="text-5xl fa-solid fa-folder-magnifying-glass text-muted"
+              ></i>
               <div style="line-height: 16px">
-                <div class="text-xs fw-bold text-muted text-uppercase">No Results</div>
+                <div class="text-xs fw-bold text-muted text-uppercase">
+                  No Results
+                </div>
                 <div class="text-xs text-muted fw-semibold">
                   My mighty search came up empty! Try a different keyword?
                 </div>
@@ -268,7 +291,9 @@ const { props } = usePage<any>();
                     style="height: 40px; width: 40px"
                   ></i>
                   <div>
-                    Show all results for "<span class="search-keyword">{{ search }}</span
+                    Show all results for "<span class="search-keyword">{{
+                      search
+                    }}</span
                     >"
                   </div>
                 </div>
@@ -322,7 +347,10 @@ const { props } = usePage<any>();
           class="dropdown show-for-medium position-relative"
           id="notification_dropdown"
         >
-          <div @click="addActiveClass(`notification_dropdown`)" class="btn-circle squish">
+          <div
+            @click="addActiveClass(`notification_dropdown`)"
+            class="btn-circle squish"
+          >
             <button
               class="px-2 text-body"
               v-tippy
@@ -378,22 +406,29 @@ const { props } = usePage<any>();
                     />
                     <div class="min-w-0" style="line-height: 16px">
                       <div class="text-sm text-truncate">
-                        <span class="search-keyword" v-if="notification.data.object"
+                        <span
+                          class="search-keyword"
+                          v-if="notification.data.object"
                           >{{ notification.data.object }} &nbsp;</span
                         >
                         <span class="text-sm text-muted">{{
                           notification.data.message
                         }}</span>
                       </div>
-                      <div class="text-xs text-muted">{{ notification.DateHum }}</div>
+                      <div class="text-xs text-muted">
+                        {{ notification.DateHum }}
+                      </div>
                     </div>
                   </div>
                 </div>
               </Link>
             </li>
             <li class="divider"></li>
-            <li v-if="props.auth.user.notifications.length" class="dropdown-item">
-              <Link :href="route(`api.notif.read-all`)" class="dropdown-link">
+            <li
+              v-if="props.auth.user.notifications.length"
+              class="dropdown-item"
+            >
+              <a @click="readAll()" class="dropdown-link">
                 <div class="align-middle flex-container align-justify">
                   <div class="gap-2 align-middle flex-container">
                     <i
@@ -404,7 +439,7 @@ const { props } = usePage<any>();
                     <div class="text-sm">Mark All As Read</div>
                   </div>
                 </div>
-              </Link>
+              </a>
             </li>
 
             <li class="dropdown-item">
@@ -432,12 +467,16 @@ const { props } = usePage<any>();
           style="line-height: 20px"
           v-tippy
           :content="
-            props.auth.user.coins + ' Coins & ' + props.auth.user.bucks + ' Bucks'
+            props.auth.user.coins +
+            ' Coins & ' +
+            props.auth.user.bucks +
+            ' Bucks'
           "
           data-tooltip-placement="bottom"
         >
           <div class="text-warning">
-            <i class="fas fa-coins" style="width: 22px"></i>{{ props.auth.user.coins }}
+            <i class="fas fa-coins" style="width: 22px"></i
+            >{{ props.auth.user.coins }}
           </div>
           <div class="text-success">
             <i class="fas fa-money-bill-1-wave" style="width: 22px"></i
@@ -479,7 +518,8 @@ const { props } = usePage<any>();
             </div>
 
             <div v-else class="text-xs text-muted fw-semibold">
-              {{ "@" + props.auth.user.username }} • {{ "Lvl. " + props.auth.user.level }}
+              {{ "@" + props.auth.user.username }} •
+              {{ "Lvl. " + props.auth.user.level }}
             </div>
           </div>
           <i class="text-sm fas fa-chevron-down text-muted show-for-large"></i>
@@ -492,67 +532,67 @@ const { props } = usePage<any>();
 </template>
 
 <script lang="ts">
-export default {
-  mounted() {
-    const theme = localStorage.getItem("theme") || "light";
-    this.applyTheme(theme);
-  },
-  methods: {
-    applyTheme(theme) {
-      var lowercaseTheme = theme.toLowerCase();
-
-      let style = document.getElementById("theme-style");
-      const themeBtn = document.getElementById(lowercaseTheme + "-theme-btn");
-
-      if (!style) {
-        style = document.createElement("link");
-        style.id = "theme-style";
-        style.rel = "stylesheet";
-        document.head.appendChild(style);
-      }
-
-      style.href = `/assets/css/themes/variables-${lowercaseTheme}.css`;
-
-      // Save the selected theme in localStorage
-      localStorage.setItem("theme", theme);
+  export default {
+    mounted() {
+      const theme = localStorage.getItem("theme") || "light";
+      this.applyTheme(theme);
     },
-    showModal(modalId: string): void {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.toggle("active");
-      }
-    },
-    addActiveClass(elementId: string): void {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.classList.toggle("active");
-      }
-    },
-    sidebarOpen(): void {
-      const sidebar = document.getElementById("sidebar");
-      if (sidebar) {
-        if (sidebar.classList.contains("show-for-large")) {
-          sidebar.classList.remove("show-for-large");
-          sidebar.classList.add("hide-for-large");
-        } else {
-          sidebar.classList.add("show-for-large");
+    methods: {
+      applyTheme(theme) {
+        var lowercaseTheme = theme.toLowerCase();
+
+        let style = document.getElementById("theme-style");
+        const themeBtn = document.getElementById(lowercaseTheme + "-theme-btn");
+
+        if (!style) {
+          style = document.createElement("link");
+          style.id = "theme-style";
+          style.rel = "stylesheet";
+          document.head.appendChild(style);
         }
-      }
-    },
-    addActiveClassSSInput(elementId: string): void {
-      const element = document.getElementById(elementId) as HTMLInputElement;
-      const isEmpty = (str: string): boolean => !str.trim().length;
 
-      if (element) {
-        element.addEventListener("input", function () {
-          if (isEmpty(this.value)) {
-            return;
+        style.href = `/assets/css/themes/variables-${lowercaseTheme}.css`;
+
+        // Save the selected theme in localStorage
+        localStorage.setItem("theme", theme);
+      },
+      showModal(modalId: string): void {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.toggle("active");
+        }
+      },
+      addActiveClass(elementId: string): void {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.classList.toggle("active");
+        }
+      },
+      sidebarOpen(): void {
+        const sidebar = document.getElementById("sidebar");
+        if (sidebar) {
+          if (sidebar.classList.contains("show-for-large")) {
+            sidebar.classList.remove("show-for-large");
+            sidebar.classList.add("hide-for-large");
           } else {
-            element.classList.toggle("hide");
+            sidebar.classList.add("show-for-large");
           }
-        });
-      }
+        }
+      },
+      addActiveClassSSInput(elementId: string): void {
+        const element = document.getElementById(elementId) as HTMLInputElement;
+        const isEmpty = (str: string): boolean => !str.trim().length;
+
+        if (element) {
+          element.addEventListener("input", function () {
+            if (isEmpty(this.value)) {
+              return;
+            } else {
+              element.classList.toggle("hide");
+            }
+          });
+        }
+      },
     },
-  },
-};
+  };
 </script>

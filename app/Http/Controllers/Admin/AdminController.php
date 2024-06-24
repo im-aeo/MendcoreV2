@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
+use App\Jobs\ItemPreviewRenderer;
 use App\Jobs\ItemRenderer;
 use App\Models\Inventory;
 
@@ -23,13 +24,13 @@ class AdminController extends Controller
     public function AdminIndex()
     {
         if (!Auth::check() || !Auth::user()->isStaff()) {
-            abort(403); // Immediately return a 404 for unauthorized users
+            abort(403); // Immediately return a 403 for unauthorized users
         }
         $admin = Admin::where('user_id', Auth::id())->first();
         return inertia('Admin/Dashboard', [
             'stats' => [
                 'adminPoints' => $admin->adminPoints,
-                'canControlMaintenance' => $admin->can_activate_maintenance ?? false,
+                'canControlMaintenance' => $admin->rolePermissions('can_activate_maintenance') ?? false,
                 'items' => Item::count(),
                 'avatars' => Avatar::count(),
             ],
@@ -108,7 +109,7 @@ class AdminController extends Controller
         } else {
             $this->uploadImage($request->file('image'), $itemHashName);
         }
-        
+
         $item->hash = $itemHashName;
         $item->creator_id = config('Values.system_account_id');
         $item->item_type = $request->type;
@@ -123,9 +124,14 @@ class AdminController extends Controller
         $inventory = new Inventory;
         $inventory->user_id = Auth::id();
         $inventory->item_id = $item->id;
-        $inventory->save(); 
+        $inventory->save();
 
-        ItemRenderer::dispatch($item->id);
+        if ($request->type !== 'face') {
+            ItemRenderer::dispatch($item->id);
+        }
+        if ($request->type === 'face') {
+            ItemPreviewRenderer::dispatch($item->id, true, $previewName);
+        }
 
         $itemUrl = route('store.item', $item->id);
 
@@ -134,7 +140,7 @@ class AdminController extends Controller
 
     private function uploadToThumbnails(UploadedFile $file, string $name): string
     {
-        $path = Storage::disk('public')->putFileAs('uploads', $file, "{$name}.png");
+        $path = Storage::disk('public')->putFileAs('thumbnails', $file, "{$name}.png");
 
         return $path;
     }

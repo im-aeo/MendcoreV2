@@ -151,11 +151,14 @@ class RenderController extends Controller
         } elseif ($type == 'item_preview') {
             if ($db->item_type == 'hat') {
                 $requestData['item'] = getItemHash($db->id);
+                $requestData['pathmod'] = true;
             } elseif ($db->item_type == 'addon') {
                 $requestData['item'] = getItemHash($db->id);
-            } elseif ($db == 'face') {
+                $requestData['pathmod'] = true;
+            } elseif ($db->item_type == 'face') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isFace'] = true;
+                $requestData['pathmod'] = true;
             } elseif ($db->item_type == 'tshirt') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isTshirt'] = true;
@@ -163,6 +166,7 @@ class RenderController extends Controller
             } elseif ($db->item_type == 'tool') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isTool'] = true;
+                $requestData['pathmod'] = true;
             } elseif ($db->item_type == 'shirt') {
                 $requestData['item'] = getItemHash($db->id);
                 $requestData['isShirt'] = true;

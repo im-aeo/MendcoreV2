@@ -69,17 +69,6 @@ class AvatarController extends Controller
                 "type" => "error",
             ], 400); // Bad request status code
         }
-        // Check the specific hat slot for null (emptys)
-        if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
-            if (is_null($avatar->{"hat_" . $slot})) {
-                $avatar->{"hat_" . $slot} = $itemId; // Set the specific hat slot
-            } else {
-                return response()->json([
-                    "message" => "This hat slot is already occupied",
-                    "type" => "error",
-                ], 409);
-            }
-        }
 
         // Update the specific item based on type and id
         if ($item->item_type == "hat" && $slot != 'none' && $slot != null) {
