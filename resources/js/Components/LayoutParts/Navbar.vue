@@ -97,14 +97,14 @@
 <template>
   <PageLoader v-if="props.site.page_loader" />
   <LanguageModal />
-  <div v-if="props.auth.user" class="modal" id="profile-modal">
+  <div v-if="props.auth?.user" class="modal" id="profile-modal">
     <div
       class="modal-card modal-card-body"
       :style="
-        props.auth.user.settings.profile_banner_enabled
+        props.auth?.user?.settings.profile_banner_enabled
           ? {
               background:
-                'url(' + props.auth.user.settings.profile_banner_url + ')',
+                'url(' + props.auth?.user?.settings.profile_banner_url + ')',
               'background-repeat': 'no-repeat',
               'background-size': 'cover',
               'box-shadow':
@@ -117,18 +117,18 @@
         <div class="gap-2 align-middle flex-container align-justify">
           <button class="gap-2 align-middle flex-container squish">
             <v-lazy-image
-              :src="usePage<any>().props.auth.user.headshot"
+              :src="usePage<any>().props.auth?.user?.headshot"
               width="40"
               class="headshot"
               alt="Avatar"
               src-placeholder="assets/img/dummy_headshot.png"
               :style="
-                props.auth.user.settings.calling_card_enabled
+                props.auth?.user?.settings.calling_card_enabled
                   ? {
                       margin: '0',
                       'background-image':
                         'url(' +
-                        props.auth.user.settings.calling_card_url +
+                        props.auth?.user?.settings.calling_card_url +
                         ')',
                       'background-repeat': 'no-repeat',
                       'background-size': 'cover',
@@ -138,24 +138,24 @@
             />
             <div class="text-start">
               <div class="text-sm fw-semibold text-body">
-                {{ props.auth.user.display_name }}
+                {{ props.auth?.user?.display_name }}
               </div>
               <div
-                v-if="props.auth.user.staff"
+                v-if="props.auth?.user?.staff"
                 class="mt-1 mb-1 badge badge-danger fw-semibold w-100"
               >
                 Administrator
               </div>
 
               <div
-                v-else-if="props.auth.user.settings.beta_tester"
+                v-else-if="props.auth?.user?.settings.beta_tester"
                 class="mt-1 mb-1 badge badge-success fw-semibold w-100"
               >
                 Beta Tester
               </div>
               <div v-else class="text-xs text-body fw-semibold">
-                {{ "@" + props.auth.user.username }} &bullet;
-                {{ "Lvl. " + props.auth.user.level }}
+                {{ "@" + props.auth?.user?.username }} &bullet;
+                {{ "Lvl. " + props.auth?.user?.level }}
               </div>
             </div>
           </button>
@@ -173,9 +173,11 @@
         <div class="gap-2 section flex-container">
           <Link
             :href="
-              route(`user.profile`, { username: props.auth.user.username })
+              route(`user.profile`, { username: props.auth?.user?.username })
             "
             class="min-w-0 btn btn-info btn-sm text-truncate"
+            content="Profile"
+           v-tippy="{ placement : 'bottom' }"
           >
             <i class="fa-solid fa-user-crown"></i>
           </Link>
@@ -193,7 +195,9 @@
           >
             <i class="fa-solid fa-wrench"></i>
           </Link>
-
+          <a  v-if="props.auth?.user && props.auth?.user?.staff" :href="route('admin.page')" class="min-w-0 btn btn-danger btn-sm text-truncate">
+            <i class="fas fa-gavel"></i>
+          </a>
           <Link
             :href="route('auth.logout')"
             method="post"
@@ -236,7 +240,14 @@
         <i :class="topbarlinks.icon"></i> &nbsp;
         <span>{{ topbarlinks[lang].title }}</span>
       </NavLink>
-
+      <li class="nav-item text-danger cell shrink show-for-large">
+        <li class="side-item">
+            <a  v-if="props.auth?.user && props.auth?.user?.staff" :href="route('admin.page')" class="nav-link">
+              <i class="fas fa-gavel"></i> &nbsp;
+              <span>Admin</span>
+            </a>
+        </li>
+    </li>
       <li class="mx-1 align-middle nav-item cell auto nav-search mx-md-3">
         <input
           v-if="props.site.frontend.search_bar"
@@ -311,7 +322,7 @@
         </button>
       </li>
       <Button
-        v-if="!props.auth.user"
+        v-if="!props.auth?.user"
         :link="route('auth.register.page')"
         ColorClass="btn-success"
         class="nav-item cell show-for-large shrink me-1"
@@ -319,7 +330,7 @@
         <i class="fas fa-person-to-portal"></i> &nbsp; Get Started
       </Button>
       <Button
-        v-if="!props.auth.user"
+        v-if="!props.auth?.user"
         :link="route('auth.login.page')"
         ColorClass="btn-info"
         class="nav-item cell show-for-large shrink me-1"
@@ -327,7 +338,7 @@
         <i class="fas fa-door-open"></i> &nbsp; Login
       </Button>
       <li
-        v-if="props.auth.user && props.auth.user.settings.notifications_enabled"
+        v-if="props.auth?.user && props.auth?.user?.settings.notifications_enabled"
         class="position-relative nav-item cell shrink"
       >
         <div class="show-for-small-only position-relative">
@@ -337,7 +348,7 @@
             class="px-2 btn-circle squish text-body"
           >
             <span
-              v-if="props.auth.user.notifications.length"
+              v-if="props.auth?.user?.notifications.length"
               class="notification-circle"
             ></span>
             <i class="text-xl fas fa-bell"></i>
@@ -359,7 +370,7 @@
             >
               <span
                 class="notification-circle"
-                v-if="props.auth.user.notifications.length"
+                v-if="props.auth?.user?.notifications.length"
               ></span
               ><i class="text-xl fas fa-bell"></i>
             </button>
@@ -370,7 +381,7 @@
               <li class="divider flex-child-grow"></li>
             </div>
             <li
-              v-if="!props.auth.user.notifications.length"
+              v-if="!props.auth?.user?.notifications.length"
               class="px-2 py-2 text-center dropdown-item"
             >
               <div class="gap-3 flex-container flex-dir-column">
@@ -388,7 +399,7 @@
 
             <li
               v-else
-              v-for="notification in props.auth.user.notifications"
+              v-for="notification in props.auth?.user?.notifications"
               class="dropdown-item"
             >
               <Link :href="notification.data.route" class="dropdown-link">
@@ -425,7 +436,7 @@
             </li>
             <li class="divider"></li>
             <li
-              v-if="props.auth.user.notifications.length"
+              v-if="props.auth?.user?.notifications.length"
               class="dropdown-item"
             >
               <a @click="readAll()" class="dropdown-link">
@@ -460,32 +471,32 @@
           </ul>
         </div>
       </li>
-      <li v-if="props.auth.user" class="nav-item cell shrink show-for-large">
+      <li v-if="props.auth?.user" class="nav-item cell shrink show-for-large">
         <a
           href="#"
           class="text-sm nav-link"
           style="line-height: 20px"
           v-tippy
           :content="
-            props.auth.user.coins +
+            props.auth?.user?.coins +
             ' Coins & ' +
-            props.auth.user.bucks +
+            props.auth?.user?.bucks +
             ' Bucks'
           "
           data-tooltip-placement="bottom"
         >
           <div class="text-warning">
             <i class="fas fa-coins" style="width: 22px"></i
-            >{{ props.auth.user.coins }}
+            >{{ props.auth?.user?.coins }}
           </div>
           <div class="text-success">
             <i class="fas fa-money-bill-1-wave" style="width: 22px"></i
-            >{{ props.auth.user.bucks }}
+            >{{ props.auth?.user?.bucks }}
           </div>
         </a>
       </li>
       <li
-        v-if="props.auth.user"
+        v-if="props.auth?.user"
         class="dropdown position-relative nav-item cell shrink ms-1"
         id="user_dropdown"
       >
@@ -494,7 +505,7 @@
           class="gap-2 align-middle flex-container squish"
         >
           <v-lazy-image
-            :src="usePage<any>().props.auth.user.headshot"
+            :src="usePage<any>().props.auth?.user?.headshot"
             width="40"
             class="headshot"
             alt="Avatar"
@@ -502,24 +513,24 @@
           />
           <div class="text-start show-for-large">
             <div class="text-sm fw-semibold text-body">
-              {{ props.auth.user.display_name }}
+              {{ props.auth?.user?.display_name }}
             </div>
             <div
-              v-if="props.auth.user.staff"
+              v-if="props.auth?.user?.staff"
               class="mb-1 badge badge-position badge-danger fw-semibold"
             >
               Administrator
             </div>
             <div
-              v-else-if="props.auth.user.settings.beta_tester"
+              v-else-if="props.auth?.user?.settings.beta_tester"
               class="mb-1 badge badge-position badge-success fw-semibold"
             >
               Beta Tester
             </div>
 
             <div v-else class="text-xs text-muted fw-semibold">
-              {{ "@" + props.auth.user.username }} •
-              {{ "Lvl. " + props.auth.user.level }}
+              {{ "@" + props.auth?.user?.username }} •
+              {{ "Lvl. " + props.auth?.user?.level }}
             </div>
           </div>
           <i class="text-sm fas fa-chevron-down text-muted show-for-large"></i>
@@ -532,10 +543,15 @@
 </template>
 
 <script lang="ts">
+  import { directive } from 'vue-tippy'
+
   export default {
     mounted() {
       const theme = localStorage.getItem("theme") || "light";
       this.applyTheme(theme);
+    },
+    directives: {
+      tippy: directive,
     },
     methods: {
       applyTheme(theme) {

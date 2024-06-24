@@ -157,6 +157,7 @@ Route::domain(config('Values.production.domains.main'))->group(function () {
         Route::get('/{id}/{slug}', [GrabController::class, 'SpacesView'])->name('view');
     });
 });
+
 Route::domain(env('ADMIN_DOMAIN', 'admin.netisu.com'))->group(function () {
     Route::group(['as' => 'admin.'], function () {
         Route::get('/', [AdminController::class, 'AdminIndex'])->name('page');

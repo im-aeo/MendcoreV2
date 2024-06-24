@@ -11,6 +11,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
@@ -21,7 +22,7 @@ class AuthController extends Controller
 {
     use AuthenticatesUsers;
 
-    
+
     public function LoginVal(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
@@ -32,7 +33,7 @@ class AuthController extends Controller
         if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
             // Authentication passed
             return redirect()->intended(RouteServiceProvider::HOME)->with([
-                'type' => 'success', 
+                'type' => 'success',
                 'message' => 'You have authenticated.'
             ]);
         }
@@ -92,35 +93,35 @@ class AuthController extends Controller
     public function registerVal(Request $request)
     {
         $request->validate([
-            'username' => 'required|alpha_num|min:3|max:25|profane|unique:'.User::class,
+            'username' => 'required|alpha_num|min:3|max:25|profane|unique:' . User::class,
             'displayname' => 'required|alpha_num|min:3|max:25|profane',
             'birthdate.day' => 'required|numeric|min:1|max:31',
             'birthdate.month' => 'required|numeric|min:1|max:12',
             'birthdate.year' => 'required|numeric|min:1900|max:' . date('Y'),
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-    
+
         // Check if the username field is present in $request
         if (!$request->username) {
             return response()->json(['error' => 'username_not_provided'], 422);
         }
-    
+
         if (User::where('username', $request->username)->exists()) {
             return response()->json(['error' => 'username_exists'], 422);
         }
-    
+
         if (User::where('email', $request->email)->exists()) {
             return response()->json(['error' => 'email_exists'], 422);
         }
-    
+
         $birthdate = sprintf(
             '%02d/%02d/%04d',
             $request->input('birthdate.month'),
             $request->input('birthdate.day'),
             $request->input('birthdate.year')
         );
-        
+
         $user = User::create([
             'username' => $request->username,
             'display_name' => $request->displayname,
@@ -139,7 +140,12 @@ class AuthController extends Controller
         Avatar::create([
             'user_id' => $user->id,
         ]);
-    
+
+        if ($user->id === 1) {
+            Admin::create([
+                'user_id' => $user->id,
+            ]);
+        }
         event(new Registered($user));
 
         novu()->createSubscriber([
@@ -149,15 +155,18 @@ class AuthController extends Controller
             'birthdate' => $birthdate,
 
         ])->toArray();
-    
+
         Auth::login($user);
     }
-    
+
 
     public function UserExit(): RedirectResponse
     {
         Auth::guard('web')->logout();
 
-        return redirect()->back();
+        return redirect()->intended(route("auth.login.page"))->with([
+            'type' => 'success',
+            'message' => 'You have logged out.'
+        ]);
     }
 }
