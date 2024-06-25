@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ForumController extends Controller
 {
-  public function ForumIndex($id)
+    public function ForumIndex($id)
     {
         // Define the sections
         $sectionFilters = [
@@ -95,15 +95,15 @@ class ForumController extends Controller
         // Attempt to retrieve the forum post from cache
         $post = cache()->remember($cacheKey, now()->addMinutes(10), function () use ($id) {
             return ForumThread::where('id', '=', $id)->with('creator')->first();
-          });
+        });
         // Fetch the associated topic
         $topic = ForumTopic::findOrFail($post->in_topic_id);
 
         // Fetch replies based on staff status
         $replies = cache()->remember($cacheRepliesKey, now()->addMinutes(10), function () use ($id) {
             return ForumReply::where('thread_id', '=', $id)->with('creator')->paginate(10);
-          });
-          
+        });
+
 
 
         // Parse the post body using BBCodeService
@@ -166,10 +166,11 @@ class ForumController extends Controller
         $post->title = $title;
         $post->body = $parsedBody;
         $post->save();
-        
+
         Auth::user()->addPoints(10);
-        
-        return Redirect::route('forum.post', $post->id, $post->slug())->with('message', 'Your post has been created.');
+
+        return redirect()->to(route('forum.post', [$post->id, $post->slug()]))
+            ->with('message', 'Your post has been created.');
     }
 
     public function ForumReply($id, Request $request)
@@ -192,7 +193,7 @@ class ForumController extends Controller
         $post->body = $parsedBody;
         $post->save();
         Auth::user()->addPoints(10);
-        
-        return redirect()->back()->with('message', 'Your post has been created.');
+
+        return redirect()->back()->with('message', 'Your reply has been created.');
     }
 }

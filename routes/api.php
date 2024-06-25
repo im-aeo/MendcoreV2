@@ -82,16 +82,6 @@ Route::group(['middleware' => 'throttle:30,1'], function () {
         Route::get('/wear/{id}/{slot}', [AvatarController::class, 'WearItem'])->name('wear-item');
     });
 
-    Route::domain(env('ADMIN_API_DOMAIN', 'adminapi.netisu.com'))->group(function () {
-    Route::group(['as' => 'admin.', 'prefix' => 'avatar'], function () {
-        Route::get('/', function () {
-            return redirect()->to(config('Values.production.domains.main'));
-        });
-        Route::post('/enable-maintenance', [AdminController::class, 'enableMaintenance'])->name('enableMaintenance');
-        Route::post('/disable-maintenance', [AdminController::class, 'disableMaintenance'])->name('disableMaintenance');
-    });
-});
-
     Route::group(['as' => 'settings.', 'prefix' => 'settings'], function () {
         Route::get('/', function () {
             return redirect()->to(config('Values.production.domains.main'));
@@ -101,4 +91,15 @@ Route::group(['middleware' => 'throttle:30,1'], function () {
 
     Route::get('/rss-feed', [RssController::class, 'index'])->name('rss');
     Route::get('/thumbnails/{type}/{id}', [ThumbnailController::class, 'getThumbnail'])->name('thumbnails');
+});
+
+Route::domain(env('ADMIN_API_DOMAIN', 'adminapi.netisu.com'))->group(function () {
+    Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'throttle:30,1'], function () {
+        Route::get('/', function () {
+            return redirect()->to(config('Values.production.domains.main'));
+        });
+
+        Route::post('/enable-maintenance', [AdminController::class, 'enableMaintenance'])->name('enableMaintenance');
+        Route::post('/disable-maintenance', [AdminController::class, 'disableMaintenance'])->name('disableMaintenance');
+    });
 });
