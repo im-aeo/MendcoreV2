@@ -12,7 +12,7 @@ Before proceeding with the installation, make sure you meet the following prereq
 Execute the following commands to install the required packages:
 
 ```bash
-sudo apt install php8.1-{memcache,fpm,cgi,http,raphf,memcached,common,redis,mysql,mysqli,sodium} zip unzip unrar nginx memcache curl && sudo apt remove apache*
+sudo apt install php8.2-{memcache,fpm,mbstring,bcmath,cgi,http,raphf,memcached,common,redis,mysql,mysqli,sodium} zip unzip unrar nginx memcache curl && sudo apt remove apache*
 ```
 
 ## Nginx Setup
