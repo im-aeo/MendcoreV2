@@ -110,7 +110,7 @@ php -r "unlink('composer-setup.php');" && sudo mv composer.phar /usr/local/bin/c
 2. Install dependencies:
 
 ```bash
-composer upgrade && npm upgrade
+composer upgrade && npm i bun -g && bun update
 ```
 
 ## Finalization
