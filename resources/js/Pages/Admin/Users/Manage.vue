@@ -34,7 +34,7 @@
             </p>
               <div class="content">
   
-                <blockquote>{{ usePage<any>().props.user.about_me  ?? "This user has no description yet."}}</blockquote>
+                <blockquote>{{ usePage<any>().props.user.about_me  ?? usePage<any>().props.user.username + " does not hava a description yet."}}</blockquote>
               </div>
               <label><strong>UID:</strong></label> <label>{{ usePage<any>().props.user.id }}</label>
               <br>
@@ -45,18 +45,21 @@
               <label><strong>Past Usernames:</strong></label> <label>Username, Usersname, User, Bitch</label>
             </div>
             <div class="column ">
+              <div v-if="usePage<any>().props.permissions.canMangeUser">
               <label><strong>User:</strong></label>
               <br>
               <a href="" class="button is-dark is-outlined">View Profile</a>
               <a href="grant.html" class="button is-dark is-outlined">Grant Achievement</a>
               <a href="grant.html" class="button is-dark is-outlined">Grant Item</a>
-              <br>
+            </div>
+              <div v-if="usePage<any>().props.permissions.canMangeUserSettings">
               <br>
               <label><strong>Moderation Actions:</strong></label>
               <br>
               <a href="purge.html" class="button is-danger is-outlined">Purge Username</a>
               <a href="purge.html" class="button is-danger is-outlined">Purge Bio</a>
               <a href="banuser.html" class="button is-danger is-outlined">Ban User</a>
+            </div>
             </div>
   
           </div>

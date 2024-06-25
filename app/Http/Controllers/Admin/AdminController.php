@@ -31,6 +31,7 @@ class AdminController extends Controller
             'stats' => [
                 'adminPoints' => $admin->adminPoints,
                 'canControlMaintenance' => $admin->rolePermissions('can_activate_maintenance') ?? false,
+                'canEnableAnnouncement' => $admin->rolePermissions('can_enable_announcement') ?? false,
                 'items' => Item::count(),
                 'avatars' => Avatar::count(),
             ],
@@ -171,10 +172,11 @@ class AdminController extends Controller
             return ValidationException::withMessages([$validator->errors()]);
         }
     }
+
     public function ManageUser(int $id)
     {
         // Define a cache key for this query result
-        $cacheKey = 'users_manage';
+        $cacheKey = 'users_manage_' . $id;
         $user = cache()->remember($cacheKey, now()->addMinutes(30), function () use ($id) {
             //->load(['settings'])
             return User::where(['id' => $id])->first();
@@ -182,6 +184,8 @@ class AdminController extends Controller
         if (!$user) {
             abort(404);
         }
+        $admin = Admin::where('user_id', Auth::id())->first();
+
         $joindate = Carbon::parse($user->created_at)->format('M d Y');
 
         return inertia('Admin/Users/Manage', [
@@ -196,13 +200,17 @@ class AdminController extends Controller
                 'bucks' => $user->bucks,
                 'coins' => $user->coins,
                 'joined' => $joindate,
-            ]
+            ],
+            'permissions' => [                
+                'canMangeUser' => $admin->rolePermissions('can_manage_users') ?? false,
+                'canMangeUserSettings' => $admin->rolePermissions('can_manage_user_settings') ?? false,
+            ],
         ]);
     }
     public function ManageItem(int $id)
     {
         // Define a cache key for this query result
-        $cacheKey = 'users_manage';
+        $cacheKey = 'item_manage' . $id;
         $item = cache()->remember($cacheKey, now()->addMinutes(30), function () use ($id) {
             return Item::where(['id' => $id])->first();
         });

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Endpoints\RssController;
 use App\Http\Controllers\Endpoints\UserController;
 use App\Http\Controllers\Endpoints\AvatarController;
+use App\Http\Controllers\Endpoints\AdminController;
 use App\Http\Controllers\Endpoints\RenderController;
 use App\Http\Controllers\Endpoints\ItemApiController;
 use App\Http\Controllers\Endpoints\ThumbnailController;
@@ -80,6 +81,16 @@ Route::group(['middleware' => 'throttle:30,1'], function () {
 
         Route::get('/wear/{id}/{slot}', [AvatarController::class, 'WearItem'])->name('wear-item');
     });
+
+    Route::domain(env('ADMIN_API_DOMAIN', 'adminapi.netisu.com'))->group(function () {
+    Route::group(['as' => 'admin.', 'prefix' => 'avatar'], function () {
+        Route::get('/', function () {
+            return redirect()->to(config('Values.production.domains.main'));
+        });
+        Route::post('/enable-maintenance', [AdminController::class, 'enableMaintenance'])->name('enableMaintenance');
+        Route::post('/disable-maintenance', [AdminController::class, 'disableMaintenance'])->name('disableMaintenance');
+    });
+});
 
     Route::group(['as' => 'settings.', 'prefix' => 'settings'], function () {
         Route::get('/', function () {

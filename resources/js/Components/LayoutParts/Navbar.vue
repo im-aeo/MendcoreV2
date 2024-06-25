@@ -144,7 +144,7 @@
                 v-if="props.auth?.user?.staff"
                 class="mt-1 mb-1 badge badge-danger fw-semibold w-100"
               >
-                Administrator
+              {{ props.auth?.user?.position }}
               </div>
 
               <div
@@ -195,7 +195,7 @@
           >
             <i class="fa-solid fa-wrench"></i>
           </Link>
-          <a  v-if="props.auth?.user && props.auth?.user?.staff" :href="route('admin.page')" class="min-w-0 btn btn-danger btn-sm text-truncate">
+          <a  v-if="props.auth?.user && props.auth?.user?.staff" :href="route('admin.page')" class="min-w-0 btn btn-danger btn-sm text-truncate show-for-small-only">
             <i class="fas fa-gavel"></i>
           </a>
           <Link
@@ -519,7 +519,7 @@
               v-if="props.auth?.user?.staff"
               class="mb-1 badge badge-position badge-danger fw-semibold"
             >
-              Administrator
+              {{ props.auth?.user?.position }}
             </div>
             <div
               v-else-if="props.auth?.user?.settings.beta_tester"

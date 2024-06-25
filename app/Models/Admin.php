@@ -12,7 +12,7 @@ class Admin extends Model
     use HasFactory;
 
     protected $table = 'admins'; // Specify the actual table name
-    protected $fillable = ['adminPoints', 'role_id']; // Allow mass assignment of points
+    protected $fillable = ['adminPoints', 'user_id', 'role_id']; // Allow mass assignment of points
 
     public function user()
     {
@@ -22,7 +22,7 @@ class Admin extends Model
     public function rolePermissions($key)
     {
         $roles = Cache::remember('admin_role_' . Auth::id(), now()->addMinutes(30), function () {
-            return AdminRoles::where('id',  $this->role_id); // Change to use the find() method instead of where() + first()
+            return AdminRoles::where('id',  $this->role_id)->first(); // Change to use the find() method instead of where() + first()
         });
 
         if (!$roles) {

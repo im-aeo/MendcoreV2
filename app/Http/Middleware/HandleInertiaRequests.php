@@ -54,6 +54,7 @@ class HandleInertiaRequests extends Middleware
                         'bucks' => $request->user()->bucks,
                         'status' => $request->user()->status,
                         'staff' => $request->user()->isStaff(),
+                        'position' => $request->user()->CurrentPosition(),
                         'about_me' => $request->user()->about_me,
                         'headshot' => $request->user()->headshot(),
                         'following' => $request->user()->following(),

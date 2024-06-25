@@ -12,5 +12,5 @@ class AdminRoles extends Model
     use HasFactory;
 
     protected $table = 'admin_roles'; // Specify the actual table name
-    protected $fillable = ['user_id']; // Allow mass assignment of points
+    protected $fillable = ['name', 'description', 'user_id']; // Allow mass assignment of points
 }

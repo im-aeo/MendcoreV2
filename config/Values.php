@@ -25,6 +25,7 @@ return [
             'storage' => 'https://cdn.test',
             'api' => 'https://netisu-backup.test',
             'careers' => 'https://careers.netisu-backup.test',
+            'support' => 'support@netisu-backup.test'
         ],
     ],
     

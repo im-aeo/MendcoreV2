@@ -2,7 +2,7 @@
 import Navbar from '@/Components/LayoutParts/Navbar.vue';
 import Sidebar from '@/Components/LayoutParts/Sidebar.vue';
 import Footer from '@/Components/LayoutParts/Footer.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import { route, current } from "momentum-trail";
 
 </script>
@@ -10,28 +10,17 @@ import { route, current } from "momentum-trail";
 <template>
 <Navbar/>
 <Sidebar>
-    <div class="cell medium-3">
-        <div class="mb-2 text-xl fw-semibold">Games</div>
-        <ul class="tabs flex-dir-column">
-            <li class="tab-item">
-                <a href="#" class="tab-link active squish"
-                    >Recent</a
-                >
-            </li>
-            <p class="text-xl">Categories</p>
-            <li class="tab-item">
-                <a href="#" class="tab-link squish"
-                    >Adventure </a
-                >
-            </li>
-            <li class="tab-item">
-                <a href="#" class="tab-link squish">Comedy</a>
-            </li>
-        </ul>
-    </div>
-    <div class="cell medium-8">
-
-    </div>
+    <div class="cell large-10 medium-12" id="mainframe">
+        <div class="card card-body">
+            <div class="text-xl text-info">Games are coming soon</div>
+            <div class="divider"></div>
+            <p>
+              Games are currently coming soon, our development team are working
+              very hard to bring you a stable client, if you have any questions,
+              you can email our support team over at <a :href="'mailto:' + usePage<any>().props.site?.production?.domains?.support">{{ usePage<any>().props.site?.production?.domains?.support }}</a>
+            </p>
+          </div>
+        </div>
 </Sidebar>
 <Footer/>
 </template>

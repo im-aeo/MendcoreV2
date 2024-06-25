@@ -261,6 +261,23 @@ class User extends AeoAuthenticatable
         ])->exists();
     }
 
+    public function CurrentPosition()
+    {
+        if ($this->isStaff()) {
+            $admin = Admin::where([
+                ['user_id', '=', $this->id],
+            ])->first();
+
+            $adminRole = AdminRoles::where([
+                ['id', '=', $admin->role_id],
+            ])->first();
+
+            return $adminRole->name;
+        } else {
+            return null;
+        }
+    }
+
     public function thumbnail()
     {
         $url = env('STORAGE_URL');
