@@ -14,6 +14,8 @@ class Kernel extends AeosKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
@@ -39,9 +41,9 @@ class Kernel extends AeosKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\Localization::class,
             \App\Http\Middleware\SiteConfigMiddleware::class, // SiteSettings
+            \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\EnsureSettings::class,
             \App\Http\Middleware\FeatureFlags::class,
             \App\Http\Middleware\RedirectIfBanned::class,

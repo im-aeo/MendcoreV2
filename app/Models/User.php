@@ -35,9 +35,6 @@ class User extends AeoAuthenticatable
         'email',
         'password',
         'birthdate',
-        'social_id',
-        'social_type',
-        'wallet_address',
         'status',
         'about_me',
     ];
@@ -48,6 +45,14 @@ class User extends AeoAuthenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'coins',
+        'bucks',
+        'about_me',
+        'latest_status',
+        'social_id',
+        'social_type',
+        'wallet_address',
+        'email',
         'password',
         'remember_token',
     ];
@@ -281,8 +286,12 @@ class User extends AeoAuthenticatable
     public function thumbnail()
     {
         $url = env('STORAGE_URL');
-        $image = ($this->avatar()?->image === 'default') ? config('Values.render.default_avatar') : $this->avatar()?->image;
-        return "{$url}/thumbnails/{$image}.png";
+        $image = ($this->avatar()?->image === 'default') ? env('DEFAULT_AVATAR_FILE') : $this->avatar()?->image;
+        if ($this->avatar()?->image === 'default') {
+            return "/{$image}.png";
+        } else {
+            return "{$url}/thumbnails/{$image}.png";
+        }
     }
 
     public function headshot()
@@ -292,8 +301,12 @@ class User extends AeoAuthenticatable
             $image = ($this->settings->profile_picture_url) || $this->avatar()?->image;
             return "{$url}/thumbnails/profile-pictures/{$image}.png";
         } else {
-            $image = ($this->avatar()?->image === 'default') ? config('Values.render.default_avatar') : $this->avatar()?->image;
-            return "{$url}/thumbnails/{$image}_headshot.png";
+            $image = ($this->avatar()?->image === 'default') ? env('DEFAULT_AVATAR_FILE') : $this->avatar()?->image;
+            if ($this->avatar()?->image === 'default') {
+                return "/{$image}_headshot.png";
+            } else {
+                return "{$url}/thumbnails/{$image}_headshot.png";
+            }
         }
     }
 

@@ -30,7 +30,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
+         return [
+            'site' => config('Values'),
             'locale' => function () {
                 return app()->getLocale();
             },
@@ -63,16 +64,35 @@ class HandleInertiaRequests extends Middleware
                         'xp' => $request->user()->getPoints(),
                         'nextlevelxp' =>  $request->user()->nextLevelAt(),
                         'notifications' => $request->user()->unreadNotifications()->limit(5)->get()
-                        ->each(function ($notification) {
-                            $notification->DateHum = $notification->created_at->diffForHumans();
-                        }),
+                            ->each(function ($notification) {
+                                $notification->DateHum = $notification->created_at->diffForHumans();
+                            }),
                     ] : null,
                 ];
             },
             'site' => config('Values'),
             'message' => $request->session()->get('message'),
             'error' => $request->session()->get('error'),
-        ]);
+            'errors' => $this->shareValidationErrors($request)
+        ];
+    }
+    public function shareValidationErrors(Request $request)
+    {
+        if (!$request->session()->has('errors')) {
+            return (object) [];
+        }
+
+        return (object) collect($request->session()->get('errors')->getBags())->map(function ($bag) {
+            return (object) $bag->toArray();
+        })->pipe(function ($bags) use ($request) {
+            if ($bags->has('default') && $request->header('x-inertia-error-bag')) {
+                return [$request->header('x-inertia-error-bag') => $bags->get('default')];
+            } elseif ($bags->has('default')) {
+                return $bags->get('default');
+            } else {
+                return $bags->toArray();
+            }
+        });
     }
     public function handle(Request $request, \Closure $next)
     {

@@ -16,6 +16,7 @@ class SiteConfigMiddleware
         Inertia::share('site_config', [
             'announcement_message' => site_setting('announcement_message') ?? null,
             'announcement' => site_setting('announcement_enabled') ?? false,
+            'item_creation_enabled' => site_setting('item_creation_enabled') ?? false,
             'in_maintenance' => site_setting('site_maintenance') ?? false,
         ]);
 

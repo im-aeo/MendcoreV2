@@ -33,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
         }
 
+        if ($this->app->environment('production')) {
+            Inertia::version(function () {
+                return md5_file(public_path('manifest.json'));
+            });
+        }
+
         Inertia::share([
             'locale' => function () {
                 return app()->getLocale();

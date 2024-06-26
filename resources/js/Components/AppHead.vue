@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
 import dayjs from "dayjs";
 import { usePage, Head } from "@inertiajs/vue3";
 // Props
 defineProps({
-  pageTitle: { type: String },
+  pageTitle: { type: String },  
+  maintenance: { type: Boolean, default: false },
   description: { type: String },
   url: { type: String },
   cover: { type: String },
@@ -57,7 +57,7 @@ const currentTheme = localStorage.getItem("theme");
     <meta :content="description" property="twitter:description" />
     <meta :content="cover || usePage<any>().props.site.icon" property="twitter:image" />
     <meta
-      v-if="item"
+      v-if="item == true"
       name="item-info"
       :data-id="iid"
       :data-onsale-until="getFormattedDate(itime)"
@@ -82,6 +82,12 @@ const currentTheme = localStorage.getItem("theme");
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
     />
+    <link
+    v-if="maintenance"
+      rel="stylesheet"
+      href="/assets/css/themes/variables-dark.css"
+    />
+
   </Head>
   <div v-if="currentTheme === 'xmas'" class="snow">
     <p></p>

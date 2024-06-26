@@ -475,7 +475,7 @@ watch(following, (newValue, oldValue) => {
                             </div>
                         </div>
                     </div>
-                    <AeoPagination v-if="statuses.data.length" v-bind:pagedata="statuses" />
+                    <Pagination v-if="statuses.data.length" v-bind:pagedata="statuses" />
                 </div>
             </div>
         </div>

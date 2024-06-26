@@ -42,11 +42,6 @@
     transition: all 0.2s;
     color: #5865f2;
 }
-.footer-media:hover .fas.fa-language {
-    transition: all 0.2s;
-    color: #FCAF3C;
-}
-
 .footer-media:hover .fab.fa-twitter {
     transition: all 0.2s;
     color: #00acee;

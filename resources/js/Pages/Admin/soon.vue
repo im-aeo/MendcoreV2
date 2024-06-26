@@ -1,3 +1,0 @@
-<template>
-soon.php
-</template>

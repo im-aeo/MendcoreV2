@@ -25,6 +25,7 @@ const form = useForm({
 
 defineProps<{
     themes?: Object,
+    errors?: Object,
 }>();
 
 const currentTheme = localStorage.getItem('theme');
@@ -203,11 +204,14 @@ watch(() => form.birthdate.month, updateDays);
                                     </div>
                                 </div>
                                     <div class="mt-2">
-                                        <div class="text-xs fw-bold text-muted text-uppercase">
+                                        <div :class="{ 'text-danger': form.errors.displayname }" class="text-xs fw-bold text-muted text-uppercase">
                                             Display Name
                                         </div>
                                         <input type="text" v-model="form.displayname" name="displayname" class="form"
                                             placeholder="Display Name..." />
+                                            <div v-if="form.errors.displayname" class="text-xs text-danger fw-semibold">
+                                                {{ form.errors.displayname }}
+                                            </div>
                                     </div>
                                     </div>
                                 
@@ -240,8 +244,7 @@ watch(() => form.birthdate.month, updateDays);
                                                 name="birth_month" @change="updateDays">
                                                 <option value="">Select Month</option>
                                                 <option v-for="month in months" :key="month.value" :value="month.value">
-                                                    {{
-                                                        month.label }}</option>
+                                                    {{ month.label }}</option>
                                             </select>
                                         </div>
                                         <div class="cell medium-4">

@@ -23,11 +23,8 @@ class GiveDailyRewards
     {
         
         // Check if the user agent contains known adblock keywords
-        $response = Http::get('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
-        if($response->failed()) {
-            // Adblock keyword found in user agent, take appropriate action
-            return response()->json(['error' => 'Adblock detected. Please disable it to receive your daily rewards.']);
-        } elseif (Auth::check() && !empty(Auth::user()->next_reward_payout) && strtotime(Auth::user()->next_reward_payout) < time()) {
+       
+        if (Auth::check() && !empty(Auth::user()->next_reward_payout) && strtotime(Auth::user()->next_reward_payout) < time()) {
             // Continue with the regular logic if no adblock detected 
             /** @var \App\Models\User $user **/
             $user = Auth::user();

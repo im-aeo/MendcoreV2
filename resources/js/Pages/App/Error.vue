@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
 <AppHead :pageTitle="status" :description="message" :url="route('Welcome')" />
-    <Navbar />
+    <Navbar :landing="false" />
     <Sidebar>
         <div class="cell medium-7">
             <div class="text-center card">

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import axios from "axios"; // Import Axios
 import { route } from "momentum-trail";
-import "../../../../public/assets/css/themes/variables-light.css";
 import AppHead from "@/Components/AppHead.vue";
 import { usePage } from "@inertiajs/vue3";
+import "../../../css/style.css";
+
 const { props } = usePage<any>();
 </script>
-
 <template>
   <AppHead
     pageTitle="Maintenence"
     :description="'We are working on ' + usePage<any>().props.site.name + ', We\'ll be back soon.'"
     :url="route(`maintenance.page`)"
+    :maintenance="true"
   />
   <div class="modal" id="DeveloperCode">
     <form @submit.prevent="submitPassword">
@@ -117,32 +118,7 @@ const { props } = usePage<any>();
     </div>
   </main>
 </template>
-<style scoped>
-.col-md-3 {
-  flex: 0 0 25%;
-  max-width: 25%;
-}
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.col-md-9,
-.col-md-3 {
-  position: relative;
-  width: 100;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.col-md-9 {
-  flex: 0 0 75%;
-  max-width: 75%;
-}
-</style>
 <script lang="ts">
 export default {
   data() {

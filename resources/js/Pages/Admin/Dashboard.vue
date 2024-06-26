@@ -24,7 +24,7 @@
   <AppHead
     pageTitle="Admin Dashboard"
     description="Login to Vestora."
-    :url="route('auth.login.page')"
+    :url="route('admin.page')"
   />
   <Navbar>
     <div class="card">

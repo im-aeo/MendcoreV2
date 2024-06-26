@@ -15,6 +15,8 @@ use App\Http\Controllers\Forum\ForumController;
 use App\Http\Controllers\Leaderboard\LeaderboardController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Develop\DevelopController;
+use App\Http\Controllers\Endpoints\NotificationController;
+use App\Http\Controllers\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +88,12 @@ Route::domain(config('Values.production.domains.main'))->group(function () {
 
     Route::get('/achievements', [AchievementController::class, 'AchievementList'])->name('acheivements');
 
+    Route::group(['as' => 'notification.', 'prefix' => 'notifications'], function () {
+
+        Route::get('/', [Notification::class, 'AllNotifications'])->name('page');
+        Route::get('/view/{id}', [Notification::class, 'Notification'])->name('view');
+
+    });
 
     Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
 
@@ -172,6 +180,13 @@ Route::domain(env('ADMIN_DOMAIN', 'admin.netisu.com'))->group(function () {
                 Route::get('/', [AdminController::class, 'CreateIndex'])->name('create-item');
                 Route::post('/validate', [AdminController::class, 'uploadItem'])->name('validate');
             });
+        });
+        Route::group(['as' => 'reports.', 'prefix' => 'reports'], function () {
+            Route::get('/', [AdminController::class, 'ReportIndex'])->name('page');
+            Route::get('/view/{id}', [AdminController::class, 'ReportIndex'])->name('view');
+        });
+        Route::group(['as' => 'assets.', 'prefix' => 'assets'], function () {
+            Route::get('/approve', [AdminController::class, 'ReportIndex'])->name('approve');
         });
     });
 });

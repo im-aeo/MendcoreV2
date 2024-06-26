@@ -14,12 +14,12 @@ return new class extends Migration
     {
         $sitename = config("Values.name");
         $randomMessages = [
-            "We guarantee it's more fun than watching paint dry (unless you're into that)",
+            "We guarantee it\'s more fun than watching paint dry (unless you\'re into that)",
             "Get ready to unleash your inner productivity beast!",
             "Psst... there might be a surprise waiting for you ",
-            "Let's make today awesome!",
-            "We've got new features to explore! Check them out.",
-            "Don't forget to register today!",
+            "Let\'s make today awesome!",
+            "We\'ve got new features to explore! Check them out.",
+            "Don\'t forget to register today!",
         ];
 
         Schema::create('site_configuration', function (Blueprint $table) use ($sitename, $randomMessages) {

@@ -71,7 +71,7 @@ class SettingsController extends Controller
         }
     }
 
-    private function updateGeneralSettings($request, $user)
+    private function updateGeneralSettings(Request $request, $user)
     {
         $this->validate($request, [
             'description' => ['max:1024'],
@@ -82,11 +82,10 @@ class SettingsController extends Controller
         $user->forum_signature = $request->forum_signature;
         $user->save();
 
-        $settings = $user->settings;
-        $settings->theme = $request->has('theme') || 'light';
-        $settings->save();
-
-        return back()->with('message', 'Successfully updated general settings.');
+        return response()->json([
+            "message" => "Successfully updated general settings.",
+            "type" => "success",
+        ], 200);
     }
 
     private function updateAccountSettings($request, $user)

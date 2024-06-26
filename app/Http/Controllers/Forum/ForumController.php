@@ -147,8 +147,8 @@ class ForumController extends Controller
     public function ForumVal($id, Request $request)
     {
         $validatedData = $request->validate([
-            'title' => ['required', 'max:100'],
-            'body' => ['required', 'min:3', 'max:7500']
+            'title' => ['required', 'max:100', 'profane:es,en'],
+            'body' => ['required', 'min:3', 'max:7500', 'profane:es,en']
         ]);
 
         $title = $validatedData['title'];

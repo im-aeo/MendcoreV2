@@ -38,6 +38,9 @@ defineProps({
                         <a href="#" class="text-sm footer-link fw-semibold">JOBS</a>
                         <a href="#" class="text-sm footer-link fw-semibold">CONTACT</a>
                     </div>
+                    <div class="mb-2 flex-container-lg mb-lg-0">
+                        <div class="text-xs text-muted fw-semibold">{{ usePage<any>().props.site.version }}</div>
+                    </div>
                 </div>
                 <div class="cell large-5">
                     <div class="gap-3 flex-container align-right align-center-sm">

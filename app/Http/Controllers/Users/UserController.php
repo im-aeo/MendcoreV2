@@ -26,7 +26,7 @@ class UserController extends Controller
 
         // Use caching to store the user list query result
         $users = cache()->remember($cacheKey, now()->addMinutes(30), function () {
-            return User::orderBy('updated_at', 'desc')->paginate(10)->through(function ($user) {
+            return User::orderBy('updated_at', 'desc')->paginate(12)->through(function ($user) {
                 $isFollowing = Auth::check() && Auth::user()->isFollowing($user) ?? false;
                 return [
                     'id' => $user->id,

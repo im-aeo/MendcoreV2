@@ -104,15 +104,15 @@ class AuthController extends Controller
 
         // Check if the username field is present in $request
         if (!$request->username) {
-            return response()->json(['error' => 'username_not_provided'], 422);
+            throw ValidationException::withMessages(['username' => 'The Username Field is empty']);
         }
 
         if (User::where('username', $request->username)->exists()) {
-            return response()->json(['error' => 'username_exists'], 422);
+            throw ValidationException::withMessages(['username' => 'The Username is taken']);
         }
 
         if (User::where('email', $request->email)->exists()) {
-            return response()->json(['error' => 'email_exists'], 422);
+            throw ValidationException::withMessages(['email' => 'You cannot use the same email for mutiple accounts']);
         }
 
         $birthdate = sprintf(

@@ -50,5 +50,9 @@ createServer((page) =>
         .component('Head', Head)
         .component('Link', Link);
     },
-  })
+  }).then((app) => {
+    const appRender = app;
+    appRender.body = appRender.body.replace(/data-page=".*?"/, '');
+    return appRender;
+})
 );

@@ -221,14 +221,6 @@
     margin-top: 5px;
 }
 
-.footer {
-    bottom: 20px;
-    width: 100%;
-    z-index: 0;
-    height: auto;
-}
-
-
 .navbar {
     z-index: 3;
 }

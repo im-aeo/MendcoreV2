@@ -18,10 +18,17 @@ class LeaderboardController extends Controller
         $leaderboardService = new LeaderboardService();
         $leaderboard = $leaderboardService->generate();
         $bucksLeaderboard = User::orderBy('bucks', 'desc')->take(10)->get();
+        $bucksData = [];
 
-        return inertia('Leaderboard/Index', [ 
+        foreach ($bucksLeaderboard as $user) {
+            $bucksData[] = [
+                'username' => $user->username,
+                'bucks' => $user->bucks,
+            ];
+        }
+        return inertia('Leaderboard/Index', [
             'XP' => $leaderboard,
-            'Bucks' => $bucksLeaderboard, // soon
+            'Bucks' => $bucksData, // soon
         ]);
     }
 }

@@ -10,7 +10,7 @@
   <AppHead
     pageTitle="Item Index"
     description="Login to Vestora."
-    :url="route('admin.users.page')"
+    :url="route('admin.items.page')"
   />
   <Navbar>
     <div class="card">
@@ -41,8 +41,8 @@
         <p class="title is-4">Official Items:</p>
         </div>
         <div class="column">
-            <p class="button is-fullwidth">New Item</p>
-            </div>
+            <Link :href="route(`admin.items.create.create-item`)" class="button is-fullwidth">New Item</Link>
+        </div>
         <br />
         <article
           class="media"

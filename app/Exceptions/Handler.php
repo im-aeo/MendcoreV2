@@ -78,12 +78,46 @@ class Handler extends ExceptionHandler
 
         if (!$request->isMethod('GET')) {
             return response()->json([
-                    'type' => 'error',
-                    'message' => $this->messages[$status]
+                'type' => 'error',
+                'message' => $this->messages[$status]
             ], $status);
         }
 
         return inertia('App/Error', [
+            'site' => config('Values'),
+            'auth' => function () use ($request) {
+                return [
+                    'user' => $request->user() ? [
+                        'id' => $request->user()->id,
+                        'username' => $request->user()->username,
+                        'display_name' => $request->user()->display_name,
+                        'email' => $request->user()->email,
+                        'birthdate' => $request->user()->birthdate,
+                        'coins' => $request->user()->coins,
+                        'bucks' => $request->user()->bucks,
+                        'status' => $request->user()->status,
+                        'staff' => $request->user()->isStaff(),
+                        'position' => $request->user()->CurrentPosition(),
+                        'about_me' => $request->user()->about_me,
+                        'headshot' => $request->user()->headshot(),
+                        'following' => $request->user()->following(),
+                        'settings' => $request->user()->settings,
+                        'level' => $request->user()->getLevel(),
+                        'xp' => $request->user()->getPoints(),
+                        'nextlevelxp' =>  $request->user()->nextLevelAt(),
+                        'notifications' => $request->user()->unreadNotifications()->limit(5)->get()
+                        ->each(function ($notification) {
+                            $notification->DateHum = $notification->created_at->diffForHumans();
+                        }),
+                    ] : null,
+                ];
+            },
+            'site_config' => [
+                'announcement_message' => site_setting('announcement_message') ?? null,
+                'announcement' => site_setting('announcement_enabled') ?? false,
+                'item_creation_enabled' => site_setting('item_creation_enabled') ?? false,
+                'in_maintenance' => site_setting('site_maintenance') ?? false,
+            ],
             'status' => $status,
             'message' => $this->messages[$status],
             'adonis_error' => $this->routes[$status],

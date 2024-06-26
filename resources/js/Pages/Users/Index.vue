@@ -44,6 +44,7 @@ import VLazyImage from "v-lazy-image";
                 </div>
             </div>
             <div class="mx-3 my-3 divider"></div>
+            <Pagination v-bind:pagedata="usePage<any>().props.users"></Pagination>
         </div>
     </Sidebar>
     <Footer />

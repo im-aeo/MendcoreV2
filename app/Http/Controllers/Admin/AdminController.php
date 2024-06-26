@@ -21,23 +21,29 @@ use App\Models\Inventory;
 
 class AdminController extends Controller
 {
-    public function AdminIndex()
+    private $admin;
+
+    public function __construct()
     {
         if (!Auth::check() || !Auth::user()->isStaff()) {
             abort(403); // Immediately return a 403 for unauthorized users
         }
-        $admin = Admin::where('user_id', Auth::id())->first();
+
+        $this->admin = Admin::where('user_id', Auth::id())->first();
+    }
+    public function AdminIndex()
+    {
         return inertia('Admin/Dashboard', [
             'stats' => [
-                'adminPoints' => $admin->adminPoints,
-                'canControlMaintenance' => $admin->rolePermissions('can_activate_maintenance') ?? false,
-                'canEnableAnnouncement' => $admin->rolePermissions('can_enable_announcement') ?? false,
+                'adminPoints' => $this->admin->adminPoints,
+                'canControlMaintenance' => $this->admin->rolePermissions('can_activate_maintenance') ?? false,
+                'canEnableAnnouncement' => $this->admin->rolePermissions('can_enable_announcement') ?? false,
                 'items' => Item::count(),
                 'avatars' => Avatar::count(),
             ],
             'siteSettings' => [
                 'inMaintenance' => site_setting("site_maintenance"),
-                'maintenanceMessage' => $admin->maintenance_message ?? ''
+                'maintenanceMessage' => $this->admin->maintenance_message ?? ''
             ],
         ]);
     }
@@ -201,9 +207,9 @@ class AdminController extends Controller
                 'coins' => $user->coins,
                 'joined' => $joindate,
             ],
-            'permissions' => [                
-                'canMangeUser' => $admin->rolePermissions('can_manage_users') ?? false,
-                'canMangeUserSettings' => $admin->rolePermissions('can_manage_user_settings') ?? false,
+            'permissions' => [
+                'canMangeUser' => $this->admin->rolePermissions('can_manage_users') ?? false,
+                'canMangeUserSettings' => $this->admin->rolePermissions('can_manage_user_settings') ?? false,
             ],
         ]);
     }

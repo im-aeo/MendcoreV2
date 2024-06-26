@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, onMounted, watch, computed, Suspense } from "vue";
+  import { ref, onMounted, watch, computed } from "vue";
   import { router, Link, usePage } from "@inertiajs/vue3";
   import axios from "axios";
   import { route, current } from "momentum-trail";
@@ -176,8 +176,6 @@
               route(`user.profile`, { username: props.auth?.user?.username })
             "
             class="min-w-0 btn btn-info btn-sm text-truncate"
-            content="Profile"
-           v-tippy="{ placement : 'bottom' }"
           >
             <i class="fa-solid fa-user-crown"></i>
           </Link>
@@ -342,9 +340,8 @@
         class="position-relative nav-item cell shrink"
       >
         <div class="show-for-small-only position-relative">
-          <a
-            @click="addActiveClass(`notification_dropdown`)"
-            href="#"
+          <Link
+            :href="route('notification.page')"
             class="px-2 btn-circle squish text-body"
           >
             <span
@@ -352,7 +349,7 @@
               class="notification-circle"
             ></span>
             <i class="text-xl fas fa-bell"></i>
-          </a>
+        </Link>
         </div>
         <div
           class="dropdown show-for-medium position-relative"
@@ -454,7 +451,7 @@
             </li>
 
             <li class="dropdown-item">
-              <a href="#" class="dropdown-link">
+              <Link :href="route('notification.page')" class="dropdown-link">
                 <div class="align-middle flex-container align-justify">
                   <div class="gap-2 align-middle flex-container">
                     <i
@@ -466,7 +463,7 @@
                   </div>
                   <i class="px-1 text-sm fas fa-chevron-right text-muted"></i>
                 </div>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

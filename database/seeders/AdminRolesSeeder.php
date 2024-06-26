@@ -12,7 +12,6 @@ class AdminRolesSeeder extends Seeder
      */
     public function run(): void
     {
-        AdminRoles::truncate();
 
         $roles = [
             [
