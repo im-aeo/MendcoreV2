@@ -8,27 +8,37 @@ use App\Models\Avatar;
 use App\Models\Item;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 
 class RenderController extends Controller
 {
-    public function UserRender($id)
+    function getAvatarRecord(int $id)
+    {
+        $cacheKey = 'user_avatar_Record'; // Use a specific cache key for hat searches
+
+        return cache()->remember($cacheKey, now()->addMinutes(5), function () use ($id) {
+           return User::findOrFail($id)->avatar();
+        });
+    }
+    public function UserRender(int $id)
     {
         // Retrieve parameters for the request
-        $user = Avatar::findOrFail($id);
-
         // Verify the encryption or any other required validations
+        $avatar = $this->getAvatarRecord($id);
+
         $avatar_thumbnail_name = bin2hex(random_bytes(22));
-        $requestData = $this->prepareRequestData('user', $user, $avatar_thumbnail_name);
+
+        $requestData = $this->prepareRequestData('user', $avatar, $avatar_thumbnail_name);
 
         // Make HTTP request to the rendering server
         $this->makeRenderRequest($requestData);
 
         // Update the user's image and save
-        $user->image = $avatar_thumbnail_name;
-        $user->save();
+        $avatar->image = $avatar_thumbnail_name;
+        $avatar->save();
 
         // Return the rendered image as a response
-        return $this->getAvatarRenderHash($user->id);
+        return $this->getAvatarRenderHash($avatar->id);
     }
 
     public function ItemRender($id)
@@ -81,10 +91,11 @@ class RenderController extends Controller
         return $this->getItemThumb($item->id, true);
     }
 
-    public function getAvatarRenderHash($id)
+    public function getAvatarRenderHash(int $id)
     {
-        $user = Avatar::findOrFail($id);
-        return env('STORAGE_URL') . '/thumbnails/' . $user->image . '.png';
+        $avatar = $this->getAvatarRecord($id);
+
+        return env('STORAGE_URL') . '/thumbnails/' . $avatar->image . '.png';
     }
 
     public function getItemThumb($id, bool $isPreview = false)

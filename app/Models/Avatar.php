@@ -16,7 +16,27 @@ class Avatar extends Model
     protected $table = 'user_avatars';
 
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'image',
+        'hat_1',
+        'hat_2',
+        'hat_3',
+        'hat_4',
+        'hat_5',
+        'hat_6',
+        'addon',
+        'head',
+        'face',
+        'tool',
+        'tshirt',
+        'shirt',
+        'pants',
+        'color_head',
+        'color_torso',
+        'color_left_arm',
+        'color_right_arm',
+        'color_left_leg',
+        'color_right_leg',
 
     ];
 

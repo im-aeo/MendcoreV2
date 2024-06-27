@@ -57,7 +57,7 @@
             <div class="content">
               <br />
               <p class="title is-4">
-                <span class="mb-4">{{ user.username }} (ID: {{ user.id }})</span>
+                <span class="mb-4">{{ user.display_name }} <span class="has-text-grey">({{"@" + user.username }})</span></span>
                 <div class="mt-4 tags">
                   <span
                   v-if="user.isBanned"

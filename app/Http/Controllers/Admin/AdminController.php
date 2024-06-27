@@ -114,7 +114,8 @@ class AdminController extends Controller
             $this->uploadToThumbnails($request->file('image'), $itemHashName);
             $this->uploadImage($request->file('image'), $itemHashName);
         } else {
-            $this->uploadImage($request->file('image'), $itemHashName);
+           throw ValidationException::withMessages(['image' => 'One of your fields are empty']);
+
         }
 
         $item->hash = $itemHashName;
@@ -137,12 +138,12 @@ class AdminController extends Controller
             ItemRenderer::dispatch($item->id);
         }
         if ($request->type === 'face') {
-            ItemPreviewRenderer::dispatch($item->id, true, $previewName);
+            ItemPreviewRenderer::dispatch($item->id, true, $itemHashName);
         }
 
         $itemUrl = route('store.item', $item->id);
 
-        return redirect()->to($itemUrl);
+        return inertia()->location($itemUrl);
     }
 
     private function uploadToThumbnails(UploadedFile $file, string $name): string

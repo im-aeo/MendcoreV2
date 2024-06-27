@@ -46,7 +46,8 @@ class GrabController extends Controller
         $spaces = Space::where([
             ['thumbnail_pending', '!=', false]
         ])->orderBy('created_at', 'desc')->paginate(12)->through(function ($space) {
-            return [                'name' => $space->name,
+            return [
+                'name' => $space->name,
                 'id' => $space->id,
                 'slug' => $space->slug(),
                 'name' => $space->name,
@@ -65,7 +66,7 @@ class GrabController extends Controller
             'search' => $search,
         ]);
     }
-    
+
     public function SpacesView(Request $request, $id)
     {
         $space = Space::where('id', $id)->first();
@@ -91,7 +92,7 @@ class GrabController extends Controller
             'avatar' => $user->avatar(),
             'avatar.current_face' => env('STORAGE_URL') . (
                 $user->avatar()->face ? '/uploads/' . getItemHash($user->avatar()->face) . ".png" : '/assets/default.png'
-            ),            
+            ),
             'avatar.thumbnail' => $user->thumbnail(),
             'colors' => $colors,
             'categories' => $categories,
@@ -119,7 +120,8 @@ class GrabController extends Controller
         switch ($request->action) {
             case 'reset':
                 $avatar->resetAvatar();
-                return $this->regenerate($request);
+                $this->regenerate($request);
+                return $vrs->getAvatarRenderHash($avatar->id);
             case 'wear':
                 $item = Item::find($request->id);
 
@@ -153,7 +155,7 @@ class GrabController extends Controller
 
                 $this->regenerate($request);
 
-                return $vrs->getRenderHash($avatar->id);
+                return $vrs->getAvatarRenderHash($avatar->id);
 
             case 'remove':
                 $validTypes = ['hat_1', 'hat_2', 'hat_3', 'head', 'face', 'tool', 'addon', 'torso', 'left_arm', 'right_arm', 'left_leg', 'right_leg', 'tshirt', 'shirt', 'pants'];
@@ -167,7 +169,7 @@ class GrabController extends Controller
 
                 $this->regenerate($request);
 
-                return $vrs->getRenderHash($avatar->id);
+                return $vrs->getAvatarRenderHash($avatar->id);
             case 'color':
                 $colors = config('avatar_colors'); // Fetch colors from the configuration file
 
@@ -186,7 +188,7 @@ class GrabController extends Controller
                 // Check if the avatar's current color for the specified body part matches the requested color
                 if ($avatar->{"color_{$request->body_part}"} == $request->color) {
                     $this->regenerate($request);
-                    return $vrs->getRenderHash($avatar->id);
+                    return $vrs->getAvatarRenderHash($avatar->id);
                 }
 
                 // Update the avatar's color for the specified body part

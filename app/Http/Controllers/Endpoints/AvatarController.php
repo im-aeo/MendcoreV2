@@ -38,7 +38,10 @@ class AvatarController extends Controller
 
         return response()->json($items);
     }
-
+    private function regenerate(): void
+    {
+        UserRenderer::dispatch(Auth::user()->id);
+    }
     public function WearItem(int $itemId, int | string $slot)
     {
         // Fetch the avatar and item record
@@ -81,17 +84,16 @@ class AvatarController extends Controller
         // Save the updated avatar record
         $avatar->save();
 
-        UserRenderer::dispatch(Auth::user()->id);
-        return $vrs->getRenderHash($avatar->id);
-
+        $this->regenerate();
 
         return response()->json([
+            $vrs->getAvatarRenderHash($avatar->id),
             "message" => "You have worn this item",
             "type" => "success",
         ], 200);
     }
 
-    public function getWearingItems($id, $test)
+    public function getWearingItems()
     {
         // Return Wearing Items
         $cacheKey = 'wearing_items';

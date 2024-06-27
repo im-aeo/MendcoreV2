@@ -15,6 +15,10 @@
     align-items: center;
     overflow-y: auto;
     padding: 20px 0;
+    animation: 0.2s modal-blur-in;
+}
+.modal:not {
+    animation: 0.2s modal-blur-out;
 }
 .modal-avatar-card {
     background: var(--section-bg);
@@ -36,6 +40,10 @@
     margin: 0 20px;
     max-height: 600px;
     overflow-y: auto;
+    animation: 0.4s modal-scale-in;
+}
+.modal-card:not {
+    animation: 0.2s modal-scale-out;
 }
 .modal-card-body {
     padding: 18px;
