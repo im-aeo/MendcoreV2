@@ -8,7 +8,7 @@ return [
     'system_account_id' => 1,
     'in_testing_phase' => true,
 
-    'version' => "af8b93ed",
+    'version' => Version(),
     'frontend' => [
         'page_loader' => false,
         'sidebar_menu' => true,

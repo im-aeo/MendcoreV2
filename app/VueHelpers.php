@@ -104,3 +104,9 @@ function remote_file_exists($url)
         return false;
     }
 }
+function Version()
+{
+    $rev = exec('git rev-parse --short HEAD');
+    return $rev;
+      
+}
