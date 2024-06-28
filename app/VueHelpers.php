@@ -104,6 +104,38 @@ function remote_file_exists($url)
         return false;
     }
 }
+function shortNum($num) {
+    if ($num < 999) {
+        return $num;
+    }
+    else if ($num > 999 && $num <= 9999) {
+        $new_num = substr($num, 0, 1);
+        return $new_num.'K+';
+    }
+    else if ($num > 9999 && $num <= 99999) {
+        $new_num = substr($num, 0, 2);
+        return $new_num.'K+';
+    }
+    else if ($num > 99999 && $num <= 999999) {
+        $new_num = substr($num, 0, 3);
+        return $new_num.'K+';
+    }
+    else if ($num > 999999 && $num <= 9999999) {
+        $new_num = substr($num, 0, 1);
+        return $new_num.'M+';
+    }
+    else if ($num > 9999999 && $num <= 99999999) {
+        $new_num = substr($num, 0, 2);
+        return $new_num.'M+';
+    }
+    else if ($num > 99999999 && $num <= 999999999) {
+        $new_num = substr($num, 0, 3);
+        return $new_num.'M+';
+    }
+    else {
+        return $num;
+    }
+}
 function Version()
 {
     $rev = exec('git rev-parse --short HEAD');

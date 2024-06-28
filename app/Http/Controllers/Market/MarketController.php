@@ -142,7 +142,9 @@ class MarketController extends Controller
             'name' => 'required|string|max:30',
             'description' => 'required|string|max:255',
             'type' => 'required|string|in:shirt,tshirt,pants', // Allowed item types
-            'image' => 'required|image|mimes:png', // Validate PNG image
+            'image' => 'required|image|mimes:png,jpg', // Validate PNG image
+            'price_coins' => 'required|integer|max:999999',
+            'price_bucks' => 'required|integer|max:999999',
         ]);
 
         if ($validator->fails()) { // Use Validator object's fails method on $validator

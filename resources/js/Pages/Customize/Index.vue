@@ -368,111 +368,117 @@ onMounted(() => {
       </div>
       <div class="text-center">
         <div class="card card-body">
-          <div style="margin-bottom: 2.5px">
-            <button
-              class="avatar-body-part"
-              id="head"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_head,
-                padding: '5px',
-                borderRadius: '15px',
-                marginTop: '-1px',
-              }"
-              @click="handlePartSelection('head')"
-            >
-              <VLazyImage
-                :src="userAvatar.current_face"
-                :src-placeholder="usePage<any>().props.site.production.domains.storage + '/assets/default.png'"
-                width="50"
-                height="50"
-              />
-            </button>
-          </div>
-          <div style="margin-bottom: 2.5px">
-            <button
-              class="avatar-body-part"
-              id="left_arm"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_left_arm,
-                padding: '50px',
-                paddingRight: '0px',
-              }"
-              @click="handlePartSelection('left_arm')"
-            ></button>
+          <div style="">
+            <div style="margin-bottom: 2.5px">
+              <button
+                class="avatar-body-part"
+                id="head"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_head,
+                  padding: '5px',
+                  borderRadius: '15px',
+                  marginTop: '-1px',
+                }"
+                @click="handlePartSelection('head')"
+              >
+                <VLazyImage
+                  :src="userAvatar.current_face"
+                  :src-placeholder="usePage<any>().props.site.production.domains.storage + '/assets/default.png'"
+                  width="50"
+                  height="50"
+                />
+              </button>
+            </div>
+            <div style="margin-bottom: 2.5px">
+              <button
+                class="avatar-body-part"
+                id="left_arm"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_left_arm,
+                  padding: '50px',
+                  paddingRight: '0px',
+                }"
+                @click="handlePartSelection('left_arm')"
+              ></button>
 
-            <button
-              class="avatar-body-part"
-              id="torso"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_torso,
-                padding: '50px',
-              }"
-              @click="handlePartSelection('torso')"
-            ></button>
+              <button
+                class="avatar-body-part"
+                id="torso"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_torso,
+                  padding: '50px',
+                }"
+                @click="handlePartSelection('torso')"
+              ></button>
 
-            <button
-              class="avatar-body-part"
-              id="right_arm"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_right_arm,
-                padding: '50px',
-                paddingRight: '0px',
-              }"
-              @click="handlePartSelection('right_arm')"
-            ></button>
-          </div>
-          <div>
-            <button
-              class="avatar-body-part"
-              name="left_leg"
-              @click="handlePartSelection('left_leg')"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_left_leg,
-                padding: '50px',
-                paddingRight: '0px',
-                paddingLeft: '47px',
-              }"
-            ></button>
+              <button
+                class="avatar-body-part"
+                id="right_arm"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_right_arm,
+                  padding: '50px',
+                  paddingRight: '0px',
+                }"
+                @click="handlePartSelection('right_arm')"
+              ></button>
+            </div>
+            <div>
+              <button
+                class="avatar-body-part"
+                name="left_leg"
+                @click="handlePartSelection('left_leg')"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_left_leg,
+                  padding: '50px',
+                  paddingRight: '0px',
+                  paddingLeft: '47px',
+                }"
+              ></button>
 
-            <button
-              class="avatar-body-part"
-              name="right_leg"
-              @click="handlePartSelection('right_leg')"
-              :style="{
-                backgroundColor: '#' + userAvatar.color_right_leg,
-                padding: '50px',
-                paddingRight: '0px',
-                borderBottom: '15px',
-                paddingLeft: '47px',
-              }"
-            ></button>
+              <button
+                class="avatar-body-part"
+                name="right_leg"
+                @click="handlePartSelection('right_leg')"
+                :style="{
+                  backgroundColor: '#' + userAvatar.color_right_leg,
+                  padding: '50px',
+                  paddingRight: '0px',
+                  borderBottom: '15px',
+                  paddingLeft: '47px',
+                }"
+              ></button>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="cell medium-8">
-      <div class="mb-1 align-middle flex-container align-justify">
-        <div class="mb-1 text-xl fw-semibold">Inventory</div>
-      </div>
-      <div class="section">
-        <div class="gap-3 text-center flex-container flex-dir-column">
-          <div class="grid-x grid-margin-x">
-            <div v-for="item in wearingItems.data" class="cell large-2 medium-3 small-3">
-              <div class="d-block">
-                <div class="p-2 mb-1 card card-inner position-relative">
-                  <img :src="item.thumbnail" />
+      <div class="mb-3 card card-body">
+        <div class="mb-1 align-middle flex-container align-justify">
+          <div class="mb-1 text-xl fw-semibold">Currently Wearing</div>
+        </div>
+        <div class="section">
+          <div class="gap-3 text-center flex-container flex-dir-column">
+            <div class="grid-x grid-margin-x">
+              <div
+                v-for="item in wearingItems.data"
+                class="cell large-2 medium-3 small-3"
+              >
+                <div class="d-block">
+                  <div class="p-2 mb-1 card card-inner position-relative">
+                    <img :src="item.thumbnail" />
+                  </div>
+                  <Link
+                    :href="route(`store.item`, { id: item.id })"
+                    class="text-body fw-semibold text-truncate"
+                  >
+                    {{ item.name }}
+                  </Link>
                 </div>
-                <Link
-                  :href="route(`store.item`, { id: item.id })"
-                  class="text-body fw-semibold text-truncate"
-                >
-                  {{ item.name }}
-                </Link>
               </div>
             </div>
           </div>
-        </div>
-        <div class="mb-3 card card-body">
+
           <div
             v-if="!wearingItems.length"
             class="gap-3 text-center flex-container flex-dir-column"
