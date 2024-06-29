@@ -55,11 +55,15 @@ class MarketController extends Controller
         $recommendations = cache()->remember($recommendationCacheKey, now()->addHours(6), function () use ($item) {
             return Item::where([
                 ['id', '!=', $item->id],
-                ['public_view', true],
-                ['status', 'approved'],
+                ['public_view', false],
+                ['status', 'pending'],
                 ['creator_id', $item->creator->id]
             ])->inRandomOrder()->take(6)->get();
         });
+        foreach ($recommendations as $recommendation) {
+            $thumbnail = $recommendation->thumbnail();
+            $recommendation->thumbnail = $thumbnail;
+        }
 
 
         return inertia('Store/Item', [

@@ -8,9 +8,12 @@ import { route } from 'momentum-trail'
 import axios from 'axios';
 import { ref } from 'vue';
 
+const isDescOpen = ref(false);
+const isOtherOpen = ref(false);
+
 defineProps<{
     item?: { type: Object, default: null },
-    reccomendations?: Object,
+    recommendations?: Array,
     itemOwnership: Boolean
 }>();
 
@@ -21,6 +24,18 @@ let isPreview = ref(false);
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+function setAttributeActive(id: string) {
+  const element = document.getElementById(id);
+
+  if (element) {
+    // Toggle the 'active' class
+    element.classList.toggle('active');
+  } else {
+    console.error(`Element with ID ${id} not found`);
+  }
+}
+
 const purchaseBucks = () => {
     axios.get(`/sanctum/csrf-cookie`).then(response => {
         axios.post(route(`api.store.purchase`, { id: usePage<any>().props.item.id, currencyType: 'bucks' }));
@@ -749,34 +764,46 @@ function onImgErrorSmall(id) {
                             </button>
                         </div>
                     </div>
-                    <div class="mb-1 text-xl fw-semibold">
-                        Description
-                    </div>
-                    <div class="mb-3 card card-body">
-                        <div class="text-sm fw-semibold">
-                            {{ usePage<any>().props.item.description }}
-                        </div>
-                    </div>
-                    <div class="mb-1 text-xl fw-semibold">
-                        More From Creator
-                    </div>
-                    <div class="mb-3 card card-body">
-                        <div v-if="reccomendations" class="grid-x grid-margin-x">
-                            <div class="cell large-3 medium-4 small-6" v-for="suggestion in reccomendations">
-                                <a href="#" class="d-block">
-                                    <div class="p-2 mb-1 card card-inner position-relative">
-                                        <img src="/assets/img/item_dummy_2.png">
-                                    </div>
-                                    <div class="text-body fw-semibold text-truncate">
-                                        {{ suggestion.name }}
-                                    </div>
-                                </a>
+                    <div class="card">
+                        <div class="description-parent">
+                          <button class="mt-3 description fw-semibold" :class="{ active: isDescOpen ? 'active' : '' }" @click="isDescOpen = !isDescOpen">
+                            <i class="me-2 fas fa-comments text-muted"></i>
+                            Description
+                          </button>
+                          <div class="text-sm description-content text-muted" :style="{ height: isDescOpen ? '45px' : '20px' }">
+                            <div  v-if="isDescOpen" class="mt-1 text-sm text-body fw-semibold description-body">
+                                {{ usePage<any>().props.item.description }}
                             </div>
+                          </div>
                         </div>
-                        <div v-else class="text-sm fw-bold text-muted">
-                            There is no other items from this creator
+                      </div>
+                      <div class="card">
+                        <div class="description-parent">
+                          <button class="mt-3 description fw-semibold" :class="{ active: isOtherOpen ? 'active' : '' }" @click="isOtherOpen = !isOtherOpen">
+                            <i class="me-2 fas fa-comments text-muted"></i>
+                            Items by {{ usePage<any>().props.item.creator.username }}
+                          </button>
+                          <div class="text-sm description-content text-muted" :style="{ height: isOtherOpen ? 'auto' : '20px' }">
+                            <div  v-if="isOtherOpen" class="mt-1 mb-2 text-sm text-body fw-semibold description-body">
+                                <div v-if="recommendations.length" class="grid-x grid-margin-x">
+                                    <div class="cell large-3 medium-4 small-6" v-for="suggestion in recommendations">
+                                        <Link :href="route('store.item', { id: suggestion.id })" class="d-block">
+                                            <div class="p-2 mb-1 card card-inner position-relative">
+                                                <img :src="suggestion.thumbnail">
+                                            </div>
+                                            <div class="text-body fw-semibold text-truncate">
+                                                {{ suggestion.name }}
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </div>
+                                <div v-else class="text-sm fw-bold text-muted">
+                                    There is no other items from this creator
+                                </div>
+                            </div>
+                          </div>
                         </div>
-                    </div>
+                      </div>
                     <div class="mb-1 text-xl fw-semibold">
                         Price Chart
                     </div>

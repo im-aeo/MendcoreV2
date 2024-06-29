@@ -55,13 +55,13 @@ class ItemApiController extends Controller
         if ($categoryData === $categories['Exclusives']) {
             $exclusiveType = $category;
             if ($exclusiveType === "exclusive_all") {
-                $items = Item::where('rare', '=', true)->with('creator')->orderBy('updated_at')->get();
+                $items = Item::where(['rare', '=', true, 'status' => 'approved'])->with('creator')->orderBy('updated_at')->get();
             } else {
                 $exclusiveType = explode('exclusive_', $exclusiveType);
                 $trimmedType = $exclusiveType[1] ?? ""; // Get the second element (or empty string if not found)
 
 
-                $items = Item::where(['rare' => true, 'item_type' => $trimmedType])->with('creator')->orderBy('updated_at')->get();
+                $items = Item::where(['rare' => true, 'item_type' => $trimmedType, 'status' => 'approved'])->with('creator')->orderBy('updated_at')->get();
             }
 
 
@@ -71,7 +71,7 @@ class ItemApiController extends Controller
             }
         } else {
             // Get items for the specific category
-            $items = Item::where('item_type', $category)->with('creator')->orderBy('updated_at')->get();
+            $items = Item::where(['item_type' => $category, 'status' => 'approved'])->with('creator')->orderBy('updated_at')->get();
             foreach ($items as $item) {
                 $item->thumbnail = $item->thumbnail();
             }

@@ -1,12 +1,12 @@
 .card {
     background: var(--section-bg);
-    border: 1px solid var(--section-border-color);
-    box-shadow: 0 1px 2px rgb(var(--section-shadow), 0.1);
-    border-radius: var(--rounded-lg);
+    border: 2px solid var(--section-border-color);
+    box-shadow: 0 1px 3px rgb(var(--section-shadow), 30%);
+    border-radius: 12px;
     position: relative;
 }
 .card-body {
-    padding: 18px;
+    padding: 20px;
 }
 .card-inner {
     background: var(--input-bg);
