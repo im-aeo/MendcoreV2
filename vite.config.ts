@@ -40,7 +40,7 @@ export default defineConfig({
       debugProtection: false,
       debugProtectionInterval: 0,
       disableConsoleOutput: false,
-      domainLock: ["localhost:8000", "netisu.com", "vextoria.com"],
+      domainLock: ["localhost:8000", "netisu.com", "admin.netisu.com"],
       domainLockRedirectUrl: "about:blank",
       forceTransformStrings: [],
       identifierNamesCache: null,

@@ -201,6 +201,26 @@ const lang = computed(() => usePage<any>().props.locale);
       </div>
     </div>
   </nav>
+  <main
+    :class="{
+      'container-navbar': !props.site.frontend.sidebar_menu,
+      container: props.site.frontend.sidebar_menu,
+    }"
+  >
+    <div class="position-relative cell shrink ms-1 mt-2 mb-2">
+      <v-lazy-image
+        :src="usePage<any>().props.auth?.user?.headshot"
+        width="40"
+        class="headshot"
+        alt="Avatar"
+        src-placeholder="assets/img/dummy_headshot.png"
+      />
+      <div class="text-2xl fw-semibold">test</div>
+      <div class="text-sm fw-semibold text-muted">
+        This idk does not have a description.
+      </div>
+    </div>
+  </main>
   <div v-if="image" class="profile-banner">
     <v-lazy-image class="masoqi" :src="image" />
   </div>

@@ -52,49 +52,139 @@ const performSearch = async () => {
   />
 
   <Navbar />
-  <Sidebar>
-    <div class="cell large-12">
-      <div class="mb-2 align-middle grid-x">
-        <div class="cell large-3">
-          <div class="mb-2 text-xl fw-semibold">Spaces</div>
-        </div>
-        <div class="cell large-9">
-          <div class="gap-2 align-middle flex-container-lg">
-            <select class="mb-2 form form-xs form-select form-has-section-color">
-              <option value="1" selected disabled>Advanced Sorting...</option>
-            </select>
-            <div class="mb-2 flex-container flex-child-grow">
-              <input type="submit" class="btn btn-xs btn-success w-100" value="Search" />
-            </div>
-            <div class="mb-2 flex-container flex-child-grow">
-              <a href="#" class="text-center btn btn-info btn-xs flex-child-grow"
-                >Buy Currency</a
-              >
-            </div>
+  <Sidebar image="https://t4.ftcdn.net/jpg/05/71/83/47/360_F_571834789_ujYbUnH190iUokdDhZq7GXeTBRgqYVwa.jpg">
+    <div class="grid-x grid-margin-x grid-padding-y align-center">
+      <div class="cell medium-3">
+          <div class="mb-2 card card-body">
+              <img width="512" height="512" src="file:///home/chronos/u-b99c190e11ee42e371d918a0399d97cb71a388b8/MyFiles/eclipse-frontend/assets/img/space_placeholder.png">
           </div>
-        </div>
-      </div>
-      <div class="grid-x grid-margin-x grid-padding-y">
-        <a href="#" class="d-block squish">
-          <v-lazy-image
-            sizes="(max-width: 320px) 280px, 440px"
-            src="https://img.freepik.com/free-vector/overlapping-forms-background_23-2148642590.jpg?size=626&ext=jpg&ga=GA1.1.1313891279.1718199690&semt=ais_user"
-            class="mb-2 space-thumbnail"
-          />
-          <div style="line-height: 18px">
-            <div class="d-block fw-semibold text-body">
-              <Link style="color: inherit; font-weight: 600">{{ usePage<any>().props.space.name }}</Link>
-            </div>
-            <div class="text-xs text-muted fw-semibold text-truncate">
-              {{ usePage<any>().props.space.description ?? "This space does not have a description." }}
-            </div>
-            <div class="mt-1 text-xs fw-semibold text-muted">
-              {{ usePage<any>().props.space.DateHum }}
-            </div>
+          <div class="text-danger">
+              <i class="fas fa-ban"></i>&nbsp; Space Alert Here
           </div>
-        </a>
+          <div class="mt-2 mb-2">
+              <div class="fw-semibold">{{ usePage<any>().props.space.name }}</div>
+              <div class="text-xs fw-semibold text-muted">{{ usePage<any>().props.space.description ?? "This space does not have a description." }}</div>
+          </div>
+          <div class="gap-3 mt-3 mb-3 align-middle">
+              <button class="mb-2 btn btn-info btn-xs w-100">
+              <i class="fa-solid fa-torii-gate"></i>
+                  Join {{ usePage<any>().props.space.name }}
+              </button>
+              <button class="mb-2 btn btn-danger btn-xs w-100" onclick="showModal('space-leave-modal')">
+              <i class="fa-solid fa-ban"></i>
+                  Leave {{ usePage<any>().props.space.name }}
+              </button>
+              <button class="mb-2 btn btn-secondary btn-disabled btn-xs w-100">
+              <i class="fa-solid fa-clock"></i>
+              Join Request Pending
+              </button>
+              
+          </div>
+          <div class="mb-1 text-xl fw-semibold">Statistics</div>
+          <div class="mb-3 card card-body">
+              <div class="gap-1 align-middle flex-container flex-dir-column">
+
+                  <div class="text-sm text-info w-100">
+                      <i class="text-center fas fa-users-crown" style="width: 26px"></i>
+                      {{ usePage<any>().props.space.creator.username }}
+                  </div>
+                  <div class="text-sm w-100">
+                      <i class="text-center fas fa-user-group text-muted" style="width: 26px"></i>
+                     10k+ Members
+                  </div>
+                  <div class="text-sm w-100">
+                      <i class="text-center fas fa-clock text-muted" style="width: 26px"></i>
+                      {{ usePage<any>().props.space.DateHum }}
+                  </div>
+              </div>
+          </div>
       </div>
-    </div>
+      <div class="cell medium-8">
+          <div style="height: 6px"></div>
+
+          <div class="mb-1 align-middle flex-container align-justify">
+              <div class="mb-1 text-xl fw-semibold">About</div>
+          </div>
+          <div class="mb-3 card card-body">
+              <div class="gap-3 flex-container flex-dir-column">
+                      The council would like to speak with you.....
+              </div>
+
+          </div>
+          <div class="mb-3 card card-body">
+              <div class="section">
+                  <ul class="tabs">
+                      <li class="tab-item">
+                          <a href="#" class="tab-link active squish">Members</a>
+                      </li>
+                      <li class="tab-item">
+                          <a href="#" class="tab-link squish">Posts</a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="section">
+                  <div class="mb-2 align-middle grid-x">
+                      <div class="cell large-3">
+                          <div class="mb-2 text-xl fw-semibold">
+                              Members
+                          </div>
+                      </div>
+                      <div class="cell large-9">
+                          <div class="gap-2 align-middle flex-container-lg">
+                              <input type="text" class="mb-2 form form-xs form-has-section-color" placeholder="Search Members...">
+                              <select class="mb-2 form form-xs form-select form-has-section-color">
+                                  <option value="1" selected="">
+                                      Members
+                                  </option>
+                                  <option value="2">
+                                      Administrators
+                                  </option>
+                                   <option value="3" disabled="">
+                                      Creators
+                                  </option>
+
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="flex-wrap gap-3 mt-2 mb-2 flex-container">
+                      <div class="min-w-0 text-center" style="width: 80px">
+                          <img src="file:///home/chronos/u-b99c190e11ee42e371d918a0399d97cb71a388b8/MyFiles/eclipse-frontend/assets/img/dummy_headshot.png" class="headshot flex-child-grow" alt="headshot">
+                          <div class="text-sm text-info fw-semibold text-truncate">
+                              Aeo
+                          </div>
+                      </div>
+                      <div class="min-w-0 text-center" style="width: 80px">
+                          <img src="file:///home/chronos/u-b99c190e11ee42e371d918a0399d97cb71a388b8/MyFiles/eclipse-frontend/assets/img/dummy_headshot.png" class="headshot flex-child-grow" alt="headshot">
+                          <div class="text-sm text-danger fw-semibold text-truncate">
+                              Aeo
+                          </div>
+                      </div>
+                      <div class="min-w-0 text-center" style="width: 80px">
+                          <img src="file:///home/chronos/u-b99c190e11ee42e371d918a0399d97cb71a388b8/MyFiles/eclipse-frontend/assets/img/dummy_headshot.png" class="headshot flex-child-grow" alt="headshot">
+                          <div class="text-sm fw-semibold text-truncate">
+                              Aeo
+                          </div>
+                      </div>
+                  </div>
+
+                  </div>
+                  <div class="section">
+                      <ul class="pagination flex-container align-center">
+                          <button class="page-link page-disabled">
+                              <i class="fa-regular fa-chevron-left"></i>
+                          </button>
+                          <button class="page-link page-active">1</button>
+                          <button class="page-link">2</button>
+                          <button class="page-link">3</button>
+                          <button class="page-link">
+                              <i class="fa-regular fa-chevron-right"></i>
+                          </button>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
   </Sidebar>
   <Footer />
 </template>

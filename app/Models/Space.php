@@ -42,7 +42,7 @@ class Space extends Model
         return $array;
     }
 
-    public function owner()
+    public function creator()
     {
         return $this->belongsTo('App\Models\User', 'owner_id');
     }

@@ -730,9 +730,6 @@ function onImgErrorSmall(id) {
                                 </div>
                             </div>
                             </Link>
-                            <i class="fas fa-shield-check text-success" data-toggle-modal="#verified-modal"
-                                data-tooltip-title="Verified" data-tooltip-placement="bottom"
-                                style="cursor: pointer"></i>
                         </div>
                         <div class="mb-1 text-xs fw-bold text-uppercase text-muted">
 
@@ -772,7 +769,7 @@ function onImgErrorSmall(id) {
                           </button>
                           <div class="text-sm description-content text-muted" :style="{ height: isDescOpen ? '45px' : '20px' }">
                             <div  v-if="isDescOpen" class="mt-1 text-sm text-body fw-semibold description-body">
-                                {{ usePage<any>().props.item.description }}
+                                {{ usePage<any>().props.item.description ?? "This item does not have a description" }}
                             </div>
                           </div>
                         </div>

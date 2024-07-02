@@ -69,7 +69,7 @@ class GrabController extends Controller
 
     public function SpacesView(Request $request, $id)
     {
-        $space = Space::where('id', $id)->first();
+        $space = Space::where('id', $id)->with(['creator'])->first();
 
         return inertia('Spaces/View', [
             'space' => $space,
