@@ -8,7 +8,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## Project Eclipse Documentation
+## Mendcore Documentation
 - [Setup](/documentation/Setup.md)
 - [Rendering](/documentation/Rendering.md)
 - [Follower Relationships](/documentation/Followers.md)
