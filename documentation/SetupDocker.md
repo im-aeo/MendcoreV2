@@ -4,8 +4,7 @@
 
 Before proceeding with the installation, make sure you meet the following prerequisites:
 
-1. **Operating System:** You can use either Ubuntu/Linux Server (version 20.04+) or a Windows machine with Laragon installed.
-2. **Laragon:** If you're on a Windows machine, download Laragon from [Laragon.org](https://laragon.org).
+1. **Operating System:** You can use either Ubuntu/Linux Server (version 20.04+) or a Windows machine with docker installed.
 
 ### Installation Commands:
 
@@ -13,6 +12,33 @@ Execute the following commands to install the required packages:
 
 ```bash
 sudo apt install php8.1-{memcache,fpm,cgi,http,raphf,memcached,common,redis,mysql,mysqli,sodium} zip unzip unrar nginx memcache curl && sudo apt remove apache*
+```
+
+## Docker Setup
+Execute the following commands to install docker:
+
+```
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+after running
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+then 
+
+ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 ## Nginx Setup
@@ -107,7 +133,13 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');" && sudo mv composer.phar /usr/local/bin/composer
 ```
 
-2. Install dependencies:
+2. Install Laravel Sail
+
+```
+composer install laravel/sail
+```
+
+3. Install dependencies:
 
 ```bash
 composer upgrade && npm upgrade
@@ -117,31 +149,19 @@ composer upgrade && npm upgrade
 
 Finish setting up your environment:
 
-1. Copy the `.env.example` file:
-
-```bash
-cd /var/www/html && cp .env.example .env
-```
-
-2. Edit the `.env` configuration:
-
-```dotenv
-# Configure your application settings here
-```
-
-3. Generate your application key:
-
-```bash
-php artisan key:generate
-```
-
-4. Configure Eclipse settings:
+1. Configure Eclipse settings:
 
 Edit the `Values.php` configuration file:
 
 ```bash
 nano /var/www/html/config/Values.php
 ```
+2. Run sail up
+
+```bash
+./vendor/bin/sail up
+```
+### Note that everytime you change a file, the docker server has to be rebuilt.
 
 Modify the settings in this file as needed.
 
