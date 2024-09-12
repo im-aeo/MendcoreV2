@@ -87,10 +87,12 @@ Then restart the webserver.
 ```bash
 sudo service nginx restart
 ```
+
 Make sure you set the correct permissions!
 ```bash
 chmod -R 777 /var/www/* && chmod -R 777 /var/www/html/* 
 ```
+
 ## Node.js Setup
 
 Install the Node.js Version Manager (NVM) by following these steps:
